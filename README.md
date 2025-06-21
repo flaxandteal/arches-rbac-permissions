@@ -20,8 +20,8 @@ TODO: finish out and tidy
 
 An outcome of the [Arches Developer Meeetup 2025](https://flaxandteal.github.io/arches2025-website/) was that we want
 
- - tidy up this repo
- - add tests
+ - tidy up this repository (linting, full types)
+ - add (in-process) tests
  - make casbin optional and update naming to decouple
  - make worker/rabbit optional
  - split into in-Arches user management and permissions Arches Applications (likely to be a dependency relationship)
