@@ -42,5 +42,10 @@ Much of this development was undertaken during the period of a project for
 the NI Historic Environment Division, who provided valuable insights and
 feedback to functionality.
 
+The base of this Arches Application is from [@chiatt](github.com/chiatt)'s Arches Dashboard example project.
+
+Thanks are due to the Arches Core team at [Farallon](https://www.fargeo.com/) and [GCI](https://www.getty.edu/conservation/)
+for the fantastic Arches project.
+
 A number of ancillary files, including linting, doc generation and CI,
 were taking from the Apache2-licensed [DeWReT](https://github.com/flaxandteal/dewret) library.
