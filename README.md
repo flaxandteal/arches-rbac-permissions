@@ -2,7 +2,19 @@
 
 ### Functionality
 
-TODO
+Currently within this repository:
+
+ - datatypes for users and (Django) groups
+ - Person, Group, Set and LogicalSet types (based on [Arches for Science](https://github.com/archesproject/arches-for-science/))
+ - permissions based on relationships between those
+ - caching of resource permissions without Django Guardian
+ - nested permissions (hierarchies)
+ - permissions based on Arches searches
+ - management of people and roles through the Arches front-end
+ - (to add) Group Manager for visualizing organograms from Coral project
+ - (to add) flows for user sign-up, auto-permissioning and attaching to Person from Coral project
+
+TODO: finish out and tidy
 
 ### Suggested Plan
 
@@ -10,6 +22,8 @@ An outcome of the [Arches Developer Meeetup 2025](https://flaxandteal.github.io/
 
  - tidy up this repo
  - add tests
+ - make casbin optional and update naming to decouple
+ - make worker/rabbit optional
  - split into in-Arches user management and permissions Arches Applications (likely to be a dependency relationship)
  - upstream plan agreement and light review (**external dependency**)
  - tidy up and add the views/templates for user management from coral-arches
@@ -18,6 +32,11 @@ An outcome of the [Arches Developer Meeetup 2025](https://flaxandteal.github.io/
  - look at whether we can move from AORM to QuerySets, at least in part
  - integrate/rebase onto Farallon's Default Deny
  - finalize merging of plugins (**external dependency**)
+
+#### Future
+
+Make a more straightforward way to build logical sets, other than copying search URLs.
+Nodegroup permissions in the same approach as resource permissions. This would be easiest with a PG/ES tile index as an alternative to resource indexing.
 
 ### Installation
 
