@@ -1,0 +1,30 @@
+name: Static checking
+on: [push, pull_request]
+jobs:
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - uses: chartboost/ruff-action@v1
+        with:
+          src: "./src ./tests ./example"
+      - uses: python/mypy@v1.8.0
+        with:
+          paths: "./src"
+      - run: pip install .[test] && python -m mypy --strict --install-types --allow-subclassing-any --non-interactive ./src ./tests ./example
+
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: install
+        run: python -m pip install .
+      - uses: pypa/gh-action-pip-audit@v1.0.8
+        with:
+          paths: "./src ./tests"
