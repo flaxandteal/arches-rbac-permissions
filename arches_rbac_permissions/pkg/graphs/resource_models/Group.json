@@ -239,7 +239,7 @@
                     "instructions": {
                         "en": ""
                     },
-                    "is_editable": true,
+                    "is_editable": false,
                     "name": {
                         "en": "Permissions"
                     },
@@ -980,16 +980,7 @@
                 {
                     "alias": "arches_plugins",
                     "config": {
-                        "graphs": [
-                            {
-                                "graphid": "e828f30f-f4ef-4e9b-aeb0-3998bcb7678a",
-                                "inverseRelationshipConcept": "ac41d9be-79db-4256-b368-2f4559cfbe55",
-                                "name": "Arches Plugins",
-                                "relationshipCollection": "00000000-0000-0000-0000-000000000005",
-                                "relationshipConcept": "ac41d9be-79db-4256-b368-2f4559cfbe55",
-                                "useOntologyRelationship": false
-                            }
-                        ],
+                        "graphs": [],
                         "searchDsl": "",
                         "searchString": ""
                     },
@@ -1529,8 +1520,8 @@
             "publication": {
                 "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
                 "notes": null,
-                "publicationid": "bcaac244-1158-11ef-a6e2-0242ac170006",
-                "published_time": "2024-05-13T18:43:49.187"
+                "publicationid": "435818a6-6789-11ef-baee-0242ac120006",
+                "published_time": "2024-08-31T11:07:50.980"
             },
             "relatable_resource_model_ids": [],
             "resource_2_resource_constraints": [],
@@ -1564,8 +1555,8 @@
     ],
     "metadata": {
         "db": "PostgreSQL 12.2 (Debian 12.2-2.pgdg100+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 8.3.0-6) 8.3.0, 64-bit",
-        "git hash": "62bd9f152 2024-05-15 15:32:24 +0100",
+        "git hash": "bf3f81818 2024-09-07 21:13:20 +0100",
         "os": "Linux",
-        "os version": "6.5.0-28-generic"
+        "os version": "6.8.0-41-generic"
     }
 }

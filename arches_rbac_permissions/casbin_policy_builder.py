@@ -70,7 +70,6 @@ class CasbinPolicyBuilder:
     
     def _trigger_reload_if_needed(self):
         """Trigger reload in other processes if configured"""
-        import os
-        if os.getenv("CASBIN_LISTEN", False):
+        if settings.get("ENABLE_CASBIN_TRIGGER"):
             from .casbin import trigger
             trigger.request_reload()

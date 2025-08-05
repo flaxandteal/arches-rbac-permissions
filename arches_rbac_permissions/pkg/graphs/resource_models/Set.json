@@ -22,12 +22,12 @@
                     "instructions": {
                         "en": ""
                     },
-                    "is_editable": false,
                     "name": {
                         "en": "Members"
                     },
                     "nodegroup_id": "7383b2c6-705c-11ee-977f-0242ac140008",
                     "sortorder": null,
+                    "source_identifier_id": null,
                     "visible": true
                 },
                 {
@@ -58,12 +58,12 @@
                     "instructions": {
                         "en": ""
                     },
-                    "is_editable": false,
                     "name": {
                         "en": "Title"
                     },
                     "nodegroup_id": "2cd7a956-6f42-11ee-9192-0242ac140008",
                     "sortorder": null,
+                    "source_identifier_id": null,
                     "visible": true
                 },
                 {
@@ -85,12 +85,12 @@
                     "instructions": {
                         "en": ""
                     },
-                    "is_editable": true,
                     "name": {
                         "en": "Nested Sets"
                     },
                     "nodegroup_id": "08bdee88-705d-11ee-8f59-0242ac140008",
                     "sortorder": null,
+                    "source_identifier_id": null,
                     "visible": true
                 }
             ],
@@ -113,6 +113,7 @@
                     },
                     "node_id": "7383b2c6-705c-11ee-977f-0242ac140008",
                     "sortorder": 0,
+                    "source_identifier_id": null,
                     "visible": true,
                     "widget_id": "ff3c400a-76ec-11e7-a793-784f435179ea"
                 },
@@ -142,6 +143,7 @@
                     },
                     "node_id": "a829879a-6f43-11ee-9ebf-0242ac140008",
                     "sortorder": 0,
+                    "source_identifier_id": null,
                     "visible": true,
                     "widget_id": "10000000-0000-0000-0000-000000000001"
                 },
@@ -163,6 +165,7 @@
                     },
                     "node_id": "08bdee88-705d-11ee-8f59-0242ac140008",
                     "sortorder": 0,
+                    "source_identifier_id": null,
                     "visible": true,
                     "widget_id": "ff3c400a-76ec-11e7-a793-784f435179ea"
                 }
@@ -182,7 +185,8 @@
                     "graph_id": "b16832e8-dfc9-4fc8-9c07-0c0b980ed220",
                     "name": null,
                     "ontologyproperty": null,
-                    "rangenode_id": "08bdee88-705d-11ee-8f59-0242ac140008"
+                    "rangenode_id": "08bdee88-705d-11ee-8f59-0242ac140008",
+                    "source_identifier_id": null
                 },
                 {
                     "description": null,
@@ -191,7 +195,8 @@
                     "graph_id": "b16832e8-dfc9-4fc8-9c07-0c0b980ed220",
                     "name": null,
                     "ontologyproperty": null,
-                    "rangenode_id": "a829879a-6f43-11ee-9ebf-0242ac140008"
+                    "rangenode_id": "a829879a-6f43-11ee-9ebf-0242ac140008",
+                    "source_identifier_id": null
                 },
                 {
                     "description": null,
@@ -200,7 +205,8 @@
                     "graph_id": "b16832e8-dfc9-4fc8-9c07-0c0b980ed220",
                     "name": null,
                     "ontologyproperty": null,
-                    "rangenode_id": "2cd7a956-6f42-11ee-9192-0242ac140008"
+                    "rangenode_id": "2cd7a956-6f42-11ee-9192-0242ac140008",
+                    "source_identifier_id": null
                 },
                 {
                     "description": null,
@@ -209,7 +215,8 @@
                     "graph_id": "b16832e8-dfc9-4fc8-9c07-0c0b980ed220",
                     "name": null,
                     "ontologyproperty": null,
-                    "rangenode_id": "7383b2c6-705c-11ee-977f-0242ac140008"
+                    "rangenode_id": "7383b2c6-705c-11ee-977f-0242ac140008",
+                    "source_identifier_id": null
                 }
             ],
             "functions_x_graphs": [
@@ -237,8 +244,11 @@
                 }
             ],
             "graphid": "b16832e8-dfc9-4fc8-9c07-0c0b980ed220",
+            "group_permissions": {},
+            "has_unpublished_changes": true,
             "iconclass": "fa fa-cubes",
-            "is_editable": false,
+            "is_active": true,
+            "is_copy_immutable": false,
             "isresource": true,
             "jsonldcontext": null,
             "name": {
@@ -247,18 +257,21 @@
             "nodegroups": [
                 {
                     "cardinality": "1",
+                    "grouping_node_id": "08bdee88-705d-11ee-8f59-0242ac140008",
                     "legacygroupid": null,
                     "nodegroupid": "08bdee88-705d-11ee-8f59-0242ac140008",
                     "parentnodegroup_id": null
                 },
                 {
                     "cardinality": "n",
+                    "grouping_node_id": "2cd7a956-6f42-11ee-9192-0242ac140008",
                     "legacygroupid": null,
                     "nodegroupid": "2cd7a956-6f42-11ee-9192-0242ac140008",
                     "parentnodegroup_id": null
                 },
                 {
                     "cardinality": "1",
+                    "grouping_node_id": "7383b2c6-705c-11ee-977f-0242ac140008",
                     "legacygroupid": null,
                     "nodegroupid": "7383b2c6-705c-11ee-977f-0242ac140008",
                     "parentnodegroup_id": null
@@ -287,6 +300,7 @@
                     "graph_id": "b16832e8-dfc9-4fc8-9c07-0c0b980ed220",
                     "hascustomalias": false,
                     "is_collector": true,
+                    "is_immutable": false,
                     "isrequired": false,
                     "issearchable": true,
                     "istopnode": false,
@@ -294,8 +308,9 @@
                     "nodegroup_id": "08bdee88-705d-11ee-8f59-0242ac140008",
                     "nodeid": "08bdee88-705d-11ee-8f59-0242ac140008",
                     "ontologyclass": null,
-                    "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P10i_contains",
+                    "parentproperty": null,
                     "sortorder": 1,
+                    "source_identifier_id": null,
                     "sourcebranchpublication_id": null
                 },
                 {
@@ -310,6 +325,7 @@
                     "graph_id": "b16832e8-dfc9-4fc8-9c07-0c0b980ed220",
                     "hascustomalias": false,
                     "is_collector": true,
+                    "is_immutable": false,
                     "isrequired": true,
                     "issearchable": true,
                     "istopnode": false,
@@ -317,8 +333,9 @@
                     "nodegroup_id": "2cd7a956-6f42-11ee-9192-0242ac140008",
                     "nodeid": "2cd7a956-6f42-11ee-9192-0242ac140008",
                     "ontologyclass": null,
-                    "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P102_has_title",
+                    "parentproperty": null,
                     "sortorder": 0,
+                    "source_identifier_id": null,
                     "sourcebranchpublication_id": null
                 },
                 {
@@ -507,6 +524,7 @@
                     "graph_id": "b16832e8-dfc9-4fc8-9c07-0c0b980ed220",
                     "hascustomalias": false,
                     "is_collector": true,
+                    "is_immutable": false,
                     "isrequired": false,
                     "issearchable": true,
                     "istopnode": false,
@@ -514,8 +532,9 @@
                     "nodegroup_id": "7383b2c6-705c-11ee-977f-0242ac140008",
                     "nodeid": "7383b2c6-705c-11ee-977f-0242ac140008",
                     "ontologyclass": null,
-                    "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/BM.PX_is_related_to",
+                    "parentproperty": null,
                     "sortorder": 2,
+                    "source_identifier_id": null,
                     "sourcebranchpublication_id": null
                 },
                 {
@@ -530,6 +549,7 @@
                     "graph_id": "b16832e8-dfc9-4fc8-9c07-0c0b980ed220",
                     "hascustomalias": false,
                     "is_collector": false,
+                    "is_immutable": false,
                     "isrequired": true,
                     "issearchable": true,
                     "istopnode": false,
@@ -537,12 +557,13 @@
                     "nodegroup_id": "2cd7a956-6f42-11ee-9192-0242ac140008",
                     "nodeid": "a829879a-6f43-11ee-9ebf-0242ac140008",
                     "ontologyclass": null,
-                    "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P3_has_note",
+                    "parentproperty": null,
                     "sortorder": 0,
+                    "source_identifier_id": null,
                     "sourcebranchpublication_id": null
                 },
                 {
-                    "alias": null,
+                    "alias": "set",
                     "config": {
                         "en": ""
                     },
@@ -553,6 +574,7 @@
                     "graph_id": "b16832e8-dfc9-4fc8-9c07-0c0b980ed220",
                     "hascustomalias": false,
                     "is_collector": false,
+                    "is_immutable": false,
                     "isrequired": false,
                     "issearchable": true,
                     "istopnode": true,
@@ -562,20 +584,83 @@
                     "ontologyclass": null,
                     "parentproperty": "",
                     "sortorder": 0,
+                    "source_identifier_id": null,
                     "sourcebranchpublication_id": null
                 }
             ],
             "ontology_id": null,
             "publication": {
                 "graph_id": "b16832e8-dfc9-4fc8-9c07-0c0b980ed220",
+                "most_recent_edit_id": null,
                 "notes": null,
                 "publicationid": "06640308-3497-11ef-9c38-0242ac150006",
                 "published_time": "2024-06-27T15:07:52.369"
             },
             "relatable_resource_model_ids": [],
             "resource_2_resource_constraints": [],
+            "resource_instance_lifecycle": {
+                "id": "7e3cce56-fbfb-4a4b-8e83-59b9f9e7cb75",
+                "name": {
+                    "en": "Standard"
+                },
+                "resource_instance_lifecycle_states": [
+                    {
+                        "action_label": {
+                            "en": "Revert to Draft"
+                        },
+                        "can_delete_resource_instances": true,
+                        "can_edit_resource_instances": true,
+                        "id": "9375c9a7-dad2-4f14-a5c1-d7e329fdde4f",
+                        "is_initial_state": true,
+                        "name": {
+                            "en": "Draft"
+                        },
+                        "next_resource_instance_lifecycle_states": [
+                            "f75bb034-36e3-4ab4-8167-f520cf0b4c58"
+                        ],
+                        "previous_resource_instance_lifecycle_states": [],
+                        "resource_instance_lifecycle_id": "7e3cce56-fbfb-4a4b-8e83-59b9f9e7cb75"
+                    },
+                    {
+                        "action_label": {
+                            "en": "Make Active"
+                        },
+                        "can_delete_resource_instances": false,
+                        "can_edit_resource_instances": true,
+                        "id": "f75bb034-36e3-4ab4-8167-f520cf0b4c58",
+                        "is_initial_state": false,
+                        "name": {
+                            "en": "Active"
+                        },
+                        "next_resource_instance_lifecycle_states": [
+                            "d95d9c0e-0e2c-4450-93a3-d788b91abcc8"
+                        ],
+                        "previous_resource_instance_lifecycle_states": [
+                            "9375c9a7-dad2-4f14-a5c1-d7e329fdde4f"
+                        ],
+                        "resource_instance_lifecycle_id": "7e3cce56-fbfb-4a4b-8e83-59b9f9e7cb75"
+                    },
+                    {
+                        "action_label": {
+                            "en": "Retire"
+                        },
+                        "can_delete_resource_instances": false,
+                        "can_edit_resource_instances": false,
+                        "id": "d95d9c0e-0e2c-4450-93a3-d788b91abcc8",
+                        "is_initial_state": false,
+                        "name": {
+                            "en": "Retired"
+                        },
+                        "next_resource_instance_lifecycle_states": [],
+                        "previous_resource_instance_lifecycle_states": [
+                            "f75bb034-36e3-4ab4-8167-f520cf0b4c58"
+                        ],
+                        "resource_instance_lifecycle_id": "7e3cce56-fbfb-4a4b-8e83-59b9f9e7cb75"
+                    }
+                ]
+            },
             "root": {
-                "alias": null,
+                "alias": "set",
                 "config": {
                     "en": ""
                 },
@@ -586,6 +671,7 @@
                 "graph_id": "b16832e8-dfc9-4fc8-9c07-0c0b980ed220",
                 "hascustomalias": false,
                 "is_collector": false,
+                "is_immutable": false,
                 "isrequired": false,
                 "issearchable": true,
                 "istopnode": true,
@@ -594,20 +680,24 @@
                 "nodeid": "bd768bae-6f41-11ee-9192-0242ac140008",
                 "ontologyclass": null,
                 "sortorder": 0,
+                "source_identifier_id": null,
                 "sourcebranchpublication_id": null
             },
             "slug": "set",
+            "source_identifier_id": null,
+            "spatial_views": [],
             "subtitle": {
                 "en": "Nestable collection of subject resources on which actors may have permissions."
             },
             "template_id": "50000000-0000-0000-0000-000000000001",
+            "user_permissions": {},
             "version": ""
         }
     ],
     "metadata": {
-        "db": "PostgreSQL 12.2 (Debian 12.2-2.pgdg100+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 8.3.0-6) 8.3.0, 64-bit",
-        "git hash": "4d3c9cc22 2024-06-25 15:54:29 +0100",
+        "db": "PostgreSQL 16.4 (Debian 16.4-1.pgdg110+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit",
+        "git hash": "fatal: your current branch 'master' does not have any commits yet",
         "os": "Linux",
-        "os version": "5.10.0-23-amd64"
+        "os version": "6.11.0-29-generic"
     }
 }

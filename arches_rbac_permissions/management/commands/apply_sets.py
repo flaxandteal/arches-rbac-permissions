@@ -23,7 +23,7 @@ import psycopg2
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User, Group as DjangoGroup
 
-from coral import settings
+from arches.app.models.system_settings import settings
 
 logging.basicConfig()
 
@@ -56,8 +56,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Cannot be imported until Django ready
-        from coral.permissions.casbin import CasbinPermissionFramework
-        from coral.utils.casbin import SetApplicator
+        from arches_rbac_permissions.permissions.casbin import CasbinPermissionFramework
+        from arches_rbac_permissions.utils.casbin import SetApplicator
 
         print_statistics = True if options["print_statistics"] else False
         synchronous = True if options["synchronous"] else False

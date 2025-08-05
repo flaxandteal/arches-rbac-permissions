@@ -40,7 +40,13 @@ classifiers = [
     "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
 ]
 requires-python = ">=3.11"
-dependencies = ["arches>=8.0<8.1"]
+dependencies = [
+    "arches>=8.0,<8.2",
+    "django-authorization",
+    "casbin-django-orm-adapter",
+    "arches_orm@git+https://github.com/flaxandteal/arches-orm@release/0.3",
+    "arches_querysets"
+]
 
 [tool.hatch.metadata]
 allow-direct-references = true
