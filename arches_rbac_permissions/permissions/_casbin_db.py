@@ -1,3 +1,4 @@
+import logging
 from django.db import transaction
 from django.contrib.auth.models import User, Permission, Group as DjangoGroup
 from arches.app.models.system_settings import settings, SystemSettings
@@ -8,6 +9,10 @@ from arches_orm.models import Person, Set, LogicalSet, Group
 from arches_orm.view_models import ResourceInstanceViewModel
 from arches_orm.arches_django.datatypes.django_group import MissingDjangoGroupViewModel
 from arches_orm.adapter import context_free
+from arches_querysets.models import ResourceTileTree
+from arches_rbac_permissions.service import trigger
+
+logger = logging.getLogger(__name__)
 
 class NoSubjectError(RuntimeError):
     pass
@@ -21,6 +26,7 @@ class CasbinDB:
         self.LogicalSet = LogicalSet
         self.ResourceInstanceViewModel = ResourceInstanceViewModel
 
+    @staticmethod
     @context_free
     def _ri_to_django_groups(group: Group):
         if not group.django_group:
@@ -29,6 +35,7 @@ class CasbinDB:
             group.save()
         return group.django_group
 
+    @staticmethod
     @context_free
     def _django_group_to_ri(django_group: DjangoGroup):
         # TODO: a more robust mapping
@@ -55,6 +62,7 @@ class CasbinDB:
     def _recalculate_table_real(self):
         print("RECALC", 1)
         groups = settings.GROUPINGS["groups"]
+        # TODO - going to need help rewriting this for QuerySets
         root_group = Group.find(groups["root_group"])
         self._enforcer.clear_policy()
 
@@ -112,7 +120,7 @@ class CasbinDB:
             if group_key in groups_seen:
                 return groups_seen[group_key]
             users = []
-            print(" " * len(ancestors), len(group.members), "members")
+            print(" " * len(ancestors), len(group.members), "members in", group.basic_info[0].name)
             for n, member in enumerate(group.members):
                 if isinstance(member, Group):
                     member_key = self._subj_to_str(member)
@@ -178,13 +186,16 @@ class CasbinDB:
                         self._enforcer.add_policy(group_key, obj_key, str(act.conceptid))
             if len(group.django_group) == 0:
                 self._ri_to_django_groups(group)
-            for gp in group.django_group:
-                if not gp or gp.pk is None or isinstance(gp, MissingDjangoGroupViewModel):
-                    logging.warn("Missing Django Group in a group: %s for %s", group_key, str(gp.pk) if gp else str(gp))
-                    continue
-                if list(gp.user_set.all()) != users:
-                    gp.user_set.set(users)
-                    gp.save()
+
+            # TODO: come back to
+            # for gp in group.django_group:
+            #     if not gp or gp.pk is None or isinstance(gp, MissingDjangoGroupViewModel):
+            #         logging.warn("Missing Django Group in a group: %s for %s", group_key, str(gp.pk) if gp else str(gp))
+            #         continue
+            #     if list(gp.user_set.all()) != users:
+            #         print(users)
+            #         gp.user_set.set(users)
+            #         gp.save()
             groups_seen[group_key] = users
             return users
 
@@ -239,10 +250,6 @@ class CasbinDB:
         self._enforcer.save_policy()
         self._enforcer.load_policy()
         print("RECALC", 8)
-
-        if settings.ENABLE_CASBIN_TRIGGER:
-            trigger.request_reload()
-        print("RECALC", 9)
 
 
     @context_free

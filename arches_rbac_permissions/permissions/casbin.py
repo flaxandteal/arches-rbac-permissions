@@ -18,9 +18,11 @@ import logging
 from guardian.shortcuts import (
     get_users_with_perms,
 )
+from elasticsearch.exceptions import NotFoundError
 
 from arches.app.models.resource import Resource
 from django.db import transaction
+from django.contrib.contenttypes.models import ContentType
 
 from guardian.models import GroupObjectPermission
 
@@ -36,7 +38,8 @@ from arches.app.search.search_engine_factory import SearchEngineInstance as se
 from arches.app.search.search import SearchEngine
 from django.core.cache import cache
 
-from arches_rbac_permissions.utils.sets import UnindexedError, get_sets_for_resource
+from arches_rbac_permissions.utils.sets import UnindexedError, get_sets_for_resource, get_index
+from arches_rbac_permissions.service import trigger as trigger # TODO: remove other refs
 
 logger = logging.getLogger(__name__)
 REMAPPINGS = {
@@ -101,6 +104,7 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         for obj, act in was - perms:
             self._enforcer.remove_policy(user, obj, act)
         self._enforcer.save_policy()
+        trigger.trip()
 
     def update_permissions_for_group(self, group):
         perms = {(self._obj_to_str(permission), permission.codename) for permission in group.permissions.all()}
@@ -111,6 +115,7 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         for obj, act in was - perms:
             self._enforcer.remove_policy(group, obj, act)
         self._enforcer.save_policy()
+        trigger.trip()
 
     def update_groups_for_user(self, user):
         groups = {self._subj_to_str(group) for group in user.groups.all()}
@@ -121,6 +126,7 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         for group in was - groups:
             self._enforcer.delete_role_for_user(user, group)
         self._enforcer.save_policy()
+        trigger.trip()
 
     def assign_perm(self, perm, user_or_group, obj=None):
         try:
@@ -144,7 +150,9 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         if not group:
             raise RuntimeError("Must have a group to assign permissions to")
 
-        return gsc.assign_perm(perm, user_or_group, obj=obj)
+        assigned = gsc.assign_perm(perm, user_or_group, obj=obj)
+        trigger.trip()
+        return assigned
 
     @staticmethod
     def get_permission_backend():
@@ -157,6 +165,7 @@ class CasbinPermissionFramework(ArchesPermissionBase):
 
         self._enforcer.remove_policy(subj, obj, perm)
         self._enforcer.save_policy()
+        get_permission_service().trip()
 
     # This is slow and should be avoided where possible.
     def get_perms(self, user_or_group, obj):
@@ -242,7 +251,7 @@ class CasbinPermissionFramework(ArchesPermissionBase):
             else:
                 formatted_perms.append(perm)
 
-        if user.is_superuser is True:
+        if user is True or user.is_superuser is True:
             return MapLayer.objects.all()
         else:
             permitted_map_layers = list()
@@ -295,6 +304,8 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         any_perm -- True to check ANY perm in "perms" or False to check ALL perms
 
         """
+        if user is True or user.is_superuser:
+            return [str(nodegroup) for nodegroup in NodeGroup.objects.values_list('nodegroupid', flat=True).all()]
         return list(set(
             str(nodegroup.pk)
             for group in user.groups.all()
@@ -315,13 +326,17 @@ class CasbinPermissionFramework(ArchesPermissionBase):
 
         logger.debug(f"Checking resource instance permissions: {user} {resourceid}")
 
+        if user is True or user.is_superuser:
+            result["permitted"] = True
+            return result
+
         try:
             resource = Resource(resourceinstanceid=resourceid)
             try:
-                index = resource.get_index()
+                index = get_index(resource)
             except UnindexedError:
                 se.es.indices.refresh(index="coral_resources")
-                index = resource.get_index()
+                index = get_index(resource)
             if (principal_users := index.get("_source", {}).get("permissions", {}).get("principal_user", [])):
                 if len(principal_users) >= 1 and user and user.id in principal_users:
                     if permission == "view_resourceinstance" and self.user_has_resource_model_permissions(user, ["models.read_nodegroup"], resource):
@@ -438,7 +453,7 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         }
 
         for user, perms in user_and_group_perms.items():
-            if user.is_superuser:
+            if user is True or user.is_superuser:
                 pass
             else:
                 if "view_resourceinstance" not in perms:
@@ -456,7 +471,7 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         # TODO: add possibility of a default anonymous set(s) from settings
         if not user:
             return set()
-        if isinstance(user, User) and user.is_superuser is True:
+        if isinstance(user, User) and (user is True or user.is_superuser is True):
             return None
 
         sets = set()
@@ -500,7 +515,7 @@ class CasbinPermissionFramework(ArchesPermissionBase):
 
         print('get_restricted_instances called')
 
-        if user.is_superuser is True:
+        if user is True or user.is_superuser is True:
             return []
         
         if allresources is True and not search_engine:
@@ -634,7 +649,7 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         """
 
         # Only considers groups a user is assigned to.
-        if user.is_superuser:
+        if user is True or user.is_superuser:
             return True
 
         if resource:
@@ -656,8 +671,8 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         """
         if resource:
             resourceid = resource.resourceinstanceid
-        if user.is_authenticated:
-            if user.is_superuser:
+        if user is True or user.is_authenticated:
+            if user is True or user.is_superuser:
                 return True
             if resourceid not in [None, ""]:
                 result = self.check_resource_instance_permissions(user, resourceid, "view_resourceinstance")
@@ -677,7 +692,7 @@ class CasbinPermissionFramework(ArchesPermissionBase):
             str(graph_id) for graph_id in
             Graph.objects.filter(isresource=True).exclude(pk=SystemSettings.SYSTEM_SETTINGS_RESOURCE_MODEL_ID).values_list("graphid", flat=True)
         ]
-        if user.is_superuser:
+        if user is True or user.is_superuser:
             return all_graphs
         # Only considers groups a user is assigned to.
         allowed = set()
@@ -700,8 +715,8 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         """
         if resource:
             resourceid = resource.resourceinstanceid
-        if user.is_authenticated:
-            if user.is_superuser:
+        if user is True or user.is_authenticated:
+            if user is True or user.is_superuser:
                 return True
             if resourceid not in [None, ""]:
                 result = self.check_resource_instance_permissions(user, resourceid, "change_resourceinstance")
@@ -726,8 +741,8 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         """
         if resource:
             resourceid = resource.resourceinstanceid
-        if user.is_authenticated:
-            if user.is_superuser:
+        if user is True or user.is_authenticated:
+            if user is True or user.is_superuser:
                 return True
             if resourceid not in [None, ""]:
                 result = self.check_resource_instance_permissions(user, resourceid, "delete_resourceinstance")
@@ -754,6 +769,9 @@ class CasbinPermissionFramework(ArchesPermissionBase):
 
         """
 
+        if user is True:
+            return True
+
         if user.is_authenticated:
             return self.user_in_group_by_name(user, ["RDM Administrator"])
         return False
@@ -763,6 +781,9 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         """
         Single test for whether a user is in the Resource Editor group
         """
+
+        if user is True:
+            return True
 
         if user.is_authenticated:
             if user.is_superuser:
@@ -777,6 +798,9 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         Single test for whether a user is in the Resource Reviewer group
         """
 
+        if user is True:
+            return True
+
         if user.is_authenticated:
             if user.is_superuser:
                 return True
@@ -789,6 +813,9 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         """
         Single test for whether a user is in the Resource Exporter group
         """
+
+        if user is True:
+            return True
 
         if user.is_authenticated and user.is_superuser:
             return True
@@ -822,13 +849,13 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         allresources: bool = False,
         resources: list[str] | None = None,
     ):
-        if user.is_superuser is True:
+        if user is True or user.is_superuser is True:
             if resources is not None:
                 return resources
             else:
                 # TODO: could probably just use casbin, but don't think this is the idea
                 # also, why would we want all resources? this seems inefficient?
-                return Resource.objects.value_list('resourceinstanceid', flat=True)
+                return Resource.objects.values_list('resourceinstanceid', flat=True)
 
         # Only considers groups a user is assigned to.
         allowed = set()
@@ -858,15 +885,20 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         permissions = {}
         try:
             permissions["sets"] = get_sets_for_resource(resource)
-        except UnindexedError:
+        except (UnindexedError, NotFoundError):
             ...
-        permissions["principal_user"] = [resource.principaluser_id]
+        if resource.principaluser_id:
+            permissions["principal_user"] = [resource.principaluser_id]
+        else:
+            permissions["principal_user"] = []
+
         return permissions
 
 
     def get_permission_inclusions(self) -> list:
         return [
-                "permissions.principal_user", # TODO: could we use this for sets?
+                "permissions.sets",
+                "permissions.principal_user",
         ]
 
     def get_permission_search_filter(self, user: User) -> Bool:
@@ -879,13 +911,14 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         """
 
         has_access = Bool()
-        principal_user = Terms(field="permissions.principal_user", terms=[str(user.id)])
+        should_access = Bool()
+        principal_user = Terms(field="permissions.principal_user", terms=[int(user.id)])
         principal_user_term_filter = Nested(path="permissions", query=principal_user)
         should_access.should(principal_user_term_filter)
 
         # TODO: we could maybe remove casbin if we do this for each permission type
         sets = self.get_sets_for_user(user, "view_resourceinstance")
-        if sets:
+        if sets is not None: # TODO: sort for "no sets" scenarios
             sets_terms = Terms(field="permissions.sets", terms=list(sets))
             sets_filter = Nested(path="permissions", query=sets_terms)
             should_access.should(sets_filter)
@@ -911,101 +944,5 @@ class CasbinPermissionFramework(ArchesPermissionBase):
     def update_mappings(self):
         # TODO: probably don't want this
         return {
-            "sets": {"type": "integer"}
+            "sets": {"type": "keyword"}
         }
-
-_PROCESS_KEY = str(uuid.uuid4())
-
-CASBIN_TRIGGER_DEBOUNCE_SECONDS = int(settings.CASBIN_TRIGGER_DEBOUNCE_SECONDS)
-
-class CasbinTrigger:
-    wait_time = CASBIN_TRIGGER_DEBOUNCE_SECONDS
-    _timer = None
-
-    @staticmethod
-    @contextmanager
-    def connect():
-        credentials = pika.PlainCredentials(
-            settings.RABBITMQ_USER,
-            settings.RABBITMQ_PASS
-        )
-        parameters = pika.ConnectionParameters(
-            host=settings.RABBITMQ_HOST,
-            credentials=credentials,
-        )
-        connection = pika.BlockingConnection(parameters)
-        channel = connection.channel()
-        channel.exchange_declare(exchange=settings.CASBIN_RELOAD_QUEUE, exchange_type="fanout")
-        channel.queue_declare(queue=_PROCESS_KEY, durable=False)
-        channel.queue_bind(exchange=settings.CASBIN_RELOAD_QUEUE, queue=_PROCESS_KEY, routing_key=settings.CASBIN_RELOAD_QUEUE)
-        channel.basic_qos(prefetch_count=1)
-        try:
-            yield channel
-        finally:
-            connection.close()
-
-    def listen(self):
-        print("Listening")
-        from arches.app.utils.permission_backend import _get_permission_framework
-        casbin_framework = _get_permission_framework()
-
-        self._timer
-
-        def _reload_real():
-            self._timer = None
-            print("Policy loading")
-            casbin_framework._enforcer.load_policy()
-            print("Policy loaded")
-
-        def _reload(channel, method, properties, body):
-            try:
-                if body:
-                    body = json.loads(body)
-
-                # Helps avoid unnecessary reloading in the producer.
-                if not body or body.get("processKey", True) != str(_PROCESS_KEY):
-                    if self._timer is not None:
-                        print("CASBIN-TRIGGER: debounce")
-                        self._timer.cancel()
-                    else:
-                        print("CASBIN-TRIGGER: setting up")
-                    self._timer = threading.Timer(
-                        self.wait_time,
-                        _reload_real
-                    )
-                    self._timer.start()
-                    print("CASBIN-TRIGGER: resetting in", self.wait_time)
-                else:
-                    print("CASBIN-TRIGGER: ignoring reload request")
-
-                channel.basic_ack(delivery_tag=method.delivery_tag)
-            except:
-                logger.exception("Casbin listener exception")
-
-        print("Attempting connect")
-        with self.connect() as channel:
-            print("Consuming")
-            channel.basic_consume(
-                queue=_PROCESS_KEY,
-                on_message_callback=_reload,
-            )
-            channel.start_consuming()
-            print("Exiting Casbin listener")
-
-    def request_reload(self):
-        timestamp = time.time()
-        with self.connect() as channel:
-            channel.basic_publish(
-                exchange=settings.CASBIN_RELOAD_QUEUE,
-                routing_key=settings.CASBIN_RELOAD_QUEUE,
-                body=json.dumps({"processKey": str(_PROCESS_KEY)}),
-                properties=pika.BasicProperties(
-                    delivery_mode=pika.DeliveryMode.Transient,
-                    timestamp=int(timestamp),
-                    expiration="1000",
-                )
-            )
-
-if settings.ENABLE_CASBIN_TRIGGER:
-    import pika
-    trigger = CasbinTrigger()

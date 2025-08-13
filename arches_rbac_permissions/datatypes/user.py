@@ -19,38 +19,51 @@ class UserDataType(BaseDataType):
     """DataType for a Django User."""
 
     def append_to_document(self, document, nodevalue, nodeid, tile, provisional=False):
-        document["strings"].append(
-            {"string": nodevalue, "nodegroup_id": tile.nodegroup_id}
-        )
+        print(document)
+        if (user := self.get_user(tile, nodeid)):
+            document["strings"].append(
+                {"string": self._get_display_value_for_user(user), "nodegroup_id": tile.nodegroup_id}
+            )
 
     def get_search_terms(self, nodevalue, nodeid=None):
         terms = []
-        if nodevalue:
-            user = User.objects.get(pk=int(nodevalue))
+        if nodevalue and "userId" in nodevalue:
+            user = User.objects.get(pk=int(nodevalue["userId"]))
             # TODO: scrub on removal of a user
             terms.append(SearchTerm(value=self._get_display_value_for_user(user)))
         return terms
 
     def get_display_value(self, tile, node, **kwargs):
-        if (user := self.get_user(tile, node)):
+        if (user := self.get_user(tile, str(node.nodeid))):
             return self._get_display_value_for_user(user)
         return None
 
     def _get_display_value_for_user(self, user: User) -> str:
         return user.email or user.username
 
-    def get_user(self, tile: Tile, node: Node) -> User:
+    def get_user(self, tile: Tile, nodeid: str) -> User:
         data = self.get_tile_data(tile)
         if data:
-            raw_value = data.get(str(node.nodeid))
-            if raw_value is not None:
-                user = User.objects.get(pk=int(raw_value))
+            raw_value = data.get(nodeid)
+            if raw_value and (user_id := raw_value.get("userId")):
+                user = User.objects.get(pk=user_id)
                 return user
 
     def compile_json(self, tile, node, **kwargs):
         json = super().compile_json(tile, node, **kwargs)
+        json.setdefault("@display_value", "")
         data = self.get_tile_data(tile)
         if data:
-            raw_value = data.get(str(node.nodeid))
-            json["userId"] = int(raw_value)
+            json = data.get(str(node.nodeid), {})
+            json["@display_value"] = self.get_display_value(tile, node)
         return json
+
+    def default_es_mapping(self):
+        mapping = {
+            "properties": {
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        }
+        return mapping

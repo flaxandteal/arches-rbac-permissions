@@ -2,9 +2,7 @@
     "name": "arches-rbac-permissions",
     "version": "0.0.1",
     "dependencies": {
+        "cytoscape-elk": "^2.3.0"
     },
-    "devDependencies": {
-    },
-    "nodeModulesPaths": {
-    }
+    "nodeModulesPaths": {}
 }

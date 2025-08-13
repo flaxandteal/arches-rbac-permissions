@@ -26,18 +26,20 @@ APP_ROOT = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe(
 
 GROUPINGS = {
     "groups": {
-        "allowed_relationships": {
-            "http://www.cidoc-crm.org/cidoc-crm/P107_has_current_or_former_member": (True, True),
-        },
+        "allowed_relationships": None,
+        # {
+        #     "http://www.cidoc-crm.org/cidoc-crm/P107_has_current_or_former_member": (True, True),
+        # },
         "root_group": "d2368123-9628-49a2-b3dd-78ac6ee3e911",
         "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a"
     },
     "permissions": {
-        "allowed_relationships": {
-            "http://www.cidoc-crm.org/cidoc-crm/P107_has_current_or_former_member": (True, False),
-            "http://www.cidoc-crm.org/cidoc-crm/P104i_applies_to": (True, True),
-            "http://www.cidoc-crm.org/cidoc-crm/P10i_contains": (True, True),
-        },
+        "allowed_relationships": None,
+        # {
+        #     "http://www.cidoc-crm.org/cidoc-crm/P107_has_current_or_former_member": (True, False),
+        #     "http://www.cidoc-crm.org/cidoc-crm/P104i_applies_to": (True, True),
+        #     "http://www.cidoc-crm.org/cidoc-crm/P10i_contains": (True, True),
+        # },
         "root_group": "74e496c7-ec7e-43b8-a7b3-05bacf496794",
     }
 }
@@ -55,6 +57,7 @@ CASBIN_RELOAD_QUEUE = os.getenv("CASBIN_RELOAD_QUEUE", "reloadQueue")
 # TODO: this was previously read from OS as CASBIN_LISTEN
 ENABLE_CASBIN_TRIGGER = False
 CASBIN_TRIGGER_DEBOUNCE_SECONDS = 5.
+CASBIN_TRIGGER_MINIMUM_REFRESH_SECONDS = None
 
 AUTHENTICATION_BACKENDS = (
     *AUTHENTICATION_BACKENDS,
@@ -88,6 +91,8 @@ DAUTHZ = {
         },
     },
 }
+
+SEARCH_BACKEND = "arches_rbac_permissions.utils.search.UpdatingSearchEngine"
 
 try:
     with (Path(__file__).parent / "wkrm.toml").open("rb") as wkrm_f:

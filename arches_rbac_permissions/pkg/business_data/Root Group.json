@@ -7,13 +7,13 @@
             "en": {
               "description": "<Statement_content>",
               "map_popup": "Undefined",
-              "name": "Global Group"
+              "name": "Top Permissions Group"
             }
           },
           "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
           "graph_publication_id": "bcaac244-1158-11ef-a6e2-0242ac170006",
           "legacyid": null,
-          "name": "Global Group",
+          "name": "Top Permissions Group",
           "principaluser_id": null,
           "resourceinstanceid": "d2368123-9628-49a2-b3dd-78ac6ee3e911",
           "publication_id": "bcaac244-1158-11ef-a6e2-0242ac170006"
@@ -24,7 +24,7 @@
               "127095f5-c05e-11e9-bb57-a4d18cec433a": {
                 "de": { "direction": "ltr", "value": "" },
                 "el": { "direction": "ltr", "value": "" },
-                "en": { "direction": "ltr", "value": "Global Group" },
+                "en": { "direction": "ltr", "value": "Top Permissions Group" },
                 "en-US": { "direction": "ltr", "value": "" },
                 "en-us": { "direction": "ltr", "value": "" },
                 "fr": { "direction": "ltr", "value": "" },

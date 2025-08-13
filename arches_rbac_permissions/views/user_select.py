@@ -48,7 +48,7 @@ def user_get(request):
     ):
         try:
             userid = int(request.GET.get("userid", ""))
-        except TypeError:
+        except ValueError:
             return JSONResponse({"status": "error", "message": "User ID must be integer"}, status=401)
 
         user = User.objects.get(id=userid)

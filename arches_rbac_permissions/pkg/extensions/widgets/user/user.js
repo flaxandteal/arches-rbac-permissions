@@ -1,8 +1,7 @@
 import ko from 'knockout';
-import UserSelectViewModel from 'viewmodels/user-select';
+import UserSelectViewModel from 'arches_rbac_permissions/arches_rbac_permissions/media/js/viewmodels/user-select';
 import userTemplate from 'templates/views/components/widgets/user.htm';
 import 'bindings/select2-query';
-
 
 const viewModel = function(params) {
     params.configKeys = ['defaultValue'];

@@ -60,6 +60,36 @@
             ],
             "cards_x_nodes_x_widgets": [
                 {
+                    "card_id": "e2543712-8ada-478f-84f0-fd30d2cfd9e5",
+                    "config": {
+                        "defaultValue": {
+                            "en": {
+                                "direction": "ltr",
+                                "value": ""
+                            }
+                        },
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
+                        "label": "User Account",
+                        "maxLength": null,
+                        "placeholder": {
+                            "en": ""
+                        },
+                        "uneditable": true,
+                        "width": "100%"
+                    },
+                    "id": "070e72e8-691c-411e-b9f5-35f9c16f215a",
+                    "label": {
+                        "en": "User Account"
+                    },
+                    "node_id": "b1f5c336-6a0e-11ee-b748-0242ac140009",
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "visible": true,
+                    "widget_id": "8e113d7f-668c-400c-824e-087167ad5d9d"
+                },
+                {
                     "card_id": "4110f743-1a44-11e9-9a37-000d3ab1e588",
                     "config": {
                         "defaultValue": {
@@ -88,36 +118,6 @@
                     "source_identifier_id": null,
                     "visible": true,
                     "widget_id": "10000000-0000-0000-0000-000000000001"
-                },
-                {
-                    "card_id": "e2543712-8ada-478f-84f0-fd30d2cfd9e5",
-                    "config": {
-                        "defaultValue": {
-                            "en": {
-                                "direction": "ltr",
-                                "value": ""
-                            }
-                        },
-                        "i18n_properties": [
-                            "placeholder"
-                        ],
-                        "label": "User Account",
-                        "maxLength": null,
-                        "placeholder": {
-                            "en": ""
-                        },
-                        "uneditable": false,
-                        "width": "100%"
-                    },
-                    "id": "070e72e8-691c-411e-b9f5-35f9c16f215a",
-                    "label": {
-                        "en": "User Account"
-                    },
-                    "node_id": "b1f5c336-6a0e-11ee-b748-0242ac140009",
-                    "sortorder": 0,
-                    "source_identifier_id": null,
-                    "visible": true,
-                    "widget_id": "8e113d7f-668c-400c-824e-087167ad5d9d"
                 }
             ],
             "color": "rgba(236,109,155,1)",

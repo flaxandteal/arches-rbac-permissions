@@ -1,6 +1,8 @@
 import hashlib
 import time
 import uuid
+import json
+import logging
 from functools import partial
 from urllib.parse import parse_qs
 from arches.app.search.components.base import SearchFilterFactory
@@ -9,9 +11,11 @@ from arches.app.search.search_engine_factory import SearchEngineFactory
 from arches.app.search.mappings import RESOURCES_INDEX
 from arches.app.models.models import Plugin
 from arches.app.models.resource import Resource
-from arches_querysets.models import ResourceTileTree
+from arches_querysets.models import ResourceTileTree, GraphWithPrefetching
 
 from .search import CommandSearchFilterFactory, UpdateByQuery
+
+logger = logging.getLogger(__name__)
 
 def _consistent_hash(string: str):
     hsh = hashlib.sha256(string.encode("utf-8"))
@@ -39,7 +43,7 @@ class SetApplicator:
             if resourceinstanceid:
                 bool_query.must(Ids(ids=[str(resourceinstanceid)]))
             if add_not_remove:
-                bool_query.must_not(set_query())
+                bool_query.must_not(set_query().dsl["query"])
                 bool_query.must(Nested(path="permissions", query=Terms(field="permissions.sets", terms=[str(set_id)])))
                 sets = [str(set_id)]
                 source = """
@@ -52,15 +56,15 @@ class SetApplicator:
                 }
                 """
             else:
-                bool_query.must(set_query())
+                bool_query.must(set_query().dsl["query"])
                 bool_query.must_not(Nested(path="permissions", query=Terms(field="permissions.sets", terms=[str(set_id)])))
                 source = """
-                if (ctx._source.sets == null) {
-                    ctx._source.sets = [];
+                if (ctx._source.permissions.sets == null) {
+                    ctx._source.permissions.sets = [];
                 }
-                ctx._source.sets.addAll(params.logicalSets);
+                ctx._source.permissions.sets.addAll(params.logicalSets);
                 """
-                sets = [{"id": str(set_id)}]
+                sets = [str(set_id)]
             dsl.add_query(bool_query)
             update_by_query = UpdateByQuery(se=se, query=dsl, script={
                 "lang": "painless",
@@ -107,15 +111,19 @@ class SetApplicator:
 
         from arches.app.search.search_engine_factory import SearchEngineInstance as _se
 
-        logical_sets = ResourceTileTree.get_tiles(graph_slug="logical_set")
+        try:
+            logical_sets = ResourceTileTree.get_tiles(graph_slug="logical_set")
+        except GraphWithPrefetching.DoesNotExist:
+            logger.error("Logical Set not loaded yet")
+            return
         results = []
         print("Print statistics?", self.print_statistics)
         for logical_set in logical_sets:
-            logical_set = logical_set.aliased_data
-            if logical_set.member_definition:
+            logical_set_data = logical_set.aliased_data
+            if logical_set_data.member_definition:
                 # user=True is shorthand for "do not restrict by user"
-                print(logical_set.member_definition.aliased_data.member_definition.value)
-                parameters = parse_qs(logical_set.member_definition.data)
+                print(logical_set_data.member_definition.aliased_data.member_definition)
+                parameters = parse_qs(logical_set_data.member_definition.aliased_data.member_definition)
                 for key, value in parameters.items():
                     if len(value) != 1:
                         raise RuntimeError("Each filter type must appear exactly once")
@@ -128,22 +136,20 @@ class SetApplicator:
                             search_filter_factory, returnDsl=True
                         )
                     )
-                    return inner_dsl.dsl["query"]
+                    return inner_dsl["query"]
                 logical_set_query = partial(_logical_set_query, parameters)
                 if self.print_statistics:
-                    dsl = Query(se=_se)
-                    dsl.add_query(logical_set_query())
-                    count = dsl.count(index=RESOURCES_INDEX)
-                    print("Logical Set:", logical_set.id)
-                    print("Definition:", logical_set.member_definition)
+                    count = logical_set_query().count(index=RESOURCES_INDEX)
+                    print("Logical Set:", logical_set.pk)
+                    print("Definition:", logical_set_data.member_definition)
                     print("Count:", count)
-                results = self._apply_set(_se, f"l:{logical_set.id}", logical_set_query, resourceinstanceid=resourceinstanceid)
+                results = self._apply_set(_se, f"l:{logical_set.pk}", logical_set_query, resourceinstanceid=resourceinstanceid)
                 if self.wait:
                     self.wait_for_completion(_se, results)
                 if self.print_statistics:
                     dsl = Query(se=_se)
                     bool_query = Bool()
-                    bool_query.must(Nested(path="permissions", query=Terms(field="permissions.sets", terms=[f"l:{logical_set.id}"])))
+                    bool_query.must(Nested(path="permissions", query=Terms(field="permissions.sets", terms=[f"l:{logical_set.pk}"])))
                     if resourceinstanceid:
                         bool_query.must(Ids(ids=[str(resourceinstanceid)]))
                     dsl.add_query(bool_query)
@@ -151,21 +157,27 @@ class SetApplicator:
                     print("Applies to by search:", count)
 
         # Leaving these out for now
-        # sets = Set.all()
-        # for regular_set in sets:
-        #     if regular_set.members:
-        #         # user=True is shorthand for "do not restrict by user"
-        #         members = [str(member.id) for member in regular_set.members]
-        #         if not resourceinstanceid or str(resourceinstanceid) in members:
-        #             def _regular_set_query():
-        #                 query = Query(se=_se)
-        #                 bool_query = Bool()
-        #                 bool_query.must(Terms(field="_id", terms=members))
-        #                 query.add_query(bool_query)
-        #                 return query.dsl["query"]
-        #             results = self._apply_set(_se, f"r:{regular_set.id}", _regular_set_query, resourceinstanceid=resourceinstanceid)
-        #             if self.wait:
-        #                 self.wait_for_completion(_se, results)
+        sets = ResourceTileTree.get_tiles(graph_slug="set")
+        for regular_set in sets:
+            if regular_set.aliased_data.members:
+                # user=True is shorthand for "do not restrict by user"
+                # does not allow for nested (unless bubbling up implemented)
+
+                # TODO: as I understand it, similarly to AORM, I can do something like "member.id for member in regulur_set.members" but
+                # I got a little confused about how to achieve that
+                print(regular_set.aliased_data.members.aliased_data.members)
+                members = [str(member2['resourceId']) for _, member in regular_set.aliased_data.members.data.items() if member for member2 in member]
+                if not resourceinstanceid or str(resourceinstanceid) in members:
+                    def _regular_set_query(members):
+                        query = Query(se=_se)
+                        bool_query = Bool()
+                        print(members, 'members')
+                        bool_query.must(Ids(ids=members))
+                        query.add_query(bool_query)
+                        return query
+                    results = self._apply_set(_se, f"r:{regular_set.resourceinstanceid}", partial(_regular_set_query, members), resourceinstanceid=resourceinstanceid)
+                    if self.wait:
+                        self.wait_for_completion(_se, results)
 
     def wait_for_completion(self, _se, results):
         tasks_client = _se.make_tasks_client()

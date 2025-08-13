@@ -17,3 +17,11 @@ members = "members"
 ["Logical Set"]
 model_name = "Logical Set"
 graphid = "5b8b4084-9687-11ee-8782-0242ac140006"
+
+[Book]
+model_name = "Book"
+graphid = "717291c0-99cc-4aa0-98c1-b37cc21a8a3a"
+
+[Author]
+model_name = "Author"
+graphid = "2b9d31bd-9a19-4944-a05c-c305e5669db8"

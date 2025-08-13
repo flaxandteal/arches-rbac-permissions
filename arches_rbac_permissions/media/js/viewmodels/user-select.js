@@ -1,4 +1,7 @@
 import ko from 'knockout';
+import _ from 'underscore';
+import uuid from 'uuid';
+import dispose from 'utils/dispose';
 import $ from 'jquery';
 import arches from 'arches';
 import WidgetViewModel from 'viewmodels/widget';
@@ -10,7 +13,14 @@ import { generateArchesURL } from "@/arches/utils/generate-arches-url.ts";
 
 var NAME_LOOKUP = {};
 var UserSelectViewModel = function(params) {
+    // TODO: tidy up to remove excess settings
+    // Getting this to display was a _long_ journey.
     var self = this;
+
+    // TODO: not sure where this is _not_ being set for this widget, but is for others.
+    if (params.value && !ko.isObservable(params.value)) {
+        params.value = ko.observable(params.value);
+    }
 
     const url_get_user_names_all = generateArchesURL(
         "get_user_names_all"
@@ -20,80 +30,232 @@ var UserSelectViewModel = function(params) {
         "get_user_names_one"
     );
 
+    const url_person_signup_link = generateArchesURL(
+        "person_signup"
+    );
+
     params.configKeys = ['placeholder', 'defaultValue'];
 
-    this.multiple = params.multiple || false;
     this.allowClear = params.allowClear ?? true;
     this.displayName = ko.observable('');
-
-    WidgetViewModel.apply(this, [params]);
-
-    this.valueList = ko.computed(function() {
-        var valueList = self.value() || self.defaultValue();
-        self.displayName();
-        
-        if (Array.isArray(valueList)) {
-            return valueList;
-        } else if (!self.multiple && valueList) {
-            return [valueList];
+    this.canIssueUserSignupLink = ko.observable(false);
+    this.selectedItem = params.selectedItem || ko.observable();
+    this.formData = params.formData || null;
+    this.form = params.form || null;
+    this.tile = params.tile || null;
+    this.widget = params.widget || null;
+    this.value = params.value || ko.observable(null);
+    this.configForm = params.configForm || false;
+    this.configKeys = params.configKeys || [];
+    this.configKeys.push('label');
+    this.configKeys.push('required');
+    this.state = params.state || 'form';
+    this.hideEmptyNodes = params.hideEmptyNodes;
+    this.externalObservables = ['value', 'config', 'expanded', 'defaultValueSubscription', 'valueSubscription'];
+    var self = this;
+    this.state = params.state || 'form';
+    var expanded = params.expanded || ko.observable(false);
+    var nodeid = params.node ? params.node.nodeid : uuid.generate();
+    this.expanded = ko.computed({
+        read: function() {
+            return nodeid === expanded();
+        },
+        write: function(val) {
+            if (val) {
+                expanded(nodeid);
+            } else {
+                expanded(false);
+            }
         }
-        return [];
+    });
+    this.value = params.value || ko.observable(null);
+    this.formData = params.formData || null;
+    this.form = params.form || null;
+    this.tile = params.tile || null;
+    this.widget = params.widget || null;
+    this.inResourceEditor = (typeof params.inResourceEditor === "boolean" ? params.inResourceEditor : null);
+    this.results = params.results || null;
+    this.disabled = params.disabled || ko.observable(false);
+    this.node = params.node || null;
+    this.configForm = params.configForm || false;
+    this.config = params.config || ko.observable({});
+    this.configObservables = params.configObservables || {};
+    this.configKeys = params.configKeys || [];
+    this.configKeys.push('label');
+    this.configKeys.push('required');
+    if (this.node) {
+        this.required = this.node.isrequired;
+    }
+    if (typeof this.config !== 'function') {
+        this.config = ko.observable(this.config);
+    }
+
+    this.disposables = [];
+
+    var subscribeConfigObservable = function(obs, key) {
+        self[key] = obs;
+
+        var forwardSubscription = self[key].subscribe(function(val) {
+            if (params.hasOwnProperty('graphDesignerHasDirtyWidget')) {
+                if (val && val !== params.config()[key]) {
+                    params.graphDesignerHasDirtyWidget(true);
+                }
+            }
+
+            var configObj = self.config();
+            configObj[key] = val;
+            self.config(configObj);
+        });
+
+        var reverseSubscription = self.config.subscribe(function(val) {
+            if (val[key] !== self[key]()) {
+                self[key](val[key]);
+            }
+        });
+        self.disposables.push(forwardSubscription);
+        self.disposables.push(reverseSubscription);
+    };
+    _.each(this.configObservables, subscribeConfigObservable);
+    _.each(this.configKeys, function(key) {
+        var obs = ko.observable(self.config()[key]);
+        subscribeConfigObservable(obs, key);
     });
 
-    this.valueObjects = ko.computed(function() {
-        self.displayName();
-        return self.valueList().map(function(value) {
-            const valueId = parseInt(value);
-            return {
-                id: valueId,
-                name: NAME_LOOKUP[valueId]
-            };
-        }).filter(function(item) {
-            return item.name;
-        });
+    if (ko.isObservable(this.value) && ko.isObservable(this.defaultValue)) {
+        var defaultValue = this.defaultValue();
+        if (this.tile && !this.tile.noDefaults && !ko.unwrap(this.tile.dirty) && ko.unwrap(this.tile.tileid) == "" && defaultValue != null && defaultValue != "") {
+            this.value(defaultValue);
+        }
+
+        if (!self.form) {
+            if (ko.isObservable(self.value)) {
+                self.valueSubscription = self.value.subscribe(function(val){
+                    if (self.defaultValue() != val) {
+                        self.defaultValue(val);
+                    }
+                });
+                self.defaultValueSubscription = self.defaultValue.subscribe(function(val){
+                    if (self.value() != val) {
+                        self.value(val);
+                    }
+                });
+            }
+        }
+    }
+
+    this.disposables.push(this.defaultValueSubscription);
+    this.disposables.push(this.valueSubscription);
+
+    this.onInit = params.onInit;
+    if (typeof this.onInit === 'function') {
+        this.onInit();
+    }
+
+    this.dispose = function(){
+        dispose(self);
+    };
+
+    this.nodeCssClasses = ko.pureComputed(function() {
+        return [ko.unwrap(self.node?.alias),
+            self.node?.graph?.attributes?.slug,
+            self.widget?.widgetLookup[ko.unwrap(self.widget?.widget_id)].name
+            ].join(" ").trim();
     });
+
+    const resourceId = (this.tile && this.tile.resourceinstance_id) || (params && params.resourceinstance_id) || null;
+    console.log(this.tile, resourceId);
+
+    if (resourceId) {
+        this.issueUserSignupLink = function(){
+            return $.ajax({
+                url: url_person_signup_link,
+                context: this,
+                method: 'POST',
+                data: { personId: resourceId },
+                dataType: 'json'
+            })
+                .done(function(data) {
+                    console.log('User signup link request succeeded', data);
+                    return data.userSignupLink;
+                })
+                .fail(function(data) {
+                    console.log('User signup link request failed', data);
+                });
+        };
+        this.checkCanIssueUserSignupLink = function(){
+            return $.ajax({
+                url: url_person_signup_link,
+                context: this,
+                method: 'GET',
+                data: { personId: resourceId },
+                dataType: 'json'
+            })
+                .done(function(data) {
+                    if (data.success) {
+                        console.log('Can request signup links for this person');
+                    }
+                    return data.success;
+                })
+                .fail(function(data) {
+                    console.log('User signup link check failed', data);
+                });
+        };
+    }
 
     this.displayValue = ko.computed(function() {
-        var val = self.value();
         var name = self.displayName();
         var displayVal = null;
 
-        if (val) {
+        if (name) {
             displayVal = name;
         }
 
         return displayVal;
     });
 
-    this.setNames = function() {
-        var names = [];
-        self.valueList().forEach(function(val) {
-            if (ko.unwrap(val)) {
-                if (NAME_LOOKUP[val]) {
-                    names.push(NAME_LOOKUP[val]);
-                    self.displayName(names.join(', '));
+    this.setName = function() {
+        const val = self.value();
+        if (ko.unwrap(val)) {
+            const value = parseInt(ko.unwrap(ko.unwrap(val).userId));
+            if (!isNaN(value)) {
+                if (NAME_LOOKUP[value]) {
+                    self.displayName(NAME_LOOKUP[value]);
                 } else {
-                    $.ajax(url_get_user_names_one + '?userid=' + ko.unwrap(val), {
+                    $.ajax(url_get_user_names_one + '?userid=' + ko.unwrap(value), {
                         dataType: "json"
                     }).done(function(data) {
                         NAME_LOOKUP[data.id] = data.text;
-                        names.push(data.text);
-                        self.displayName(names.join(', '));
+                        self.displayName(data.text);
                     });
                 }
             }
-        });
+        }
     };
-    this.setNames();
+    this.setName();
 
-    this.value.subscribe(function() {
-        self.setNames();
+    this.userToAdd = ko.observable(null);
+    this.userToAdd.subscribe(function(data) {
+        let valueInt;
+        if (data && typeof data === 'object' && data.userId) {
+            valueInt = parseInt(ko.unwrap(data.userId));
+        } else if (data) {
+            valueInt = data;
+        }
+        if (valueInt) {
+            self.value({
+                "userId": ko.unwrap(valueInt),
+            });
+        }
+    });
+    this.value.subscribe(function(val) {
+        self.userToAdd(val.userId);
+        self.setName();
     });
 
     this.select2Config = {
-        value: self.value,
+        value: self.userToAdd,
         clickBubble: true,
-        multiple: self.multiple,
+        multiple: false,
         closeOnSelect: true,
         placeholder: self.placeholder,
         allowClear: self.allowClear,
@@ -131,78 +293,67 @@ var UserSelectViewModel = function(params) {
         escapeMarkup: function(m) { return m; },
         initComplete: false,
         initSelection: function(el, callback) {
-            var valueList = self.valueList();
+            var val = self.value();
             
             var setSelectionData = function(data) {
-                var valueData = [];
-
-                if (self.multiple || Array.isArray(valueList)) {
-                    if (!(data instanceof Array)) { data = [data]; }
-                    
-                    valueData = data.map(function(valueId) {
-                        const valueInt = parseInt(valueId);
-                        return {
-                            id: valueInt,
-                            text: NAME_LOOKUP[valueInt],
-                        };
-                    });
-
-                    /* add the rest of the previously selected values */ 
-                    valueList.forEach(function(value) {
-                        if (value !== valueData[0].id) {
-                            valueData.push({
-                                id: value,
-                                text: NAME_LOOKUP[value],
-                            });
-                        }
-                    });
-
-                    /* keeps valueData obeying valueList as ordering source of truth */ 
-                    if (valueData[0].id !== valueList[0]) {
-                        valueData.reverse();
-                    }
+                let valueData;
+                let valueInt;
+                if (data && typeof data === 'object' && data.userId) {
+                    valueInt = parseInt(ko.unwrap(data.userId));
                 } else {
-                    const valueId = parseInt(data);
-                    valueData = [{
-                        id: valueId,
-                        text: NAME_LOOKUP[valueId],
-                    }];
+                    valueInt = data;
                 }
-                if(!self.select2Config.initComplete){
-                    valueData.forEach(function(data) {
-                        var option = new Option(data.text, data.id, true, true);
-                        $(el).append(option);
-                    });
+                if (valueInt) {
+                    valueData = {
+                        id: valueInt,
+                        text: NAME_LOOKUP[valueInt],
+                    };
+                } else {
+                    console.warn("Could not load value", valueId);
+                }
+
+                if(!self.select2Config.initComplete && valueData){
+                    var option = new Option(valueData.text, valueData.id, true, true);
+                    $(el).append(option);
                     self.select2Config.initComplete = true;
                 }
                 callback(valueData);
+                self.value({
+                    userId: ko.unwrap(valueData.id)
+                });
             };
 
-            if (valueList.length > 0) {
-                valueList.forEach(function(val) {
-                    const value = parseInt(val);
-                    if (ko.unwrap(value)) {
-                        if (NAME_LOOKUP[value]) {
-                            setSelectionData(value);
-                        } else {
-                            $.ajax(url_get_user_names_one + '?userid=' + ko.unwrap(value), {
-                                dataType: "json"
-                            }).done(function(data) {
-                                NAME_LOOKUP[value] = data.text;
-                                setSelectionData(value);
-                            });
-                        }
-                    }
-                });
-            }else{
-                callback([]);
+            const value = parseInt(ko.unwrap(ko.unwrap(val).userId));
+            if (ko.unwrap(value)) {
+                if (NAME_LOOKUP[value]) {
+                    setSelectionData(value);
+                } else {
+                    $.ajax(url_get_user_names_one + '?userid=' + ko.unwrap(value), {
+                        dataType: "json"
+                    }).done(function(data) {
+                        NAME_LOOKUP[value] = data.text;
+                        setSelectionData(value);
+                    });
+                }
             }
 
-
+        },
+        onSelect: function(item) {
+            self.selectedItem(item);
+            var ret = {
+                userId: ko.unwrap(item.id),
+            };
+            self.value(ret);
         }
     };
-    this.select2ConfigMulti = { ...this.select2Config };
-    this.select2ConfigMulti.multiple = true;
+
+    // TODO: make configurable
+    if(this.checkCanIssueUserSignupLink){
+        this.checkCanIssueUserSignupLink().done((allowed) => {
+            console.log("Allowed to sign up a user to this person.", allowed);
+            self.canIssueUserSignupLink(allowed);
+        });
+    }
 };
 
 export default UserSelectViewModel;
