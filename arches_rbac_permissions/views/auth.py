@@ -37,6 +37,7 @@ import django.db.utils
 import django.contrib.auth.password_validation as validation
 from arches import __version__
 from arches.app.models.system_settings import settings
+from arches.app.models.models import Tile
 from arches.app.utils.arches_crypto import AESCipher
 from arches.app.utils.betterJSONSerializer import JSONSerializer, JSONDeserializer
 from arches.app.views.auth import *
@@ -193,9 +194,15 @@ class PersonConfirmSignupView(View):
             if datetime.fromtimestamp(userinfo["ts"]) + timedelta(days=1) >= datetime.fromtimestamp(int(time.time())):
                 if form.is_valid():
                     user = form.save()
-                    person.aliased_data.user_account = {
-                        "user_id": user.pk
+                    tile = Tile()
+                    tile.resourceinstance_id = person.pk
+                    tile.nodegroup_id = "b1f5c336-6a0e-11ee-b748-0242ac140009"
+                    tile.data = {
+                        "b1f5c336-6a0e-11ee-b748-0242ac140009": {
+                            "userId": int(user.pk)
+                        }
                     }
+                    tile.save()
                     try:
                         person.save()
                     except django.db.utils.ProgrammingError:

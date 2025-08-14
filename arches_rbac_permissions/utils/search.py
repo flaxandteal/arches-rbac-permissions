@@ -18,7 +18,7 @@ class CommandSearchFilterFactory(SearchFilterFactory):
         # TODO: this is awful, but the only other way to resolve the deep-accesses
         # of request is to patch the architecture for sep of concerns (as we did in Coral)
         # Does the database layer needs to have a request with a user, or is there a way to improve that?
-        user = SimpleNamespace(is_superuser=True, groups=[], is_authenticated=True, id=1, has_perm=lambda *args: True)
+        user = SimpleNamespace(is_superuser=True, groups=[], is_authenticated=True, id=None, has_perm=lambda *args: True)
         mock_request = SimpleNamespace(GET={}, POST={}, user=user, method="POST")
         super().__init__(request=mock_request, user=user)
 

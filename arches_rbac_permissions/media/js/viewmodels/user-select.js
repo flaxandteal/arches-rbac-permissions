@@ -31,7 +31,7 @@ var UserSelectViewModel = function(params) {
     );
 
     const url_person_signup_link = generateArchesURL(
-        "person_signup"
+        "person_user_signup"
     );
 
     params.configKeys = ['placeholder', 'defaultValue'];

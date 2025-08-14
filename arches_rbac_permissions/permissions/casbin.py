@@ -478,6 +478,7 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         subj = self._subj_to_str(user)
 
         # FIXME: Right now, this does not address nested sets...
+        print(self._enforcer.get_implicit_permissions_for_user(subj))
         for _, obj, act in self._enforcer.get_implicit_permissions_for_user(subj):
             act = REMAPPINGS.get(act, act)
             if (isinstance(act, list) and perm in act) or act == perm:
@@ -910,6 +911,10 @@ class CasbinPermissionFramework(ArchesPermissionBase):
         :param include_provisional: Whether to include provisional values
         """
 
+        print(user, 'USER', user.is_superuser)
+        if user is True or user.is_superuser:
+            return Bool()
+
         has_access = Bool()
         should_access = Bool()
         principal_user = Terms(field="permissions.principal_user", terms=[int(user.id)])
@@ -924,6 +929,7 @@ class CasbinPermissionFramework(ArchesPermissionBase):
             should_access.should(sets_filter)
 
         has_access.filter(should_access)
+        print(sets)
 
         return has_access
 

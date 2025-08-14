@@ -4,15 +4,15 @@ INSERT INTO resource_x_resource (
   resourcexid,
   notes,
   relationshiptype,
-  from_resource,
-  to_resource,
+  resourceinstanceidfrom,
+  resourceinstanceidto,
   modified,
   created,
   inverserelationshiptype,
   tileid,
   nodeid,
-  from_resource_graph_id,
-  to_resource_graph_id
+  resourceinstancefrom_graphid,
+  resourceinstanceto_graphid
 ) VALUES (
   'd090fa59-2cdf-4d6d-9ad6-21373300e459',
   '',
@@ -32,15 +32,15 @@ INSERT INTO resource_x_resource (
   resourcexid,
   notes,
   relationshiptype,
-  from_resource,
-  to_resource,
+  resourceinstanceidfrom,
+  resourceinstanceidto,
   modified,
   created,
   inverserelationshiptype,
   tileid,
   nodeid,
-  from_resource_graph_id,
-  to_resource_graph_id
+  resourceinstancefrom_graphid,
+  resourceinstanceto_graphid
 ) VALUES (
   '3f52e2a2-4b52-47f6-a90f-d2fb09f5c716',
   '',
