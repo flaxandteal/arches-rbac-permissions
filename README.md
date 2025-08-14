@@ -80,6 +80,11 @@ dependencies = [
 ]
 ```
 
+4. Add the application to your URLs in `urls.py`:
+```
+urlpatterns.append(path('', include('arches_rbac_permissions.urls')))
+```
+
 4. Add `cytoscape-elk` to your npm dependencies:
 ```
 npm i --save cytoscape-elk
@@ -182,6 +187,30 @@ Two first two books are by Steven Erikson and are part of the Malazan Book of th
 +----------------+----------------------------+
 
 Ian McDonald is the author of River of Gods. Here, he is the only member of his team, a group that has access to all of his works.
+
+### Exercises
+
+#### Attaching a user to a person
+
+[Edit Ian McDonald](http://localhost:8000/resource/44dd85c1-0132-44e3-b248-50f6b6d6f3d2) and go to the `User Account` option. Like any other system or external reference, this may or may not be populated depending on the referent's presence in the other system - in this case the user table.
+
+The user widget can be placed anywhere. Currently, it carries meaning because the Person model is part of this Application, but this will likely be replaced with node configuration, such that it can be a human-person link on any model.
+
+There should be an option to "Copy signup link". Click it.
+
+In a new _private_ browser window, paste from your clipboard. If you did not configure the dummy email server above, do so now and restart the server.
+
+Enter a chosen username (e.g. `ianm`), email (e.g. `ianm@example.com`) and password (e.g. `Pass1234$`).
+
+When you submit, you should see an email in your log window with a URL. Copy this. It will look something like:
+
+               <p><a href="http://localhost:8000/person-confirm-signup?link=uaWIU1ns7uQXDBNFXCo2U6KZ%2FEj7LgV0qIG8cgwNIPTmxjPnyy5xOLFm3xbrgUH0uoshWGbOV3OU8AK8ieXIMPW1ZgcEXr4jwFI12FdOHyJBSZCFo2c756xppZiQpeHsW9T%2BIgjcTgPdFZ%2FTApiafH8JSLq45Y3%2F7uN4klNEDfgH%2Fu9UF3AeBAHXJ6XGHzmcai6hmZg%2BR67%2F1JWXaaHdsmsZuduKWAEFMdxUUdYnQTNQL%2FSi7HNJaNvDKtIg0onV8CbC7J2TtcT54GlZ0TVvY7ZjGkzF2OcLvon2Hu9lk42Xpty4%2BbbI5fvGf3GE3yDRDLPExce7VGOLxBRDh9JMKYjMPCYS2SMT6Xs5s5ZjJ7hsVAxSSOOQiwxeOa8uP7wW">Signup for Arches</a></p>
+
+Copy and paste it to your private browsing window. It should confirm your account is now active.
+
+When you sign in, you should have an unprivileged account. Return [to search](http://localhost:8000/search?paging-filter=1&tiles=true). You should see one book, `Rivers of God`.
+
+### TODO - why is the signup giving a provisional edit for user account?
 
 ### Acknowledgements
 
