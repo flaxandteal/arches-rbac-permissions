@@ -160,9 +160,10 @@ The example package shows a book management database. Log in as admin and [searc
 
 #### Malazan
 
-+----------------+----------------------------+
+Assets:
+
 | Graph          | Resource                   |
-+----------------+----------------------------+
+|----------------|----------------------------|
 | Book           | Toll the Hounds            |
 | Book           | Deadhouse Gates            |
 | Book           | Dancer's Lament            |
@@ -171,20 +172,17 @@ The example package shows a book management database. Log in as admin and [searc
 | Group          | Malazan Authors            |
 | Set            | Malazan Empire Franchise   |
 | Set            | Malazan Book of the Fallen |
-+----------------+----------------------------+
 
 Two first two books are by Steven Erikson and are part of the Malazan Book of the Fallen. The third books is part of the same franchise, but is by Ian C. Esslemont.
 
 #### Ian McDonald
 
-+----------------+----------------------------+
 | Graph          | Resource                   |
-+----------------+----------------------------+
+|----------------|----------------------------|
 | Book           | River of Gods              |
 | Person         | Ian McDonald               |
 | Group          | Ian McDonald's Team        |
 | Logical Set    | Works by Ian McDonald      |
-+----------------+----------------------------+
 
 Ian McDonald is the author of River of Gods. Here, he is the only member of his team, a group that has access to all of his works.
 
