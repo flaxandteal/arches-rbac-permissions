@@ -49,7 +49,12 @@ You can add the dashboard to an Arches project in just a few easy steps.
 pip install git+https://github.com/flaxandteal/arches-rbac-permissions.git
 ```
 
-2. Add `"arches_rbac_permissions"` to the INSTALLED_APPS setting in the demo project's settings.py file below the demo project.
+2. Install the arches querysets (or clone this repo and pip install locally).
+```
+pip install git+https://github.com/archesproject/arches-querysets.git
+```
+
+3. Add `"arches_rbac_permissions"`, `"arches_querysets"` and `"casbin_adapter.apps.CasbinAdapterConfig"` to the INSTALLED_APPS setting in the project's settings.py file.
 
 #TBC
 Ensure the Application settings are available to extend with:
@@ -66,36 +71,37 @@ INSTALLED_APPS = [
     "arches_rbac_permissions",
     "arches_querysets",
     "casbin_adapter.apps.CasbinAdapterConfig",
-    "demo",
 ]
 ```
 
 Correct `MIDDLEWARE = [...` to `MIDDLEWARE += [...`
 
-3. Version your dependency on `"arches_rbac_permissions"` in `pyproject.toml`:
+4. Version your dependency on `"arches_rbac_permissions"` in `pyproject.toml`:
 ```
 dependencies = [
     "arches>=7.6.0,<7.7.0",
     "arches_rbac_permissions==0.0.1",
+    "arches_querysets[drf]"
 ]
 ```
 
-4. Add the application to your URLs in `urls.py`:
+5. Add the application to your URLs in `urls.py`:
 ```
 urlpatterns.append(path('', include('arches_rbac_permissions.urls')))
+urlpatterns.append(path("", include("arches_querysets.urls")))
 ```
 
-4. Add `cytoscape-elk` to your npm dependencies:
+6. Add `cytoscape-elk` to your npm dependencies:
 ```
 npm i --save cytoscape-elk
 ```
 
-5. From your project run migrate to add the model included in the app:
+7. From your project run migrate to add the model included in the app:
 ```
 python manage.py migrate
 ```
 
-6. Next be sure to rebuild your project's frontend to include the plugin:
+8. Next be sure to rebuild your project's frontend to include the plugin:
 ```
 npm run build_development
 ```
@@ -128,20 +134,27 @@ The environment was set up using:
     pip install -e .
     cd ..
 
+    git clone https://github.com/archesproject/arches-querysets.git
+    cd arches-querysets
+    pip install -e .
+    cd ..
+
+    # Arches querysets did throw an error in line 540 of the tiles.py with the error of a change in dict size. You can wrap the datatype values in a list to fix this error `for datatype in list(self.datatype_factory.datatype_instances.values()):`*
+
     # In another window
     docker run --rm --name some-es -e "discovery.type=single-node" -p9200:9200 -e POSTGRES_PASSWORD=postgis elastic/elasticsearch:7.17.27
     # In another window
     docker run --rm --name some-postgres -p5432:5432 -e POSTGRES_PASSWORD=postgis postgis/postgis
 
     cd rbac-test
-    # make the changes to pyproject.toml and settings.py
+    # make the changes to pyproject.toml and settings.py (follow the steps in Installation)
     # make the following adjustments for this test approach:
     # ELASTICSEARCH_HOSTS = [{"scheme": "http", "host": os.environ.get("ESHOST", "localhost"), "port": int(os.environ.get("ESPORT", 9200))}]
     # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  #<-- Only need to uncomment this for testing without an actual email server
 
     npm i --save cytoscape-elk
     python manage.py setup_db # confirm DB reset
-    mkdir -p rbac_test2/{media/js,templates}/views/components/widgets # this seems like it should not be needed?
+    mkdir -p rbac_test/{media/js,templates}/views/components/widgets # this seems like it should not be needed?
     python manage.py packages -o load_package -a arches_rbac_permissions
 
     # This may be necessary if there are npm errors:
