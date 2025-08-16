@@ -1,0 +1,149 @@
+{% load i18n %}
+{% load static %}
+{% load webpack_static from webpack_loader %}
+
+<div class="saved-search-container relative">
+    <div class="close-popup-panel-container">
+        <span class="close-popup-panel" tabindex="0" role="button" id="search-export-close-btn" 
+            data-bind="onEnterkeyClick, onSpaceClick, 
+            click: function(){selectedPopup(''); $root.shiftFocus('#search-export-type-open-btn');},
+            attr: {'aria-label': $root.translations.closeExportSearchResults},
+            text: 'Save Search'"><!-- TODO: translation -->
+        </span>
+    </div>
+    <hr class="title-underline">
+
+    <div class="search-export">
+        <div class="parameter">
+            <input
+                class="form-control input-md widget-input" 
+                data-bind="
+                    attr: {
+                        placeholder: 'Saved Search Name', // TODO: translation
+                    },
+                    textInput: savedSearchName
+                " 
+            ></input>
+        </div>
+
+    </div>
+
+    <br/>
+    <!-- Save -->
+    <div class="search-export save">
+        <button class="btn btn-lg btn-primary btn-active-primary"
+            type="button"
+            data-bind="
+                click: function(){ executeSave() },
+                attr: {
+                    'aria-disabled': false,
+                    'aria-describedby': '',
+                    'aria-busy': false,
+                },
+            "
+        > 
+            <span data-bind="text: $root.translations.save"></span>
+        </button>
+    </div>
+
+    <div class="save-message" data-bind="text: result, attr: {'aria-live': 'polite'}">
+    </div>
+
+    <hr class="rp-tile-separator">
+
+    <div class="close-popup-panel-container">
+        <span class="close-popup-panel" tabindex="0" role="button" id="saved-searches-close-btn" 
+            data-bind="onEnterkeyClick, onSpaceClick,
+            click: function(){selectedPopup(''); $root.shiftFocus('#saved-searches-type-open-btn');},
+            attr: {'aria-label': $root.translations.closeSavedSearches},
+            text: $root.translations.savedSearches + ' (Global)'"><!-- TODO: translation -->
+        </span>
+    </div>
+    <hr class="title-underline">
+
+    <div class="saved-search-grid">
+        <div data-bind="smartresize: {childclass: '.ss-grid-item'}, foreach: personalItems">
+            <!-- Saved Search Query -->
+            <div class="ss-grid-item relative">
+                    <div class="search-caption-activeWrap">
+                        <div class="search-caption-alignCenter">
+                            <div class="search-caption-body">
+                                <div class="search-query">
+                                    <a class="search-query-link-captions" tabindex="0"
+                                        data-bind="
+                                            click: function(){window.location.href = searchUrl; },
+                                            onEnterkeyClick,
+                                            attr: {
+                                                'aria-label': title
+                                            }
+                                        "><i class="rounded-x fa fa-search"></i> <span data-bind="text: title"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ko if: items().length === 0 -->
+        <div id="rr-splash" class="rr-splash">
+            <!-- Image -->
+            <div class="img-lg img-circle rr-splash-img-container">
+                <img class="rr-splash-img" src="{% webpack_static 'img/approval.png' %}" alt="Saved Search">
+            </div>
+
+            <!-- Splash Title -->
+            <div class="rr-splash-title">
+                <span data-bind="text: $root.translations.savedSearch"></span>
+            </div>
+
+            <!-- Splash Instructions -->
+            <div class="rr-splash-description">
+                <span data-bind="text: $root.translations.noSavedSearches, attr: {'aria-live': 'polite'}"></span>
+            </div>
+        </div>
+    <!-- /ko -->
+
+    <div class="saved-search-grid">
+        <div data-bind="smartresize: {childclass: '.ss-grid-item'}, foreach: items">
+            <!-- Saved Search Query -->
+            <div class="ss-grid-item relative">
+                    <div class="search-caption-activeWrap">
+                        <div class="search-caption-alignCenter">
+                            <div class="search-caption-body">
+                                <div class="search-query">
+                                    <a class="search-query-link-captions" tabindex="0"
+                                        data-bind="
+                                            click: function(){window.location.href = searchUrl; },
+                                            onEnterkeyClick,
+                                            attr: {
+                                                'aria-label': title, 
+                                                'aria-description': subtitle
+                                            }
+                                        "><i class="rounded-x fa fa-search"></i> <span data-bind="text: title"></span></a>
+                                    <div class="search-query-desc">
+                                        <span data-bind="html: subtitle"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <!-- ko if: image -->    
+                <img class="img-responsive" data-bind="attr: {src: image, alt: title}">
+                <!-- /ko -->
+            </div>
+        </div>
+    </div>
+
+    <hr class="rp-tile-separator">
+
+    <div class="close-popup-panel-container">
+        <span class="close-popup-panel" tabindex="0" role="button" id="saved-searches-close-btn" 
+            data-bind="onEnterkeyClick, onSpaceClick,
+            click: function(){selectedPopup(''); $root.shiftFocus('#saved-searches-type-open-btn');},
+            attr: {'aria-label': $root.translations.closeSavedSearches},
+            text: $root.translations.savedSearches + ' (Personal)'"><!-- TODO: translation -->
+        </span>
+    </div>
+    <hr class="title-underline">
+</div>

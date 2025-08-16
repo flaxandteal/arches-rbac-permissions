@@ -5,6 +5,7 @@ from .views.user_select import paged_user_list, user_get
 from .views.person_user import PersonUserSignupView
 from .views.auth import PersonSignupView, PersonConfirmSignupView
 from .views.group_manager import GroupManagerView
+from .views.saved_searches import SavedSearchesView
 
 uuid_regex = settings.UUID_REGEX
 
@@ -41,5 +42,9 @@ urlpatterns = [
     re_path(r'^groupmanager/(?P<grouping>[a-zA-Z_-]+)/(?P<resourceid>%s|())$' % uuid_regex,
         GroupManagerView.as_view(),
         name='groupmanager_for_resource'
+    ),
+    re_path(r'^savedsearches',
+        SavedSearchesView.as_view(),
+        name='savedsearches'
     ),
 ]
