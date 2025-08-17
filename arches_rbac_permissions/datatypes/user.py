@@ -19,7 +19,6 @@ class UserDataType(BaseDataType):
     """DataType for a Django User."""
 
     def append_to_document(self, document, nodevalue, nodeid, tile, provisional=False):
-        print(document)
         if (user := self.get_user(tile, nodeid)):
             document["strings"].append(
                 {"string": self._get_display_value_for_user(user), "nodegroup_id": tile.nodegroup_id}

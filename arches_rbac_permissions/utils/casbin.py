@@ -12,6 +12,7 @@ from arches.app.search.mappings import RESOURCES_INDEX
 from arches.app.models.models import Plugin
 from arches.app.models.resource import Resource
 from arches_querysets.models import ResourceTileTree, GraphWithPrefetching
+from arches_rbac_permissions.models import InclusionRule
 
 from .search import CommandSearchFilterFactory, UpdateByQuery
 
@@ -123,11 +124,22 @@ class SetApplicator:
             if logical_set_data.member_definition:
                 # user=True is shorthand for "do not restrict by user"
                 print(logical_set_data.member_definition.aliased_data.member_definition)
-                parameters = parse_qs(logical_set_data.member_definition.aliased_data.member_definition)
+                member_definition = logical_set_data.member_definition.aliased_data.member_definition
+                if not member_definition or not (inclusion_rule_id := member_definition.get("inclusionRuleId")):
+                    logger.error("Could not find the inclusion rule %s for logical set %s", str(inclusion_rule_id), str(logical_set.pk))
+                    continue
+                ir = InclusionRule.objects.get(pk=inclusion_rule_id)
+
+                if not ir.classname == "SearchRule":
+                    logger.error("QuerySets are not yet supported, in the rule %s for logical set %s", str(inclusion_rule_id), str(logical_set.pk))
+                    continue
+                parameters = ir.definition
+                print(parameters)
                 for key, value in parameters.items():
                     if len(value) != 1:
                         raise RuntimeError("Each filter type must appear exactly once")
-                    parameters[key] = value[0]
+                    parameters[key] = json.dumps(value)
+                print(parameters)
                 def _logical_set_query(parameters):
                     search_filter_factory = CommandSearchFilterFactory(parameters)
                     searchview_component_instance = search_filter_factory.get_searchview_instance()

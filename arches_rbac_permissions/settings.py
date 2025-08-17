@@ -14,6 +14,7 @@ PERMISSION_LOCATIONS = []
 INSTALLED_APPS = ()
 AUTHENTICATION_BACKENDS = ()
 WELL_KNOWN_RESOURCE_MODELS = []
+RULE_LOCATIONS = []
 
 try:
     from arches.settings import *
@@ -46,6 +47,7 @@ GROUPINGS = {
 
 DATATYPE_LOCATIONS += ["arches_rbac_permissions.datatypes"]
 PERMISSION_LOCATIONS += ["arches_rbac_permissions.permissions"]
+RULE_LOCATIONS += ["arches_rbac_permissions.rules"]
 MIDDLEWARE += [
     "arches_rbac_permissions.utils.middleware.CurrentUserMiddleware"
 ]

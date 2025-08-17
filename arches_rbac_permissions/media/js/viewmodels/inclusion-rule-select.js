@@ -8,11 +8,10 @@ import WidgetViewModel from 'viewmodels/widget';
 
 import { generateArchesURL } from "@/arches/utils/generate-arches-url.ts";
 
-// TODO: sort out translation string removal, as otherwise cannot cancel editing
-// (as translating usernames does not make sense)
+// TODO: sort out translation strings
 
 var NAME_LOOKUP = {};
-var UserSelectViewModel = function(params) {
+var InclusionRuleSelectViewModel = function(params) {
     // TODO: tidy up to remove excess settings
     // Getting this to display was a _long_ journey.
     var self = this;
@@ -22,23 +21,27 @@ var UserSelectViewModel = function(params) {
         params.value = ko.observable(params.value);
     }
 
-    const url_get_user_names_all = generateArchesURL(
-        "get_user_names_all"
+    const url_get_inclusion_rule_names_all = generateArchesURL(
+        "get_inclusion_rule_names_all"
     );
 
-    const url_get_user_names_one = generateArchesURL(
-        "get_user_names_one"
+    const url_get_inclusion_rule_names_one = generateArchesURL(
+        "get_inclusion_rule_names_one"
     );
 
-    const url_person_signup_link = generateArchesURL(
-        "person_user_signup"
+    const url_copy_inclusion_rule_from_saved_search = generateArchesURL(
+        "copy_inclusion_rule_from_saved_search"
+    );
+
+    const url_go_to_inclusion_rule_inspect = generateArchesURL(
+        "go_to_inclusion_rule_inspect"
     );
 
     params.configKeys = ['placeholder', 'defaultValue'];
 
     this.allowClear = params.allowClear ?? true;
     this.displayName = ko.observable('');
-    this.canIssueUserSignupLink = ko.observable(false);
+    this.canInspectRule = ko.observable(false);
     this.selectedItem = params.selectedItem || ko.observable();
     this.formData = params.formData || null;
     this.form = params.form || null;
@@ -73,7 +76,6 @@ var UserSelectViewModel = function(params) {
     this.form = params.form || null;
     this.tile = params.tile || null;
     this.widget = params.widget || null;
-    this.inResourceEditor = (typeof params.inResourceEditor === "boolean" ? params.inResourceEditor : null);
     this.results = params.results || null;
     this.disabled = params.disabled || ko.observable(false);
     this.node = params.node || null;
@@ -163,44 +165,6 @@ var UserSelectViewModel = function(params) {
     });
 
     const resourceId = (this.tile && this.tile.resourceinstance_id) || (params && params.resourceinstance_id) || null;
-    console.log(this.tile, resourceId);
-
-    if (resourceId) {
-        this.issueUserSignupLink = function(){
-            return $.ajax({
-                url: url_person_signup_link,
-                context: this,
-                method: 'POST',
-                data: { personId: resourceId },
-                dataType: 'json'
-            })
-                .done(function(data) {
-                    console.log('User signup link request succeeded', data);
-                    return data.userSignupLink;
-                })
-                .fail(function(data) {
-                    console.log('User signup link request failed', data);
-                });
-        };
-        this.checkCanIssueUserSignupLink = function(){
-            return $.ajax({
-                url: url_person_signup_link,
-                context: this,
-                method: 'GET',
-                data: { personId: resourceId },
-                dataType: 'json'
-            })
-                .done(function(data) {
-                    if (data.success) {
-                        console.log('Can request signup links for this person');
-                    }
-                    return data.success;
-                })
-                .fail(function(data) {
-                    console.log('User signup link check failed', data);
-                });
-        };
-    }
 
     this.displayValue = ko.computed(function() {
         var name = self.displayName();
@@ -213,19 +177,25 @@ var UserSelectViewModel = function(params) {
         return displayVal;
     });
 
+    this.goToInspectUrl = function(inclusionRuleId) {
+        window.open(url_go_to_inclusion_rule_inspect + '?inclusionRuleId=' + inclusionRuleId);
+    };
+
     this.setName = function() {
         const val = self.value();
         if (ko.unwrap(val)) {
-            const value = parseInt(ko.unwrap(ko.unwrap(val).userId));
-            if (!isNaN(value)) {
+            const value = ko.unwrap(ko.unwrap(val).inclusionRuleId);
+            if (value) {
                 if (NAME_LOOKUP[value]) {
-                    self.displayName(NAME_LOOKUP[value]);
+                    self.displayName(NAME_LOOKUP[value].text);
+                    self.canInspectRule(NAME_LOOKUP[value].canInspectRule);
                 } else {
-                    $.ajax(url_get_user_names_one + '?userid=' + ko.unwrap(value), {
+                    $.ajax(url_get_inclusion_rule_names_one + '?inclusionRuleId=' + ko.unwrap(value), {
                         dataType: "json"
                     }).done(function(data) {
-                        NAME_LOOKUP[data.id] = data.text;
+                        NAME_LOOKUP[data.id] = data;
                         self.displayName(data.text);
+                        self.canInspectRule(data.canInspectRule);
                     });
                 }
             }
@@ -233,46 +203,48 @@ var UserSelectViewModel = function(params) {
     };
     this.setName();
 
-    this.userToAdd = ko.observable(null);
-    this.userToAdd.subscribe(function(data) {
-        let valueInt;
-        if (data && typeof data === 'object' && data.userId) {
-            valueInt = parseInt(ko.unwrap(data.userId));
+    this.inclusionRuleToAdd = ko.observable(null);
+    this.inclusionRuleToAdd.subscribe(function(data) {
+        let valueUuid;
+        if (data && typeof data === 'object' && data.inclusionRuleId) {
+            valueUuid = ko.unwrap(data.inclusionRuleId);
         } else if (data) {
-            valueInt = data;
+            valueUuid = data;
         }
-        if (valueInt) {
+        if (valueUuid) {
             self.value({
-                "userId": ko.unwrap(valueInt),
+                "inclusionRuleId": ko.unwrap(valueUuid),
             });
         }
     });
     this.value.subscribe(function(val) {
         if (val) {
-            self.userToAdd(val.userId);
+            self.inclusionRuleToAdd(val.inclusionRuleId);
         } else {
-            self.userToAdd(null);
+            self.inclusionRuleToAdd(null);
         }
         self.setName();
     });
 
     this.select2Config = {
-        value: self.userToAdd,
+        value: self.inclusionRuleToAdd,
         clickBubble: true,
         multiple: false,
         closeOnSelect: true,
         placeholder: self.placeholder,
         allowClear: self.allowClear,
         ajax: {
-            url: url_get_user_names_all,
+            url: url_get_inclusion_rule_names_all,
             dataType: 'json',
             quietMillis: 250,
             data: function(requestParams) {
                 let term = requestParams.term || '';
                 let page = requestParams.page || 1;
+                let currentId = self.inclusionRuleToAdd();
                 return {
                     query: term,
                     page: page,
+                    onlyKeepRuleIds: currentId ? [currentId] : null
                 };
             },
             processResults: function(data) {
@@ -289,7 +261,13 @@ var UserSelectViewModel = function(params) {
             for (var i = 0; i < item.depth-1; i++) {
                 indentation += '&nbsp;&nbsp;&nbsp;&nbsp;';
             }
-            return indentation + item.text;
+            let text;
+            if (item.isSavedSearch) {
+                text = `Copy from your saved search: ${item.text}`;
+            } else {
+                text = item.text;
+            }
+            return indentation + text;
         },
         templateSelection: function(item) {
             return item.text;
@@ -301,16 +279,17 @@ var UserSelectViewModel = function(params) {
             
             var setSelectionData = function(data) {
                 let valueData;
-                let valueInt;
-                if (data && typeof data === 'object' && data.userId) {
-                    valueInt = parseInt(ko.unwrap(data.userId));
+                let valueUuid;
+                if (data && typeof data === 'object' && data.inclusionRuleId) {
+                    valueUuid = ko.unwrap(data.inclusionRuleId);
                 } else {
-                    valueInt = data;
+                    valueUuid = data;
                 }
-                if (valueInt) {
+                if (valueUuid) {
                     valueData = {
-                        id: valueInt,
-                        text: NAME_LOOKUP[valueInt],
+                        id: valueUuid,
+                        text: NAME_LOOKUP[valueUuid].text,
+                        canInspectRule: NAME_LOOKUP[valueUuid].canInspectRule,
                     };
                 } else {
                     console.warn("Could not load value", valueId);
@@ -323,19 +302,19 @@ var UserSelectViewModel = function(params) {
                 }
                 callback(valueData);
                 self.value({
-                    userId: ko.unwrap(valueData.id)
+                    inclusionRuleId: ko.unwrap(valueData.id)
                 });
             };
 
-            const value = parseInt(ko.unwrap(ko.unwrap(val).userId));
+            const value = ko.unwrap(ko.unwrap(val).inclusionRuleId);
             if (ko.unwrap(value)) {
                 if (NAME_LOOKUP[value]) {
                     setSelectionData(value);
                 } else {
-                    $.ajax(url_get_user_names_one + '?userid=' + ko.unwrap(value), {
+                    $.ajax(url_get_inclusion_rule_names_one + '?inclusionRuleId=' + ko.unwrap(value), {
                         dataType: "json"
                     }).done(function(data) {
-                        NAME_LOOKUP[value] = data.text;
+                        NAME_LOOKUP[value] = data;
                         setSelectionData(value);
                     });
                 }
@@ -344,20 +323,28 @@ var UserSelectViewModel = function(params) {
         },
         onSelect: function(item) {
             self.selectedItem(item);
-            var ret = {
-                userId: ko.unwrap(item.id),
-            };
-            self.value(ret);
+            const inclusionRuleId = ko.unwrap(item.id);
+            if (inclusionRuleId && inclusionRuleId.startsWith("ss-")) {
+              // TODO: better UX
+              self.value(null);
+              if (confirm(`Are you sure you wish to copy saved search "${item.text}" as a new inclusion rule, available to other users?`) == true) {
+                $.ajax(url_copy_inclusion_rule_from_saved_search + '?savedSearchId=' + inclusionRuleId.substr(3), {
+                    dataType: "json"
+                }).done(function(data) {
+                    NAME_LOOKUP[data.id] = data;
+                    self.value({
+                        inclusionRuleId: data.id
+                    });
+                });
+              }
+            } else {
+              var ret = {
+                  inclusionRuleId
+              };
+              self.value(ret);
+            }
         }
     };
-
-    // TODO: make configurable
-    if(this.checkCanIssueUserSignupLink){
-        this.checkCanIssueUserSignupLink().done((allowed) => {
-            console.log("Allowed to sign up a user to this person.", allowed);
-            self.canIssueUserSignupLink(allowed);
-        });
-    }
 };
 
-export default UserSelectViewModel;
+export default InclusionRuleSelectViewModel;

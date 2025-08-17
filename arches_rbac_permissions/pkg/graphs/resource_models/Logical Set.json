@@ -88,6 +88,36 @@
                     "source_identifier_id": null,
                     "visible": true,
                     "widget_id": "10000000-0000-0000-0000-000000000001"
+                },
+                {
+                    "card_id": "6a87eecc-d37a-4249-9506-a7e72d7c5269",
+                    "config": {
+                        "defaultValue": {
+                            "en": {
+                                "direction": "ltr",
+                                "value": ""
+                            }
+                        },
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
+                        "label": "Member Definition",
+                        "maxLength": null,
+                        "placeholder": {
+                            "en": ""
+                        },
+                        "uneditable": true,
+                        "width": "100%"
+                    },
+                    "id": "efa4f7f3-4ed8-486a-b095-c30a20d512b6",
+                    "label": {
+                        "en": "Member Definition"
+                    },
+                    "node_id": "2f94332c-9688-11ee-8782-0242ac140006",
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "visible": true,
+                    "widget_id": "ff2237cf-8a5a-46a2-bb58-f2f0784c9c8b"
                 }
             ],
             "color": "#798031",
@@ -184,7 +214,7 @@
                 {
                     "alias": "member_definition",
                     "config": {},
-                    "datatype": "non-localized-string",
+                    "datatype": "inclusion-rule",
                     "description": null,
                     "exportable": false,
                     "fieldname": null,

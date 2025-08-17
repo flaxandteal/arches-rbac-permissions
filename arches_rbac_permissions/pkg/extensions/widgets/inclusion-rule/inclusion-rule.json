@@ -1,0 +1,10 @@
+{
+    "widgetid": "ff2237cf-8a5a-46a2-bb58-f2f0784c9c8b",
+    "name": "inclusion-rule",
+    "component": "views/components/widgets/inclusion-rule",
+    "defaultconfig": {
+        "placeholder": "Pick an inclusion rule."
+    },
+    "helptext": null,
+    "datatype": "inclusion-rule"
+}
