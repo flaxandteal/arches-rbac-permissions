@@ -1,7 +1,25 @@
+[build-system]
+requires = ["hatchling < 1.22"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "arches_rbac_permissions"
+]
+
+[tool.ruff.lint]
+select = ["D", "F", "B"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
 [project]
-name = "arches_rbac_suite"
+name = "arches_rbac_permissions"
 version = "0.0.1"
 description = "DEclarative Workflow REndering Tool"
+homepage = "https://github.com/flaxandteal/arches-rbac-permissions"
+repository = "https://github.com/flaxandteal/arches-rbac-permissions"
+documentation = "https://flaxandteal.github.io/arches-rbac-permissions"
 readme = "README.md"
 authors = [
   {name = "Phil Weir", email = "phil.weir@flaxandteal.co.uk"},
@@ -24,7 +42,11 @@ classifiers = [
     "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
 ]
 dependencies = [
-    "arches_rbac_permissions",
+    "arches>=8.0,<8.2",
+    "arches_saved_search",
+    "arches_inclusion_rule",
+    "arches_user_datatype",
+    "arches_semantic_roles",
 ]
 
 [dependency-groups]
@@ -33,18 +55,14 @@ dev = [
     "ruff>=0.12.10",
 ]
 
+[tool.uv]
+package = true
+
 [tool.uv.sources]
 arches_inclusion_rule = { workspace = true }
 arches_saved_search = { workspace = true }
 arches_user_datatype = { workspace = true }
 arches_semantic_roles = { workspace = true }
-arches_rbac_permissions = { workspace = true }
 
-[tool.uv.workspace]
-members = [
-    "arches_rbac_permissions",
-    "arches_inclusion_rule",
-    "arches_saved_search",
-    "arches_user_datatype",
-    "arches_semantic_roles",
-]
+[tool.hatch.metadata]
+allow-direct-references = true

@@ -1,0 +1,10 @@
+{
+    "widgetid": "99d4e67f-6924-457c-bc33-6995013168a3",
+    "name": "django-group",
+    "component": "views/components/widgets/django_group",
+    "defaultconfig": {
+        "placeholder": "Provide the Django group name."
+    },
+    "helptext": null,
+    "datatype": "django-group"
+}

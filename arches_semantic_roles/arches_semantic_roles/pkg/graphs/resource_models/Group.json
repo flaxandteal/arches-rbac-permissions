@@ -1,0 +1,963 @@
+{
+    "graph": [
+        {
+            "author": " From AfS via Flax & Teal",
+            "cards": [
+                {
+                    "active": true,
+                    "cardid": "12707d3d-c05e-11e9-9866-a4d18cec433a",
+                    "component_id": "f05e4d3a-53c1-11e8-b0ea-784f435179ea",
+                    "config": null,
+                    "constraints": [],
+                    "cssclass": null,
+                    "description": {
+                        "en": "# Specific:\n\n\n# General:\nIt is strongly recommended that every resource that should be rendered to an end user have at least one name. Different types of name can be distinguished using classifications. See: https://linked.art/model/base/#names\n\n# Arches Note:\nThis node's content should be the value for the title descriptor function, when used for a resource model.\n\n* BranchId: la-name\n* FieldId: \n"
+                    },
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "helpenabled": false,
+                    "helptext": {
+                        "en": ""
+                    },
+                    "helptitle": {
+                        "en": ""
+                    },
+                    "instructions": {
+                        "en": "(Can select multiple for languages by adding)"
+                    },
+                    "name": {
+                        "en": "Name of Group"
+                    },
+                    "nodegroup_id": "12707705-c05e-11e9-8177-a4d18cec433a",
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "visible": true
+                },
+                {
+                    "active": true,
+                    "cardid": "32db9714-c05e-11e9-8b31-a4d18cec433a",
+                    "component_id": "f05e4d3a-53c1-11e8-b0ea-784f435179ea",
+                    "config": null,
+                    "constraints": [],
+                    "cssclass": null,
+                    "description": {
+                        "en": "# Specific:\n\n\n# General:\nIn many cases, current data does not support the level of specificity that the full ontology allows, or the information is simply best expressed in human-readable form. For example, instead of a completely modeled set of parts with materials, many museum collection management systems allow only a single human-readable string for the \"medium\" or \"materials statement\".  Any time that there is a description of the resource, with or without qualification as to the type of description, then this branch can be used to record the descriptive text. See: https://linked.art/model/base/#statements-about-a-resource\n\n# Arches Note:\n\n\n* BranchId: la-statement\n* FieldId: \n"
+                    },
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "helpenabled": false,
+                    "helptext": {
+                        "en": ""
+                    },
+                    "helptitle": {
+                        "en": ""
+                    },
+                    "instructions": {
+                        "en": ""
+                    },
+                    "name": {
+                        "en": "Description about Group"
+                    },
+                    "nodegroup_id": "32db94f8-c05e-11e9-a2c1-a4d18cec433a",
+                    "sortorder": 1,
+                    "source_identifier_id": null,
+                    "visible": true
+                },
+                {
+                    "active": true,
+                    "cardid": "59059dba-b69f-44d2-ae6c-1cbee1f222ec",
+                    "component_id": "f05e4d3a-53c1-11e8-b0ea-784f435179ea",
+                    "config": null,
+                    "constraints": [],
+                    "cssclass": null,
+                    "description": null,
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "helpenabled": false,
+                    "helptext": {
+                        "en": ""
+                    },
+                    "helptitle": {
+                        "en": ""
+                    },
+                    "instructions": {
+                        "en": ""
+                    },
+                    "name": {
+                        "en": "Django Group"
+                    },
+                    "nodegroup_id": "5acdfb22-1135-11ef-a3bd-0242ac170006",
+                    "sortorder": null,
+                    "source_identifier_id": null,
+                    "visible": false
+                },
+                {
+                    "active": true,
+                    "cardid": "5ea9e3d1-15c6-465c-8e66-e43dca3e3daf",
+                    "component_id": "f05e4d3a-53c1-11e8-b0ea-784f435179ea",
+                    "config": null,
+                    "constraints": [],
+                    "cssclass": null,
+                    "description": null,
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "helpenabled": false,
+                    "helptext": {
+                        "en": ""
+                    },
+                    "helptitle": {
+                        "en": ""
+                    },
+                    "instructions": {
+                        "en": ""
+                    },
+                    "name": {
+                        "en": "Members"
+                    },
+                    "nodegroup_id": "bb2f7e1c-7029-11ee-885f-0242ac140008",
+                    "sortorder": null,
+                    "source_identifier_id": null,
+                    "visible": true
+                },
+                {
+                    "active": true,
+                    "cardid": "79f14677-1839-4546-b00f-a62804e99597",
+                    "component_id": "f05e4d3a-53c1-11e8-b0ea-784f435179ea",
+                    "config": null,
+                    "constraints": [],
+                    "cssclass": null,
+                    "description": null,
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "helpenabled": false,
+                    "helptext": {
+                        "en": ""
+                    },
+                    "helptitle": {
+                        "en": ""
+                    },
+                    "instructions": {
+                        "en": ""
+                    },
+                    "name": {
+                        "en": "Permissions"
+                    },
+                    "nodegroup_id": "ae2039a4-7070-11ee-bb7a-0242ac140008",
+                    "sortorder": null,
+                    "source_identifier_id": null,
+                    "visible": true
+                }
+            ],
+            "cards_x_nodes_x_widgets": [
+                {
+                    "card_id": "5ea9e3d1-15c6-465c-8e66-e43dca3e3daf",
+                    "config": {
+                        "defaultResourceInstance": [],
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
+                        "label": "Members",
+                        "placeholder": {
+                            "en": ""
+                        }
+                    },
+                    "id": "04d704dc-48a1-4822-97a6-00556fd30594",
+                    "label": {
+                        "en": "Members"
+                    },
+                    "node_id": "bb2f7e1c-7029-11ee-885f-0242ac140008",
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "visible": true,
+                    "widget_id": "ff3c400a-76ec-11e7-a793-784f435179ea"
+                },
+                {
+                    "card_id": "79f14677-1839-4546-b00f-a62804e99597",
+                    "config": {
+                        "defaultResourceInstance": [],
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
+                        "label": "Object",
+                        "placeholder": {
+                            "en": ""
+                        }
+                    },
+                    "id": "5f1d92f9-78d0-4fee-b171-7207e6601315",
+                    "label": {
+                        "en": "Object"
+                    },
+                    "node_id": "448bcdb8-7071-11ee-8b8c-0242ac140008",
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "visible": true,
+                    "widget_id": "ff3c400a-76ec-11e7-a793-784f435179ea"
+                },
+                {
+                    "card_id": "12707d3d-c05e-11e9-9866-a4d18cec433a",
+                    "config": {
+                        "acceptedFiles": ".jpg, .png.",
+                        "defaultValue": [],
+                        "label": "Image (Max 3 files)",
+                        "maxFilesize": "200",
+                        "rerender": true
+                    },
+                    "id": "61af9f20-027f-11ed-a307-0242ac180008",
+                    "label": {
+                        "en": "Image (Max 3 files)"
+                    },
+                    "node_id": "6b7fc7e2-0279-11ed-b140-0242ac180008",
+                    "sortorder": 5,
+                    "source_identifier_id": null,
+                    "visible": true,
+                    "widget_id": "10000000-0000-0000-0000-000000000019"
+                },
+                {
+                    "card_id": "12707d3d-c05e-11e9-9866-a4d18cec433a",
+                    "config": {
+                        "defaultResourceInstance": [],
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
+                        "label": "Source",
+                        "placeholder": {
+                            "en": "Any parent team"
+                        }
+                    },
+                    "id": "61b079d6-027f-11ed-a307-0242ac180008",
+                    "label": {
+                        "en": "Source"
+                    },
+                    "node_id": "e8fe4f4e-027a-11ed-9dee-0242ac180008",
+                    "sortorder": 3,
+                    "source_identifier_id": null,
+                    "visible": true,
+                    "widget_id": "ff3c400a-76ec-11e7-a793-784f435179ea"
+                },
+                {
+                    "card_id": "59059dba-b69f-44d2-ae6c-1cbee1f222ec",
+                    "config": {
+                        "label": "Django Group",
+                        "placeholder": "Requires a Django Group ID."
+                    },
+                    "id": "b9e9022e-48c2-4912-82c9-d1f27023d2a2",
+                    "label": {
+                        "en": "Django Group"
+                    },
+                    "node_id": "5acdfb22-1135-11ef-a3bd-0242ac170006",
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "visible": true,
+                    "widget_id": "99d4e67f-6924-457c-bc33-6995013168a3"
+                },
+                {
+                    "card_id": "12707d3d-c05e-11e9-9866-a4d18cec433a",
+                    "config": {
+                        "defaultValue": "",
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
+                        "label": "Name",
+                        "maxLength": null,
+                        "placeholder": {
+                            "en": "Name of the team"
+                        },
+                        "uneditable": false,
+                        "width": "100%"
+                    },
+                    "id": "e7d7f14f-cd04-11e9-b2ad-a4d18cec433a",
+                    "label": {
+                        "en": "Name"
+                    },
+                    "node_id": "127095f5-c05e-11e9-bb57-a4d18cec433a",
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "visible": true,
+                    "widget_id": "10000000-0000-0000-0000-000000000001"
+                },
+                {
+                    "card_id": "32db9714-c05e-11e9-8b31-a4d18cec433a",
+                    "config": {
+                        "defaultValue": "",
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
+                        "label": "Description",
+                        "maxLength": null,
+                        "placeholder": {
+                            "en": "Enter text"
+                        },
+                        "uneditable": false,
+                        "width": "100%"
+                    },
+                    "id": "f9e03785-cd04-11e9-9f8d-a4d18cec433a",
+                    "label": {
+                        "en": "Description"
+                    },
+                    "node_id": "32dba023-c05e-11e9-aa88-a4d18cec433a",
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "visible": true,
+                    "widget_id": "10000000-0000-0000-0000-000000000005"
+                }
+            ],
+            "color": "rgba(231,111,81,0.75)",
+            "config": {
+                "activeTabIndex": 0,
+                "tabs": [
+                    {
+                        "icon": "fa fa-info",
+                        "name": "Identity and Description",
+                        "nodegroup_ids": [
+                            "12707705-c05e-11e9-8177-a4d18cec433a",
+                            "97f2c366-b323-11e9-98a8-a4d18cec433a",
+                            "32db94f8-c05e-11e9-a2c1-a4d18cec433a",
+                            "cadbc433-b323-11e9-a4ba-a4d18cec433a",
+                            "20003a33-c05e-11e9-8646-a4d18cec433a",
+                            "280201ae-c05e-11e9-b285-a4d18cec433a",
+                            "bc2bfc4a-c061-11e9-bfe8-a4d18cec433a"
+                        ]
+                    },
+                    {
+                        "icon": "fa fa-calendar",
+                        "name": "Events",
+                        "nodegroup_ids": [
+                            "bda20e7a-b323-11e9-b758-a4d18cec433a",
+                            "d3a51166-c061-11e9-9820-a4d18cec433a",
+                            "3b5f674f-c05e-11e9-88f2-a4d18cec433a",
+                            "ae7d576b-d284-11e9-a0e5-a4d18cec433a"
+                        ]
+                    }
+                ]
+            },
+            "deploymentdate": null,
+            "deploymentfile": null,
+            "description": {
+                "en": "One or more people, potentially sub-divided into further groups, that can act collectively. For example a research team, a department or an organization."
+            },
+            "edges": [
+                {
+                    "description": null,
+                    "domainnode_id": "12707705-c05e-11e9-8177-a4d18cec433a",
+                    "edgeid": "1270b8f5-c05e-11e9-ad47-a4d18cec433a",
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "name": null,
+                    "ontologyproperty": null,
+                    "rangenode_id": "127095f5-c05e-11e9-bb57-a4d18cec433a",
+                    "source_identifier_id": null
+                },
+                {
+                    "description": null,
+                    "domainnode_id": "07882b8c-b25c-11e9-a3e2-a4d18cec433a",
+                    "edgeid": "1270bd91-c05e-11e9-a56e-a4d18cec433a",
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "name": null,
+                    "ontologyproperty": null,
+                    "rangenode_id": "12707705-c05e-11e9-8177-a4d18cec433a",
+                    "source_identifier_id": null
+                },
+                {
+                    "description": null,
+                    "domainnode_id": "07882b8c-b25c-11e9-a3e2-a4d18cec433a",
+                    "edgeid": "1f7736e9-17f6-41d9-a1ff-242f47d5c733",
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "name": null,
+                    "ontologyproperty": null,
+                    "rangenode_id": "ae2039a4-7070-11ee-bb7a-0242ac140008",
+                    "source_identifier_id": null
+                },
+                {
+                    "description": null,
+                    "domainnode_id": "07882b8c-b25c-11e9-a3e2-a4d18cec433a",
+                    "edgeid": "2f933fb6-c3ed-4070-a353-3b9cd31d292c",
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "name": null,
+                    "ontologyproperty": null,
+                    "rangenode_id": "bb2f7e1c-7029-11ee-885f-0242ac140008",
+                    "source_identifier_id": null
+                },
+                {
+                    "description": null,
+                    "domainnode_id": "32db94f8-c05e-11e9-a2c1-a4d18cec433a",
+                    "edgeid": "32dbbc4f-c05e-11e9-b967-a4d18cec433a",
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "name": null,
+                    "ontologyproperty": null,
+                    "rangenode_id": "32dba023-c05e-11e9-aa88-a4d18cec433a",
+                    "source_identifier_id": null
+                },
+                {
+                    "description": null,
+                    "domainnode_id": "07882b8c-b25c-11e9-a3e2-a4d18cec433a",
+                    "edgeid": "32dbbed7-c05e-11e9-9327-a4d18cec433a",
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "name": null,
+                    "ontologyproperty": null,
+                    "rangenode_id": "32db94f8-c05e-11e9-a2c1-a4d18cec433a",
+                    "source_identifier_id": null
+                },
+                {
+                    "description": null,
+                    "domainnode_id": "07882b8c-b25c-11e9-a3e2-a4d18cec433a",
+                    "edgeid": "56a90ad4-d894-4e1a-b476-747336dd752c",
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "name": null,
+                    "ontologyproperty": null,
+                    "rangenode_id": "5acdfb22-1135-11ef-a3bd-0242ac170006",
+                    "source_identifier_id": null
+                },
+                {
+                    "description": null,
+                    "domainnode_id": "12707705-c05e-11e9-8177-a4d18cec433a",
+                    "edgeid": "6b7fca08-0279-11ed-b140-0242ac180008",
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "name": null,
+                    "ontologyproperty": null,
+                    "rangenode_id": "6b7fc7e2-0279-11ed-b140-0242ac180008",
+                    "source_identifier_id": null
+                },
+                {
+                    "description": null,
+                    "domainnode_id": "ae2039a4-7070-11ee-bb7a-0242ac140008",
+                    "edgeid": "ca299657-bd48-4601-a693-c1c24f5c8c5c",
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "name": null,
+                    "ontologyproperty": null,
+                    "rangenode_id": "7cb692b2-7072-11ee-bb7a-0242ac140008",
+                    "source_identifier_id": null
+                },
+                {
+                    "description": null,
+                    "domainnode_id": "ae2039a4-7070-11ee-bb7a-0242ac140008",
+                    "edgeid": "d4446657-7052-42b8-ae32-2970cde60f13",
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "name": null,
+                    "ontologyproperty": null,
+                    "rangenode_id": "448bcdb8-7071-11ee-8b8c-0242ac140008",
+                    "source_identifier_id": null
+                },
+                {
+                    "description": null,
+                    "domainnode_id": "12707705-c05e-11e9-8177-a4d18cec433a",
+                    "edgeid": "e8fe5250-027a-11ed-9dee-0242ac180008",
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "name": null,
+                    "ontologyproperty": null,
+                    "rangenode_id": "e8fe4f4e-027a-11ed-9dee-0242ac180008",
+                    "source_identifier_id": null
+                }
+            ],
+            "functions_x_graphs": [
+                {
+                    "config": {
+                        "descriptor_types": {
+                            "description": {
+                                "nodegroup_id": "32db94f8-c05e-11e9-a2c1-a4d18cec433a",
+                                "string_template": "<Statement_content>"
+                            },
+                            "map_popup": {
+                                "nodegroup_id": "",
+                                "string_template": ""
+                            },
+                            "name": {
+                                "nodegroup_id": "12707705-c05e-11e9-8177-a4d18cec433a",
+                                "string_template": "<Name>"
+                            }
+                        },
+                        "triggering_nodegroups": []
+                    },
+                    "function_id": "60000000-0000-0000-0000-000000000001",
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "id": "360c1edf-979b-4a1b-87b8-63b244c5ab98"
+                }
+            ],
+            "graphid": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+            "group_permissions": {},
+            "has_unpublished_changes": true,
+            "iconclass": "fa fa-users",
+            "is_active": true,
+            "is_copy_immutable": false,
+            "isresource": true,
+            "jsonldcontext": "https://linked.art/ns/v1/linked-art.json",
+            "name": {
+                "en": "Group"
+            },
+            "nodegroups": [
+                {
+                    "cardinality": "n",
+                    "grouping_node_id": "12707705-c05e-11e9-8177-a4d18cec433a",
+                    "legacygroupid": null,
+                    "nodegroupid": "12707705-c05e-11e9-8177-a4d18cec433a",
+                    "parentnodegroup_id": null
+                },
+                {
+                    "cardinality": "n",
+                    "grouping_node_id": "32db94f8-c05e-11e9-a2c1-a4d18cec433a",
+                    "legacygroupid": null,
+                    "nodegroupid": "32db94f8-c05e-11e9-a2c1-a4d18cec433a",
+                    "parentnodegroup_id": null
+                },
+                {
+                    "cardinality": "n",
+                    "grouping_node_id": "5acdfb22-1135-11ef-a3bd-0242ac170006",
+                    "legacygroupid": null,
+                    "nodegroupid": "5acdfb22-1135-11ef-a3bd-0242ac170006",
+                    "parentnodegroup_id": null
+                },
+                {
+                    "cardinality": "n",
+                    "grouping_node_id": "ae2039a4-7070-11ee-bb7a-0242ac140008",
+                    "legacygroupid": null,
+                    "nodegroupid": "ae2039a4-7070-11ee-bb7a-0242ac140008",
+                    "parentnodegroup_id": null
+                },
+                {
+                    "cardinality": "1",
+                    "grouping_node_id": "bb2f7e1c-7029-11ee-885f-0242ac140008",
+                    "legacygroupid": null,
+                    "nodegroupid": "bb2f7e1c-7029-11ee-885f-0242ac140008",
+                    "parentnodegroup_id": null
+                }
+            ],
+            "nodes": [
+                {
+                    "alias": "group",
+                    "config": {},
+                    "datatype": "semantic",
+                    "description": "# Specific:\n\n\n# General:\n\n\n# Arches Note:\n\n\n* BranchId: \n* FieldId: \n",
+                    "exportable": false,
+                    "fieldname": null,
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "hascustomalias": false,
+                    "is_collector": false,
+                    "is_immutable": false,
+                    "isrequired": false,
+                    "issearchable": true,
+                    "istopnode": true,
+                    "name": "Group",
+                    "nodegroup_id": null,
+                    "nodeid": "07882b8c-b25c-11e9-a3e2-a4d18cec433a",
+                    "ontologyclass": null,
+                    "parentproperty": "",
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "sourcebranchpublication_id": null
+                },
+                {
+                    "alias": "basic_info",
+                    "config": {},
+                    "datatype": "semantic",
+                    "description": "It is strongly recommended that every resource that should be rendered to an end user have at least one name. Different types of name can be distinguished using classifications.",
+                    "exportable": false,
+                    "fieldname": null,
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "hascustomalias": false,
+                    "is_collector": true,
+                    "is_immutable": false,
+                    "isrequired": false,
+                    "issearchable": true,
+                    "istopnode": false,
+                    "name": "Basic Info",
+                    "nodegroup_id": "12707705-c05e-11e9-8177-a4d18cec433a",
+                    "nodeid": "12707705-c05e-11e9-8177-a4d18cec433a",
+                    "ontologyclass": null,
+                    "parentproperty": null,
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "sourcebranchpublication_id": null
+                },
+                {
+                    "alias": "name",
+                    "config": {},
+                    "datatype": "string",
+                    "description": "The string value of the full name.\n",
+                    "exportable": true,
+                    "fieldname": null,
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "hascustomalias": false,
+                    "is_collector": false,
+                    "is_immutable": false,
+                    "isrequired": true,
+                    "issearchable": true,
+                    "istopnode": false,
+                    "name": "Name",
+                    "nodegroup_id": "12707705-c05e-11e9-8177-a4d18cec433a",
+                    "nodeid": "127095f5-c05e-11e9-bb57-a4d18cec433a",
+                    "ontologyclass": null,
+                    "parentproperty": null,
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "sourcebranchpublication_id": null
+                },
+                {
+                    "alias": "statement",
+                    "config": {},
+                    "datatype": "semantic",
+                    "description": "# Specific:\n\n\n# General:\nIn many cases, current data does not support the level of specificity that the full ontology allows, or the information is simply best expressed in human-readable form. For example, instead of a completely modeled set of parts with materials, many museum collection management systems allow only a single human-readable string for the \"medium\" or \"materials statement\".  Any time that there is a description of the resource, with or without qualification as to the type of description, then this branch can be used to record the descriptive text. See: https://linked.art/model/base/#statements-about-a-resource\n\n# Arches Note:\n\n\n* BranchId: la-statement\n* FieldId: \n",
+                    "exportable": false,
+                    "fieldname": null,
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "hascustomalias": false,
+                    "is_collector": true,
+                    "is_immutable": false,
+                    "isrequired": false,
+                    "issearchable": true,
+                    "istopnode": false,
+                    "name": "Statement",
+                    "nodegroup_id": "32db94f8-c05e-11e9-a2c1-a4d18cec433a",
+                    "nodeid": "32db94f8-c05e-11e9-a2c1-a4d18cec433a",
+                    "ontologyclass": null,
+                    "parentproperty": null,
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "sourcebranchpublication_id": null
+                },
+                {
+                    "alias": "description",
+                    "config": {},
+                    "datatype": "string",
+                    "description": "This field records the string content of the statement.\n",
+                    "exportable": false,
+                    "fieldname": null,
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "hascustomalias": false,
+                    "is_collector": false,
+                    "is_immutable": false,
+                    "isrequired": true,
+                    "issearchable": true,
+                    "istopnode": false,
+                    "name": "Description",
+                    "nodegroup_id": "32db94f8-c05e-11e9-a2c1-a4d18cec433a",
+                    "nodeid": "32dba023-c05e-11e9-aa88-a4d18cec433a",
+                    "ontologyclass": null,
+                    "parentproperty": null,
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "sourcebranchpublication_id": null
+                },
+                {
+                    "alias": "object",
+                    "config": {
+                        "graphs": [
+                            {
+                                "graphid": "5b8b4084-9687-11ee-8782-0242ac140006",
+                                "inverseRelationshipConcept": "ac41d9be-79db-4256-b368-2f4559cfbe55",
+                                "name": "Logical Set",
+                                "relationshipCollection": "00000000-0000-0000-0000-000000000005",
+                                "relationshipConcept": "ac41d9be-79db-4256-b368-2f4559cfbe55",
+                                "useOntologyRelationship": false
+                            },
+                            {
+                                "graphid": "b16832e8-dfc9-4fc8-9c07-0c0b980ed220",
+                                "inverseOntologyProperty": null,
+                                "inverseRelationshipConcept": "ac41d9be-79db-4256-b368-2f4559cfbe55",
+                                "name": "Set",
+                                "ontologyProperty": null,
+                                "relationshipCollection": "00000000-0000-0000-0000-000000000005",
+                                "relationshipConcept": "ac41d9be-79db-4256-b368-2f4559cfbe55",
+                                "useOntologyRelationship": true
+                            }
+                        ],
+                        "searchDsl": "",
+                        "searchString": ""
+                    },
+                    "datatype": "resource-instance",
+                    "description": null,
+                    "exportable": false,
+                    "fieldname": null,
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "hascustomalias": false,
+                    "is_collector": false,
+                    "is_immutable": false,
+                    "isrequired": false,
+                    "issearchable": true,
+                    "istopnode": false,
+                    "name": "Object",
+                    "nodegroup_id": "ae2039a4-7070-11ee-bb7a-0242ac140008",
+                    "nodeid": "448bcdb8-7071-11ee-8b8c-0242ac140008",
+                    "ontologyclass": null,
+                    "parentproperty": null,
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "sourcebranchpublication_id": null
+                },
+                {
+                    "alias": "django_group",
+                    "config": {
+                        "en": ""
+                    },
+                    "datatype": "django-group",
+                    "description": null,
+                    "exportable": false,
+                    "fieldname": null,
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "hascustomalias": false,
+                    "is_collector": true,
+                    "is_immutable": false,
+                    "isrequired": false,
+                    "issearchable": true,
+                    "istopnode": false,
+                    "name": "Django Group",
+                    "nodegroup_id": "5acdfb22-1135-11ef-a3bd-0242ac170006",
+                    "nodeid": "5acdfb22-1135-11ef-a3bd-0242ac170006",
+                    "ontologyclass": null,
+                    "parentproperty": null,
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "sourcebranchpublication_id": null
+                },
+                {
+                    "alias": "image",
+                    "config": {
+                        "activateMax": false,
+                        "imagesOnly": false,
+                        "maxFileSize": null,
+                        "maxFiles": 3
+                    },
+                    "datatype": "file-list",
+                    "description": "Pictures of the team (Max 3 files)",
+                    "exportable": false,
+                    "fieldname": null,
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "hascustomalias": false,
+                    "is_collector": false,
+                    "is_immutable": false,
+                    "isrequired": false,
+                    "issearchable": true,
+                    "istopnode": false,
+                    "name": "Image",
+                    "nodegroup_id": "12707705-c05e-11e9-8177-a4d18cec433a",
+                    "nodeid": "6b7fc7e2-0279-11ed-b140-0242ac180008",
+                    "ontologyclass": null,
+                    "parentproperty": null,
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "sourcebranchpublication_id": null
+                },
+                {
+                    "alias": "action",
+                    "config": {
+                        "rdmCollection": "cfe3d404-7461-433a-a6fd-05697d5ad0ca"
+                    },
+                    "datatype": "concept-list",
+                    "description": null,
+                    "exportable": false,
+                    "fieldname": null,
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "hascustomalias": false,
+                    "is_collector": false,
+                    "is_immutable": false,
+                    "isrequired": false,
+                    "issearchable": true,
+                    "istopnode": false,
+                    "name": "Action",
+                    "nodegroup_id": "ae2039a4-7070-11ee-bb7a-0242ac140008",
+                    "nodeid": "7cb692b2-7072-11ee-bb7a-0242ac140008",
+                    "ontologyclass": null,
+                    "parentproperty": null,
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "sourcebranchpublication_id": null
+                },
+                {
+                    "alias": "permissions",
+                    "config": {
+                        "en": ""
+                    },
+                    "datatype": "semantic",
+                    "description": null,
+                    "exportable": false,
+                    "fieldname": null,
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "hascustomalias": false,
+                    "is_collector": true,
+                    "is_immutable": false,
+                    "isrequired": false,
+                    "issearchable": true,
+                    "istopnode": false,
+                    "name": "Permissions",
+                    "nodegroup_id": "ae2039a4-7070-11ee-bb7a-0242ac140008",
+                    "nodeid": "ae2039a4-7070-11ee-bb7a-0242ac140008",
+                    "ontologyclass": null,
+                    "parentproperty": null,
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "sourcebranchpublication_id": null
+                },
+                {
+                    "alias": "members",
+                    "config": {
+                        "graphs": [
+                            {
+                                "graphid": "22477f01-1a44-11e9-b0a9-000d3ab1e588",
+                                "inverseOntologyProperty": null,
+                                "inverseRelationshipConcept": "ac41d9be-79db-4256-b368-2f4559cfbe55",
+                                "name": "Person",
+                                "ontologyProperty": null,
+                                "relationshipCollection": "00000000-0000-0000-0000-000000000005",
+                                "relationshipConcept": "ac41d9be-79db-4256-b368-2f4559cfbe55",
+                                "useOntologyRelationship": true
+                            },
+                            {
+                                "graphid": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                                "inverseOntologyProperty": null,
+                                "inverseRelationshipConcept": "ac41d9be-79db-4256-b368-2f4559cfbe55",
+                                "name": "Group",
+                                "ontologyProperty": null,
+                                "relationshipCollection": "00000000-0000-0000-0000-000000000005",
+                                "relationshipConcept": "ac41d9be-79db-4256-b368-2f4559cfbe55",
+                                "useOntologyRelationship": true
+                            }
+                        ],
+                        "searchDsl": "",
+                        "searchString": ""
+                    },
+                    "datatype": "resource-instance-list",
+                    "description": null,
+                    "exportable": false,
+                    "fieldname": null,
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "hascustomalias": false,
+                    "is_collector": true,
+                    "is_immutable": false,
+                    "isrequired": false,
+                    "issearchable": true,
+                    "istopnode": false,
+                    "name": "Members",
+                    "nodegroup_id": "bb2f7e1c-7029-11ee-885f-0242ac140008",
+                    "nodeid": "bb2f7e1c-7029-11ee-885f-0242ac140008",
+                    "ontologyclass": null,
+                    "parentproperty": null,
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "sourcebranchpublication_id": null
+                },
+                {
+                    "alias": "source",
+                    "config": {
+                        "graphs": [
+                            {
+                                "graphid": "22477f01-1a44-11e9-b0a9-000d3ab1e588",
+                                "name": "Person"
+                            },
+                            {
+                                "graphid": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                                "name": "Group"
+                            }
+                        ],
+                        "searchDsl": "",
+                        "searchString": ""
+                    },
+                    "datatype": "resource-instance-list",
+                    "description": "Any parent team",
+                    "exportable": false,
+                    "fieldname": null,
+                    "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                    "hascustomalias": false,
+                    "is_collector": false,
+                    "is_immutable": false,
+                    "isrequired": false,
+                    "issearchable": true,
+                    "istopnode": false,
+                    "name": "Source",
+                    "nodegroup_id": "12707705-c05e-11e9-8177-a4d18cec433a",
+                    "nodeid": "e8fe4f4e-027a-11ed-9dee-0242ac180008",
+                    "ontologyclass": null,
+                    "parentproperty": null,
+                    "sortorder": 0,
+                    "source_identifier_id": null,
+                    "sourcebranchpublication_id": null
+                }
+            ],
+            "ontology_id": null,
+            "publication": {
+                "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                "most_recent_edit_id": null,
+                "notes": null,
+                "publicationid": "8f5568f7-2b0f-4938-bf4d-05356870e571",
+                "published_time": "2025-08-09T09:07:19.217"
+            },
+            "relatable_resource_model_ids": [],
+            "resource_2_resource_constraints": [],
+            "resource_instance_lifecycle": {
+                "id": "7e3cce56-fbfb-4a4b-8e83-59b9f9e7cb75",
+                "name": "Standard",
+                "resource_instance_lifecycle_states": [
+                    {
+                        "action_label": "Revert to Draft",
+                        "can_delete_resource_instances": true,
+                        "can_edit_resource_instances": true,
+                        "id": "9375c9a7-dad2-4f14-a5c1-d7e329fdde4f",
+                        "is_initial_state": true,
+                        "name": "Draft",
+                        "next_resource_instance_lifecycle_states": [
+                            "f75bb034-36e3-4ab4-8167-f520cf0b4c58"
+                        ],
+                        "previous_resource_instance_lifecycle_states": [],
+                        "resource_instance_lifecycle_id": "7e3cce56-fbfb-4a4b-8e83-59b9f9e7cb75"
+                    },
+                    {
+                        "action_label": "Make Active",
+                        "can_delete_resource_instances": false,
+                        "can_edit_resource_instances": true,
+                        "id": "f75bb034-36e3-4ab4-8167-f520cf0b4c58",
+                        "is_initial_state": false,
+                        "name": "Active",
+                        "next_resource_instance_lifecycle_states": [
+                            "d95d9c0e-0e2c-4450-93a3-d788b91abcc8"
+                        ],
+                        "previous_resource_instance_lifecycle_states": [
+                            "9375c9a7-dad2-4f14-a5c1-d7e329fdde4f"
+                        ],
+                        "resource_instance_lifecycle_id": "7e3cce56-fbfb-4a4b-8e83-59b9f9e7cb75"
+                    },
+                    {
+                        "action_label": "Retire",
+                        "can_delete_resource_instances": false,
+                        "can_edit_resource_instances": false,
+                        "id": "d95d9c0e-0e2c-4450-93a3-d788b91abcc8",
+                        "is_initial_state": false,
+                        "name": "Retired",
+                        "next_resource_instance_lifecycle_states": [],
+                        "previous_resource_instance_lifecycle_states": [
+                            "f75bb034-36e3-4ab4-8167-f520cf0b4c58"
+                        ],
+                        "resource_instance_lifecycle_id": "7e3cce56-fbfb-4a4b-8e83-59b9f9e7cb75"
+                    }
+                ]
+            },
+            "root": {
+                "alias": "group",
+                "config": {},
+                "datatype": "semantic",
+                "description": "# Specific:\n\n\n# General:\n\n\n# Arches Note:\n\n\n* BranchId: \n* FieldId: \n",
+                "exportable": false,
+                "fieldname": null,
+                "graph_id": "07883c9e-b25c-11e9-975a-a4d18cec433a",
+                "hascustomalias": false,
+                "is_collector": false,
+                "is_immutable": false,
+                "isrequired": false,
+                "issearchable": true,
+                "istopnode": true,
+                "name": "Group",
+                "nodegroup_id": null,
+                "nodeid": "07882b8c-b25c-11e9-a3e2-a4d18cec433a",
+                "ontologyclass": null,
+                "sortorder": 0,
+                "source_identifier_id": null,
+                "sourcebranchpublication_id": null
+            },
+            "slug": "group",
+            "source_identifier_id": null,
+            "spatial_views": [],
+            "subtitle": {
+                "en": "One or more people or sub-groups that act collectively"
+            },
+            "template_id": "50000000-0000-0000-0000-000000000001",
+            "user_permissions": {},
+            "version": ""
+        }
+    ],
+    "metadata": {
+        "db": "PostgreSQL 16.4 (Debian 16.4-1.pgdg110+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit",
+        "git hash": "18ca1eded3 2025-07-29 11:13:16 -0400",
+        "os": "Linux",
+        "os version": "6.11.0-29-generic"
+    }
+}

@@ -1,0 +1,73 @@
+[build-system]
+requires = ["hatchling < 1.22"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "arches_inclusion_rule"
+]
+
+[tool.ruff.lint]
+select = ["D", "F", "B"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[project]
+name = "arches_inclusion_rule"
+version = "0.0.1"
+description = "Arches RBAC Suite: Inclusion Rules"
+homepage = "https://github.com/flaxandteal/arches-rbac-permissions"
+repository = "https://github.com/flaxandteal/arches-rbac-permissions"
+documentation = "https://flaxandteal.github.io/arches-rbac-permissions"
+readme = "README.md"
+authors = [
+  {name = "Phil Weir", email = "phil.weir@flaxandteal.co.uk"},
+  {name = "Stuart Marshall", email = "stuart.marshall@flaxandteal.co.uk"}
+]
+license = {text = "GNU AGPL3"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+]
+requires-python = ">=3.11"
+dependencies = [
+    "arches>=8.0,<8.2",
+    "django-authorization",
+    "casbin-django-orm-adapter",
+    "arches_orm>=0.4.0",
+    "arches_querysets",
+
+    "arches_saved_search",
+]
+
+[tool.uv.sources]
+arches_saved_search = { workspace = true }
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "ruff",
+    "mypy",
+    "livereload",
+    "sst",
+    "coverage",
+    "django-silk==5.1.0",
+    "pre-commit==3.8.0"
+]
+docs = [
+]
