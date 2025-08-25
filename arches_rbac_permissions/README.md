@@ -23,14 +23,14 @@ An outcome of the [Arches Developer Meeetup 2025](https://flaxandteal.github.io/
  - tidy up this repository (linting, full types)
  - add (in-process) tests
  - make casbin optional and update naming to decouple
- - ~~~make worker/rabbit optional~~~
- - ~~~split into in-Arches user management and permissions Arches Applications (likely to be a dependency relationship)~~~
+ - ~~make worker/rabbit optional~~
+ - ~~split into in-Arches user management and permissions Arches Applications (likely to be a dependency relationship)~~
  - upstream plan agreement and light review (**external dependency**)
- - ~~~tidy up and add the views/templates for user management from coral-arches~~~
- - ~~~temporarily add our custom dependencies (AORM, Arches F&amp;T fork)~~~
- - ~~~rebase our critical Arches changes (flaxandteal/arches#docker-7.6) to Arches itself and investigate upstreaming (or changing functionality here instead)~~~
+ - ~~tidy up and add the views/templates for user management from coral-arches~~
+ - ~~temporarily add our custom dependencies (AORM, Arches F&amp;T fork)~~
+ - ~~rebase our critical Arches changes (flaxandteal/arches#docker-7.6) to Arches itself and investigate upstreaming (or changing functionality here instead)~~
  - look at whether we can move from AORM to QuerySets, at least in part
- - ~~~integrate/rebase onto Farallon's Default Deny~~~
+ - ~~integrate/rebase onto Farallon's Default Deny~~
  - finalize merging of plugins (**external dependency**)
 
 This plan changed in July 2025, on request, to:
