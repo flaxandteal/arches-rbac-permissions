@@ -18,7 +18,7 @@ APP_ROOT = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe(
 DATATYPE_LOCATIONS += ["arches_inclusion_rule.datatypes"]
 RULE_LOCATIONS += ["arches_inclusion_rule.rules"]
 
-SEARCH_BACKEND = "arches_semantic_roles.utils.search.UpdatingSearchEngine"
+SEARCH_BACKEND = "arches_inclusion_rule.utils.search.UpdatingSearchEngine"
 
 ARCHES_RBAC_PERMISSIONS_APPS = (
     *ARCHES_RBAC_PERMISSIONS_APPS,

@@ -99,6 +99,8 @@ DAUTHZ = {
     },
 }
 
+SEARCH_BACKEND = "arches_inclusion_rule.utils.search.UpdatingSearchEngine"
+
 try:
     with (Path(__file__).parent / "wkrm.toml").open("rb") as wkrm_f:
         WELL_KNOWN_RESOURCE_MODELS += [model for _, model in tomllib.load(wkrm_f).items()]

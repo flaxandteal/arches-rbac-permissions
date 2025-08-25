@@ -19,7 +19,7 @@ class CommandSearchFilterFactory(SearchFilterFactory):
         # of request is to patch the architecture for sep of concerns (as we did in Coral)
         # Does the database layer needs to have a request with a user, or is there a way to improve that?
         user = SimpleNamespace(is_superuser=True, groups=[], is_authenticated=True, id=None, has_perm=lambda *args: True)
-        mock_request = SimpleNamespace(GET={}, POST={}, user=user, method="POST")
+        mock_request = SimpleNamespace(GET=dict(key_value_pairs), POST={}, user=user, method="POST")
         super().__init__(request=mock_request, user=user)
 
     def create_search_query_dict(self, _: List[Tuple[str, Any]]):

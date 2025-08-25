@@ -306,17 +306,19 @@ var InclusionRuleSelectViewModel = function(params) {
                 });
             };
 
-            const value = ko.unwrap(ko.unwrap(val).inclusionRuleId);
-            if (ko.unwrap(value)) {
-                if (NAME_LOOKUP[value]) {
-                    setSelectionData(value);
-                } else {
-                    $.ajax(url_get_inclusion_rule_names_one + '?inclusionRuleId=' + ko.unwrap(value), {
-                        dataType: "json"
-                    }).done(function(data) {
-                        NAME_LOOKUP[value] = data;
+            if (ko.unwrap(val) && ko.unwrap(val).inclusionRuleId) {
+                const value = ko.unwrap(ko.unwrap(val).inclusionRuleId);
+                if (ko.unwrap(value)) {
+                    if (NAME_LOOKUP[value]) {
                         setSelectionData(value);
-                    });
+                    } else {
+                        $.ajax(url_get_inclusion_rule_names_one + '?inclusionRuleId=' + ko.unwrap(value), {
+                            dataType: "json"
+                        }).done(function(data) {
+                            NAME_LOOKUP[value] = data;
+                            setSelectionData(value);
+                        });
+                    }
                 }
             }
 

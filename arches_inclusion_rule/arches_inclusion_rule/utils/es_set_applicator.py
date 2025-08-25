@@ -114,7 +114,7 @@ class SetApplicator:
 
         try:
             logical_sets = ResourceTileTree.get_tiles(graph_slug="logical_set")
-        except GraphWithPrefetching.DoesNotExist:
+        except (ValueError, GraphWithPrefetching.DoesNotExist):
             logger.error("Logical Set not loaded yet")
             return
         results = []

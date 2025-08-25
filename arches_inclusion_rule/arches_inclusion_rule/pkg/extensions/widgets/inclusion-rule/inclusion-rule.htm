@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {% block form %}
+<!--ko let: {self: $data} -->
 <div class="row widget-wrapper" data-bind="class: nodeCssClasses">
     <div class="form-group">
         <span class="control-label widget-input-label" data-bind="text:label, class: nodeCssClasses"></span>
@@ -19,7 +20,36 @@
                 "></select>
         </div>
     </div>
+
+    <div class="rr-widget">
+        <!-- ko if: inclusionRuleToAdd() -->
+        <div class="rr-table">
+            <div style="display: flex; flex-direction: column;">
+                <div class='rr-table-row'>
+                    <div class="rr-table-row-initial">
+                        <!-- ko if: canInspectRule() -->
+                        <div class='rr-table-column icon-column'>
+                            <button data-bind="click: function(){goToInspectUrl(inclusionRuleToAdd())}, clickBubble: false,
+                                    attr: {'aria-label': 'Search'}
+                            ">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <!-- /ko -->
+                        <div class="rr-table-column" style="flex-grow: 1; cursor: pointer;">
+                            <div class="rr-table-instance-label">
+                                Name: <span data-bind="text: displayName()"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+
 </div>
+<!-- /ko -->
 {% endblock form %}
 
 {% block config_form %}

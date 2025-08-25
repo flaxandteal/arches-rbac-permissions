@@ -46,7 +46,7 @@ dependencies = [
     "arches>=8.0,<8.2",
     "django-authorization",
     "casbin-django-orm-adapter",
-    "arches_orm>=0.4.0",
+    "arches_orm>=0.4.2",
     "arches_querysets",
 
     "arches_saved_search",
