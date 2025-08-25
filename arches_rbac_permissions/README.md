@@ -33,16 +33,44 @@ An outcome of the [Arches Developer Meeetup 2025](https://flaxandteal.github.io/
  - integrate/rebase onto Farallon's Default Deny
  - finalize merging of plugins (**external dependency**)
 
+This plan changed in July 2025, on request, to:
+
+  - ensure the repository is compatible with Arches 8
+  - it can be run and used (mostly) normally
+
+before progressing. Having made that up-front investment, we plan to tidy this for upgrading our
+existing and new customers to Arches 8, rather than exploring multiple approaches so keen to collaborate
+on approaches that align with project-wide goals to avoid later work across the community.
+
+#### Known Issues
+
+Several issues appear to be side-effects of the move to Arches 8, and off a fork, and as such are hopefully resolvable:
+
+ - Term search: this bypasses resource-wise permissions, including ours
+ - AORM/Arches8 compatibility: it should be possible to remove the dependency on AORM entirely, as everything could be done with Querysets (help welcome)
+ - Deep linking into the request: core database search plugins access the request object, for the user and querystring, which currently requires brittle workarounds
+ - Casbin startup: Django discourages DB access at startup, so there is a workaround to force Casbin to load slightly later
+ - Performance: this was previously very fast (&lt;1min rebuild for ~20 hierarchical groups accessing 60k records), but hooking into the plugin structure may miss some of the optimizations we used
+ - No resource_indexed signal: this was made private, but perhaps could be made public again? This allows us to re-run rules only against the saved record
+
+Several issues are new as a result of moving to several standalone Applications:
+
+ - Installation steps: it would be good to merge steps where possible, and remove `uv`
+ - No guaranteed Celery: without Celery, we need to do rebuilds in-process and they are be triggered by saves. However, this is probably far more frequent than necessary; currently a simple debounce is used to limit the re-runs.
+
+The Celery version is currently not ported from 7.6, but this will be need to be re-enabled before we can upgrade our own instances, so soon.
+
 #### Future
 
-Make a more straightforward way to build logical sets, other than copying search URLs.
 Nodegroup permissions in the same approach as resource permissions. This would be easiest with a PG/ES tile index as an alternative to resource indexing.
+
+Having a Postgres-only option - this assumes a general search query can be parsed into Querysets.
+
+Our goal is to allow Postgres-only operation, using Querysets.
 
 ### Installation
 
-Arches Permissions... (thanks to Cyrus for the base text from the Dashboard example).
-
-You can add the dashboard to an Arches project in just a few easy steps.
+Arches RBAC Permissions... (thanks to Cyrus for the base text from the Dashboard example).
 
 1. Install if from this repo (or clone this repo and pip install it locally). 
 ```
@@ -64,13 +92,11 @@ from arches_rbac_permissions.settings import *
 
 after `from arches.settings import *`
 
-Make the following additions:
+Make the following addition:
 ```
 INSTALLED_APPS = [
     ...
-    "arches_rbac_permissions",
-    "arches_querysets",
-    "casbin_adapter.apps.CasbinAdapterConfig",
+    *ARCHES_RBAC_PERMISSIONS_APPS,
 ]
 ```
 
@@ -113,8 +139,8 @@ The environment was set up using:
     mkdir rbac-test
     cd rbac-test
 
-    python -m venv .env
-    . .env/bin/activate
+    python -m venv .venv
+    . .venv/bin/activate
 
     pip install nodeenv
     nodeenv -n 20.18.2 .nenv
@@ -129,17 +155,18 @@ The environment was set up using:
     arches-admin startproject rbac_test
 
     (cd arches && pip install -e .)
-    git clone https://github.com/archesproject/arches-rbac-permissions
-    cd arches-rbac-permissions
-    pip install -e .
+    git clone https://github.com/flaxandteal/arches-rbac-permissions
+    pip install uv # Currently needed for monorepo (dev only)
+    cd arches-rbac-permissions/arches_rbac_permissions
+    uv pip install -e . # Note the uv prefix
     cd ..
+
+    (cd arches && pip install -e .) # It is still marked as an alpha
 
     git clone https://github.com/archesproject/arches-querysets.git
     cd arches-querysets
     pip install -e .
     cd ..
-
-    # Arches querysets did throw an error in line 540 of the tiles.py with the error of a change in dict size. You can wrap the datatype values in a list to fix this error `for datatype in list(self.datatype_factory.datatype_instances.values()):`*
 
     # In another window
     docker run --rm --name some-es -e "discovery.type=single-node" -p9200:9200 -e POSTGRES_PASSWORD=postgis elastic/elasticsearch:7.17.27
@@ -148,14 +175,24 @@ The environment was set up using:
 
     cd rbac-test
     # make the changes to pyproject.toml and settings.py (follow the steps in Installation)
+    # Specifically steps:
+    #    3.
+    #    5.
+
     # make the following adjustments for this test approach:
     # ELASTICSEARCH_HOSTS = [{"scheme": "http", "host": os.environ.get("ESHOST", "localhost"), "port": int(os.environ.get("ESPORT", 9200))}]
+    # Uncomment the dummy email backend
     # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  #<-- Only need to uncomment this for testing without an actual email server
 
     npm i --save cytoscape-elk
     python manage.py setup_db # confirm DB reset
+    # Note that setup_db cannot be run twice - known (new) bug
     mkdir -p rbac_test/{media/js,templates}/views/components/widgets # this seems like it should not be needed?
-    python manage.py packages -o load_package -a arches_rbac_permissions
+
+    # Would be nice to be able to run these as a group
+    python manage.py packages -o load_package -a arches_user_datatype
+    python manage.py packages -o load_package -a arches_inclusion_rule
+    python manage.py packages -o load_package -a arches_semantic_roles
 
     # This may be necessary if there are npm errors:
     cp ../arches/webpack/webpack-utils/build-filepath-lookup.js webpack/webpack-utils/build-filepath-lookup.js
@@ -213,15 +250,29 @@ In a new _private_ browser window, paste from your clipboard. If you did not con
 
 Enter a chosen username (e.g. `ianm`), email (e.g. `ianm@example.com`) and password (e.g. `Pass1234$`).
 
-When you submit, you should see an email in your log window with a URL. Copy this. It will look something like:
+When you submit, you should see an email in your log window with a URL. Copy this. It will look something like (but different to):
 
                <p><a href="http://localhost:8000/person-confirm-signup?link=uaWIU1ns7uQXDBNFXCo2U6KZ%2FEj7LgV0qIG8cgwNIPTmxjPnyy5xOLFm3xbrgUH0uoshWGbOV3OU8AK8ieXIMPW1ZgcEXr4jwFI12FdOHyJBSZCFo2c756xppZiQpeHsW9T%2BIgjcTgPdFZ%2FTApiafH8JSLq45Y3%2F7uN4klNEDfgH%2Fu9UF3AeBAHXJ6XGHzmcai6hmZg%2BR67%2F1JWXaaHdsmsZuduKWAEFMdxUUdYnQTNQL%2FSi7HNJaNvDKtIg0onV8CbC7J2TtcT54GlZ0TVvY7ZjGkzF2OcLvon2Hu9lk42Xpty4%2BbbI5fvGf3GE3yDRDLPExce7VGOLxBRDh9JMKYjMPCYS2SMT6Xs5s5ZjJ7hsVAxSSOOQiwxeOa8uP7wW">Signup for Arches</a></p>
 
-Copy and paste it to your private browsing window. It should confirm your account is now active.
+Copy and paste it to your _private_ browsing window. It should confirm your account is now active.
 
-When you sign in, you should have an unprivileged account. Return [to search](http://localhost:8000/search?paging-filter=1&tiles=true). You should see one book, `Rivers of God`.
+When you sign in, you should have an unprivileged account. Return [to search](http://localhost:8000/search?paging-filter=1&tiles=true). You should see one book, `River of Gods`.
 
-### TODO - why is the signup giving a provisional edit for user account?
+#### Creating a Logical Set
+
+Complete the task above. Return to the admin user and go to Search.
+
+From the Advanced Search, pick Person &rarr; Names and set the value to `Ian`. You should see two entries, Ian C. Esslemont and Ian McDonald. Set the Lifecycle State to `Active (Standard)`. You should see no entries.
+
+Click the Bookmark icon - third from right, under the logout button. Enter the text "Active People with IAN in their name" into `Enter name for search` and click Save. You should see a message "Saved".
+
+Create a new resource - a Logical Set - from the Add New Resource toolbar menu. Make the Title, "Ians" and when you go to Member Definition, you should see an option to "Copy from your saved search: Active People with IAN in their name". On selecting this, you will see a warning that your search, in becoming an inclusion rule, will be visible to other users of the Logical Set. Click OK, then Add.
+
+Edit the [Ian McDonald's Team](http://localhost:8000/resource/eba96b33-603b-4c4e-aaba-8e964a3b6d57) group, and add a new Permission: to Object `Ians`, with Action `Reading`.
+
+If you return to the unprivileged user (Ian McDonald) in your private browsing, then you should see no change. Only the `River of Gods` is visible, unless you changed other permissions.
+
+Back in the admin account, edit [Ian C. Esslemont](http://localhost:8000/resource/b647bd9a-15f9-48c6-800c-4496fd8269d6) and click `Make Active`. If you check your private browsing window, and update the search, perhaps by resorting, you should see Ian C. Esslemont appearing in the list. Do the same with [Ian McDonald](http://localhost:8000/resource/44dd85c1-0132-44e3-b248-50f6b6d6f3d2) himself. With ~5s, you should see his record has been added to the available items in his list.
 
 ### Acknowledgements
 
