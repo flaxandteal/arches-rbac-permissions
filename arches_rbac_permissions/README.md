@@ -23,14 +23,14 @@ An outcome of the [Arches Developer Meeetup 2025](https://flaxandteal.github.io/
  - tidy up this repository (linting, full types)
  - add (in-process) tests
  - make casbin optional and update naming to decouple
- - make worker/rabbit optional
- - split into in-Arches user management and permissions Arches Applications (likely to be a dependency relationship)
+ - ~~~make worker/rabbit optional~~~
+ - ~~~split into in-Arches user management and permissions Arches Applications (likely to be a dependency relationship)~~~
  - upstream plan agreement and light review (**external dependency**)
- - tidy up and add the views/templates for user management from coral-arches
- - temporarily add our custom dependencies (AORM, Arches F&amp;T fork)
- - rebase our critical Arches changes (flaxandteal/arches#docker-7.6) to Arches itself and investigate upstreaming (or changing functionality here instead)
+ - ~~~tidy up and add the views/templates for user management from coral-arches~~~
+ - ~~~temporarily add our custom dependencies (AORM, Arches F&amp;T fork)~~~
+ - ~~~rebase our critical Arches changes (flaxandteal/arches#docker-7.6) to Arches itself and investigate upstreaming (or changing functionality here instead)~~~
  - look at whether we can move from AORM to QuerySets, at least in part
- - integrate/rebase onto Farallon's Default Deny
+ - ~~~integrate/rebase onto Farallon's Default Deny~~~
  - finalize merging of plugins (**external dependency**)
 
 This plan changed in July 2025, on request, to:
@@ -39,10 +39,19 @@ This plan changed in July 2025, on request, to:
   - it can be run and used (mostly) normally
 
 before progressing. Having made that up-front investment, we plan to tidy this for upgrading our
-existing and new customers to Arches 8, rather than exploring multiple approaches so keen to collaborate
-on approaches that align with project-wide goals to avoid later work across the community.
+existing and new customers to Arches 8 long term. As such, especially keen to collaborate
+on approaches that align with project-wide goals to reduce later work across the community.
+
+**Alpha-testers wanted - please reach out to admin@flaxandteal.co.uk**
 
 #### Known Issues
+
+ - Docs and linting: major changes are still expected structurally, so feedback would be helpful first!
+ - Limited tests: given the expected changes, the first question is whether the end-to-end works predictably, but automated testing is the next highest priority
+ - Casbin is still present - discussion to be had
+ - Elasticsearch is still a dependency, but now SearchRules are abstracted in the hope that they can be defined in multiple ways (and persisted in the incoming `sets` table regardless of how they are defined)
+ - Group Manager depended on the relationship ontology classes, but this forces an ontology, which is undesirable, so right now it is pretty broken
+ - Person is still a standalone model, instead of a reusable branch
 
 Several issues appear to be side-effects of the move to Arches 8, and off a fork, and as such are hopefully resolvable:
 
