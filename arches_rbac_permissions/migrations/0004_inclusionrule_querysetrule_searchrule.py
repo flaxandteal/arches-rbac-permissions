@@ -9,7 +9,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('arches_rbac_permissions', '0003_savedsearch'),
+        ('arches_saved_search', '0003_savedsearch'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 

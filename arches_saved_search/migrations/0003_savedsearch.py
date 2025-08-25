@@ -8,8 +8,9 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
+    initial = True
+
     dependencies = [
-        ('arches_rbac_permissions', '0002_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 

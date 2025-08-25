@@ -20,7 +20,7 @@ import logging
 import json
 from django.views.generic import View
 from arches.app.utils.response import JSONResponse, JSONErrorResponse
-from arches_rbac_permissions.models import SavedSearch
+from arches_saved_search.models import SavedSearch
 
 
 logger = logging.getLogger(__name__)
