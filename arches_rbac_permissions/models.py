@@ -6,22 +6,6 @@ from arches.app.models.models import ResourceInstance
 from arches.app.utils.module_importer import get_class_from_modulename
 from arches_rbac_permissions.const import RBACExtensionType
 
-class RegistrationLink(models.Model):
-    registrationlinkid = models.UUIDField(default=uuid.uuid1, primary_key=True, serialize=False)
-    person = models.ForeignKey(ResourceInstance, db_column="person_id", on_delete=deletion.CASCADE)
-    created = models.DateTimeField(auto_now_add=True)
-    used = models.DateTimeField(null=True)
-    metadata = JSONField(blank=True, db_column="metadata", null=True)
-
-    def __init__(self, *args, **kwargs):
-        super(RegistrationLink, self).__init__(*args, **kwargs)
-        if not self.registrationlinkid:
-            self.registrationlinkid = uuid.uuid4()
-
-    class Meta:
-        managed = True
-        db_table = "registration_links"
-
 class SavedSearch(models.Model):
     savedsearchid = models.UUIDField(default=uuid.uuid1, primary_key=True, serialize=False)
     user = models.ForeignKey(User, db_column="user_id", on_delete=deletion.CASCADE)
