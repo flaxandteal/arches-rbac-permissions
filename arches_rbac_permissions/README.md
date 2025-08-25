@@ -52,6 +52,7 @@ on approaches that align with project-wide goals to reduce later work across the
  - Elasticsearch is still a dependency, but now SearchRules are abstracted in the hope that they can be defined in multiple ways (and persisted in the incoming `sets` table regardless of how they are defined)
  - Group Manager depended on the relationship ontology classes, but this forces an ontology, which is undesirable, so right now it is pretty broken
  - Person is still a standalone model, instead of a reusable branch
+ - It uses Knockout: unfortunately, Widgets that work in Knockout must be Vue-less (so these will need rewritten, and are consequently rougher)
 
 Several issues appear to be side-effects of the move to Arches 8, and off a fork, and as such are hopefully resolvable:
 
