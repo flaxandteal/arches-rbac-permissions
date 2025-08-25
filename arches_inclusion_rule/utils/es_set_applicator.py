@@ -12,7 +12,7 @@ from arches.app.search.mappings import RESOURCES_INDEX
 from arches.app.models.models import Plugin
 from arches.app.models.resource import Resource
 from arches_querysets.models import ResourceTileTree, GraphWithPrefetching
-from arches_rbac_permissions.models import InclusionRule
+from arches_inclusion_rule.models import InclusionRule
 
 from .search import CommandSearchFilterFactory, UpdateByQuery
 
