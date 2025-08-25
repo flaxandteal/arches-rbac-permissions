@@ -44,6 +44,16 @@ on approaches that align with project-wide goals to reduce later work across the
 
 **Alpha-testers wanted - please reach out to admin@flaxandteal.co.uk**
 
+#### Structure
+
+The repo is split into five Applications, one of which is simply a convenience wrapper.
+
+ - arches_rbac_permissions: proxy for the other three
+ - arches_user_datatype: widgets and datatypes for Django Users and Django Groups, with a (configurable) sign-up workflow
+ - arches_inclusion_rule: widget and datatype for saved rules, currently only for ES-defined rules, but stubs for Querysets
+ - arches_saved_search: (temporary) a mock-up-level Application for saving a search that can later be re-shown
+ - arches_semantic_roles: Person, Group, Logical Set and Set models that use the above
+
 #### Known Issues
 
  - Docs and linting: major changes are still expected structurally, so feedback would be helpful first!
