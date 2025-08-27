@@ -10,9 +10,9 @@ Currently within this repository:
  - caching of resource permissions without Django Guardian
  - nested permissions (hierarchies)
  - permissions based on Arches searches
- - management of people and roles through the Arches front-end
- - (to add) Group Manager for visualizing organograms from Coral project
- - (to add) flows for user sign-up, auto-permissioning and attaching to Person from Coral project
+ - partial management of people and roles through the Arches front-end (not a full replacement for superuser user/password management)
+ - flows for user sign-up, auto-permissioning and attaching to Person
+ - (to fix) Group Manager for visualizing organograms from Coral project
 
 TODO: finish out and tidy
 
