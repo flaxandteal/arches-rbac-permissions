@@ -92,65 +92,7 @@ Our goal is to allow Postgres-only operation, using Querysets.
 
 Arches RBAC Permissions... (thanks to Cyrus for the base text from the Dashboard example).
 
-1. Install if from this repo (or clone this repo and pip install it locally). 
-```
-pip install git+https://github.com/flaxandteal/arches-rbac-permissions.git
-```
-
-2. Install the arches querysets (or clone this repo and pip install locally).
-```
-pip install git+https://github.com/archesproject/arches-querysets.git
-```
-
-3. Add `"arches_rbac_permissions"`, `"arches_querysets"` and `"casbin_adapter.apps.CasbinAdapterConfig"` to the INSTALLED_APPS setting in the project's settings.py file.
-
-#TBC
-Ensure the Application settings are available to extend with:
-```
-from arches_rbac_permissions.settings import *
-```
-
-after `from arches.settings import *`
-
-Make the following addition:
-```
-INSTALLED_APPS = [
-    ...
-    *ARCHES_RBAC_PERMISSIONS_APPS,
-]
-```
-
-Correct `MIDDLEWARE = [...` to `MIDDLEWARE += [...`
-
-4. Version your dependency on `"arches_rbac_permissions"` in `pyproject.toml`:
-```
-dependencies = [
-    "arches>=7.6.0,<7.7.0",
-    "arches_rbac_permissions==0.0.1",
-    "arches_querysets[drf]"
-]
-```
-
-5. Add the application to your URLs in `urls.py`:
-```
-urlpatterns.append(path('', include('arches_rbac_permissions.urls')))
-urlpatterns.append(path("", include("arches_querysets.urls")))
-```
-
-6. Add `cytoscape-elk` to your npm dependencies:
-```
-npm i --save cytoscape-elk
-```
-
-7. From your project run migrate to add the model included in the app:
-```
-python manage.py migrate
-```
-
-8. Next be sure to rebuild your project's frontend to include the plugin:
-```
-npm run build_development
-```
+__These instructions are currently removed to avoid ambiguity while testing - follow the steps below.__
 
 ### How this was tested
 
