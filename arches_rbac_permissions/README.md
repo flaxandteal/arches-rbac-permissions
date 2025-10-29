@@ -98,6 +98,7 @@ __These instructions are currently removed to avoid ambiguity while testing - fo
 
 2. ~~Install the arches querysets (or clone this repo and pip install locally).~~
 
+FIXME: The above are struck-out, but should one follow the installation instructions 3-8? If so, what is "the project"?
 3. Add `"arches_rbac_permissions"`, `"arches_querysets"` and `"casbin_adapter.apps.CasbinAdapterConfig"` to the INSTALLED_APPS setting in the project's settings.py file.
 
 #TBC
@@ -190,22 +191,27 @@ The environment was set up using:
     docker run --rm --name some-postgres -p5432:5432 -e POSTGRES_PASSWORD=postgis postgis/postgis
 
     cd rbac-test
+    FIXME: Are these instructions supposed to be commented out or removed?
     # make the changes to pyproject.toml and settings.py (follow the steps in Installation)
     # Specifically steps:
     #    3.
     #    5.
 
+    FIXME: Are these instructions supposed to be commented out or removed?
     # make the following adjustments for this test approach:
     # ELASTICSEARCH_HOSTS = [{"scheme": "http", "host": os.environ.get("ESHOST", "localhost"), "port": int(os.environ.get("ESPORT", 9200))}]
     # Uncomment the dummy email backend
     # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  #<-- Only need to uncomment this for testing without an actual email server
 
     npm i --save cytoscape-elk
+    FIXME: `manage.py` is in the arches repo, not the rbac-test/ directory.
     python manage.py setup_db # confirm DB reset
     # Note that setup_db cannot be run twice - known (new) bug
+    FIXME: Confirm `rbac_test`, not `rbac-test`.
     mkdir -p rbac_test/{media/js,templates}/views/components/widgets # this seems like it should not be needed?
 
     # Would be nice to be able to run these as a group
+    FIXME: Confirm to be run from rbac-test/arches
     python manage.py packages -o load_package -a arches_user_datatype
     python manage.py packages -o load_package -a arches_inclusion_rule
     python manage.py packages -o load_package -a arches_semantic_roles
