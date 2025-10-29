@@ -98,17 +98,17 @@ __These instructions are currently removed to avoid ambiguity while testing - fo
 
 2. ~~Install the arches querysets (or clone this repo and pip install locally).~~
 
-FIXME: The above are struck-out, but should one follow the installation instructions 3-8? If so, what is "the project"?
 3. Add `"arches_rbac_permissions"`, `"arches_querysets"` and `"casbin_adapter.apps.CasbinAdapterConfig"` to the INSTALLED_APPS setting in the project's settings.py file.
 
+FIXME: TBC = To be confirmed? As in we are not sure if this is necessary? Is there not a better way than importing all (*) here?
 #TBC
 Ensure the Application settings are available to extend with:
 ```
 from arches_rbac_permissions.settings import *
 ```
+after `from arches.settings import *`.
 
-after `from arches.settings import *`
-
+FIXME: Above we are instructed to edit the INSTALLED_APPS setting (which is a tuple for some reason). Here we are instructed to add list by the same name? I am confused.
 Make the following addition:
 ```
 INSTALLED_APPS = [
@@ -117,9 +117,10 @@ INSTALLED_APPS = [
 ]
 ```
 
+FIXME: but this is the first occurance of "MIDDLEWARE"?
 Correct `MIDDLEWARE = [...` to `MIDDLEWARE += [...`
 
-4. Version your dependency on `"arches_rbac_permissions"` in `pyproject.toml`:
+4. Version your dependency on `"arches_rbac_permissions"` and `"arches_querysets"` in `pyproject.toml`:
 ```
 dependencies = [
     "arches>=7.6.0,<7.7.0",
@@ -151,18 +152,25 @@ npm run build_development
 
 ### How this was tested
 
-The environment was set up using:
+The environment was set up using the following instructions:
 
+1. Create a project folder and environments
+    ```shell
     mkdir rbac-test
     cd rbac-test
+    ```
 
+    ```shell
     python -m venv .venv
     . .venv/bin/activate
 
     pip install nodeenv
     nodeenv -n 20.18.2 .nenv
     . .nenv/bin/activate
+    ```
 
+2. Clone arches and start a project
+    ```shell
     git clone https://github.com/archesproject/arches
     cd arches
     git checkout dev/8.1.x # a6d1eb
@@ -170,61 +178,106 @@ The environment was set up using:
     cd ..
 
     arches-admin startproject rbac_test
+    ```
+    This should make a directory `rbac-test` (with a dash) containing in particular a `pyproject.toml` file and a `rbac_test/settings.py` file that you will edit in step 7 below.
 
+    FIXME: What is the following parenthetical expressing?
     (cd arches && pip install -e .)
+
+3. Add rbac-permissions
+
+    ```shell
     git clone https://github.com/flaxandteal/arches-rbac-permissions
     pip install uv # Currently needed for monorepo (dev only)
     cd arches-rbac-permissions/arches_rbac_permissions
     uv pip install -e . # Note the uv prefix
-    cd ..
+    cd .. # FIXME: confirm this is cd up one level and not two (ie back to rbac-test/arches-rbac-permissions/ or rbac-test/ )
+    ```
 
+    FIXME: What is the following parenthetical expressing? Only going up one level means `arches/` is not a subdir
     (cd arches && pip install -e .) # It is still marked as an alpha
 
+4. Add query sets
+    ```shell
     git clone https://github.com/archesproject/arches-querysets.git
     cd arches-querysets
     pip install -e .
     cd ..
+    ```
 
-    # In another window
+5. Start elastic search
+
+    In another shell
+    ```shell
     docker run --rm --name some-es -e "discovery.type=single-node" -p9200:9200 -e POSTGRES_PASSWORD=postgis elastic/elasticsearch:7.17.27
-    # In another window
+    ```
+
+6. Start postgis
+
+    In another shell
+
+    ```shell
     docker run --rm --name some-postgres -p5432:5432 -e POSTGRES_PASSWORD=postgis postgis/postgis
+    ```
+7. Edit test project settings
+    ```shell
+    cd ../rbac-test
+    ```
+    - Following [Installation](#installation) step 3 edit the `rbac_test/settings.py` file
+    - Following [Installation](#installation) step 4 edit the `pyproject.toml` file
+    - Following [Installation](#installation) step 5 edit the `rbac_test/urls.py` file
 
-    cd rbac-test
-    FIXME: Are these instructions supposed to be commented out or removed?
-    # make the changes to pyproject.toml and settings.py (follow the steps in Installation)
-    # Specifically steps:
-    #    3.
-    #    5.
+    In addition to edits for step 3 made above, in `rbac_test/settings.py` make the following changes:
+    - Add an elasticsearch host
+    ```python
+    ELASTICSEARCH_HOSTS = [{"scheme": "http", "host": os.environ.get("ESHOST", "localhost"), "port": int(os.environ.get("ESPORT", 9200))}]
+    ```
+    - Uncomment the dummy email backend
+    ```python
+    # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    ```
 
-    FIXME: Are these instructions supposed to be commented out or removed?
-    # make the following adjustments for this test approach:
-    # ELASTICSEARCH_HOSTS = [{"scheme": "http", "host": os.environ.get("ESHOST", "localhost"), "port": int(os.environ.get("ESPORT", 9200))}]
-    # Uncomment the dummy email backend
-    # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  #<-- Only need to uncomment this for testing without an actual email server
+8. Do something with the local wildlife
 
+    ```shell
     npm i --save cytoscape-elk
-    FIXME: `manage.py` is in the arches repo, not the rbac-test/ directory.
+    ```
+    and reset / setup the database
+    ```shell
     python manage.py setup_db # confirm DB reset
-    # Note that setup_db cannot be run twice - known (new) bug
-    FIXME: Confirm `rbac_test`, not `rbac-test`.
-    mkdir -p rbac_test/{media/js,templates}/views/components/widgets # this seems like it should not be needed?
+    ```
+    Note that setup_db cannot be run twice - known (new) bug
 
-    # Would be nice to be able to run these as a group
-    FIXME: Confirm to be run from rbac-test/arches
+    Finally make some directories
+    ```shell
+    mkdir -p rbac_test/{media/js,templates}/views/components/widgets
+    ``` 
+    TODO: Resolve if this is actually needed.
+
+9. Load arches packages
+    TODO: Figure out how to run these as a group
+    ```shell
     python manage.py packages -o load_package -a arches_user_datatype
     python manage.py packages -o load_package -a arches_inclusion_rule
-    python manage.py packages -o load_package -a arches_semantic_roles
+    python manage.py packages -o load_package -a arches_semantic_roles #FIXME: Errors
+    ``` 
 
-    # This may be necessary if there are npm errors:
+    Note: The following may be necessary if there are npm errors:
+    ```shell 
     cp ../arches/webpack/webpack-utils/build-filepath-lookup.js webpack/webpack-utils/build-filepath-lookup.js
+    ``` 
 
-    python manage.py packages -o load_package -s ../arches-rbac-permissions/tests/example/
+    ```shell 
+    python manage.py packages -o load_package -s ../arches-rbac-permissions/tests/example/ #FIXME: Errors
+    ``` 
 
+10. Lastly spin up arches
+    ```shell
     npm run build_development
     python manage.py runserver
+    ```
 
-At this point, a regular Arches instance with admin login should be available on localhost:8000
+    At this point, a regular Arches instance with admin login should be available on localhost:8000
 
 ### Example
 
