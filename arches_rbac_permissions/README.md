@@ -98,9 +98,11 @@ __These instructions are currently removed to avoid ambiguity while testing - fo
 
 2. ~~Install the arches querysets (or clone this repo and pip install locally).~~
 
-3. Add `"arches_rbac_permissions"`, `"arches_querysets"` and `"casbin_adapter.apps.CasbinAdapterConfig"` to the INSTALLED_APPS setting in the project's settings.py file.
+3. FIXME: This step should be edited to content only needed for installation. The [dev setup](#development-set-up) section below does not currently reference this step.
 
-FIXME: TBC = To be confirmed? As in we are not sure if this is necessary? Is there not a better way than importing all (*) here?
+Add `"arches_rbac_permissions"`, `"arches_querysets"` and `"casbin_adapter.apps.CasbinAdapterConfig"` to the INSTALLED_APPS setting in the project's settings.py file.
+
+FIXME: TBC = To be confirmed? As in we are not sure if this is necessary?
 #TBC
 Ensure the Application settings are available to extend with:
 ```
@@ -108,7 +110,6 @@ from arches_rbac_permissions.settings import *
 ```
 after `from arches.settings import *`.
 
-FIXME: Above we are instructed to edit the INSTALLED_APPS setting (which is a tuple for some reason). Here we are instructed to add list by the same name? I am confused.
 Make the following addition:
 ```
 INSTALLED_APPS = [
@@ -117,7 +118,6 @@ INSTALLED_APPS = [
 ]
 ```
 
-FIXME: But this is the first occurance of "MIDDLEWARE", and should result in a NameError.
 Correct `MIDDLEWARE = [...` to `MIDDLEWARE += [...`
 
 4. Version your dependency on `"arches_rbac_permissions"` and `"arches_querysets"` in `pyproject.toml`:
@@ -155,7 +155,7 @@ npm run build_development
 The following steps should get you set up for development with `arches-rbac-permissions`.
 The approach involves running `elasticsearch` and `postgis` in Docker containers, but you should have other [Arches dependencies](https://arches.readthedocs.io/en/stable/installing/requirements-and-dependencies/) as well clang installed.
 
-1. Create a project folder and environments
+1. Create a root development folder and environments
     ```shell
     mkdir rbac-test
     cd rbac-test
@@ -226,20 +226,38 @@ The approach involves running `elasticsearch` and `postgis` in Docker containers
     ```
     - Following [Installation](#installation) step 4 edit the `pyproject.toml` file
     - Following [Installation](#installation) step 5 edit the `rbac_test_prj/urls.py` file
-    - Following [Installation](#installation) step 3 edit the `rbac_test_prj/settings.py` file. 
-    There are three changes concerning:
-        - import statement
-        - INSTALLED_APPS
-        - MIDDLEWARE
 
-    In addition to edits for step 3 made above, in `rbac_test_prj/settings.py` make the following changes:
-    - Add an elasticsearch host
+    Next make the following edits to the `rbac_test_prj/settings.py` file:
+    - Extend arches settings by adding the line: 
+    ```python 
+    from arches_rbac_permissions.settings import *
+    ```
+    after the `from arches.settings import *` statement.
+
+    - Edit the `INSTALLED_APPS` by adding all `ARCHES_RBAC_PERMISSIONS_APPS` like so: 
+    ```python
+    INSTALLED_APPS += (
+        "arches.app",
+        "django.contrib.admin",
+        *ARCHES_RBAC_PERMISSIONS_APPS,
+    )
+    ```
+
+    - Fix bug in `MIDDLEWARE` setting. The `MIDDLEWARE` setting should extend that imported from the `arches-rbac-permissions` settings. To account for this change the assignment to an update:
+    ```python
+    - MIDDLEWARE = [...]
+    + MIDDLEWARE += [...]
+    ```
+
+    - Add an elasticsearch host:
     ```python
     ELASTICSEARCH_HOSTS = [{"scheme": "http", "host": os.environ.get("ESHOST", "localhost"), "port": int(os.environ.get("ESPORT", 9200))}]
     ```
-    - Uncomment the dummy email backend
+
+    - Uncomment the dummy email backend: 
     ```python
-    # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    - # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    + EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     ```
 
 8. Do something with the local wildlife
