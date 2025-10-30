@@ -117,7 +117,7 @@ INSTALLED_APPS = [
 ]
 ```
 
-FIXME: but this is the first occurance of "MIDDLEWARE"?
+FIXME: But this is the first occurance of "MIDDLEWARE", and should result in a NameError.
 Correct `MIDDLEWARE = [...` to `MIDDLEWARE += [...`
 
 4. Version your dependency on `"arches_rbac_permissions"` and `"arches_querysets"` in `pyproject.toml`:
@@ -150,9 +150,10 @@ python manage.py migrate
 npm run build_development
 ```
 
-### How this was tested
+### Development set up
 
-The environment was set up using the following instructions:
+The following steps should get you set up for development with `arches-rbac-permissions`.
+The approach involves running `elasticsearch` and `postgis` in Docker containers, but you should have other [Arches dependencies](https://arches.readthedocs.io/en/stable/installing/requirements-and-dependencies/) as well clang installed.
 
 1. Create a project folder and environments
     ```shell
@@ -177,11 +178,11 @@ The environment was set up using the following instructions:
     pip install -e .
     cd ..
 
-    arches-admin startproject rbac_test
+    arches-admin startproject rbac_test_prj
     ```
-    This should make a directory `rbac-test` (with a dash) containing in particular a `pyproject.toml` file and a `rbac_test/settings.py` file that you will edit in step 7 below.
+    This should make a sample project directory directory `rbac-test-prj` (with dashes) containing in particular a `pyproject.toml` file, a `rbac_test_prj/settings.py` file, and a `rbac_test_prj/urls.py` file that you will edit in step 7 below.
 
-    FIXME: What is the following parenthetical expressing?
+    FIXME: What is the following parenthetical expressing? Ignoring
     (cd arches && pip install -e .)
 
 3. Add rbac-permissions
@@ -194,7 +195,7 @@ The environment was set up using the following instructions:
     cd .. # FIXME: confirm this is cd up one level and not two (ie back to rbac-test/arches-rbac-permissions/ or rbac-test/ )
     ```
 
-    FIXME: What is the following parenthetical expressing? Only going up one level means `arches/` is not a subdir
+    FIXME: What is the following parenthetical expressing? Only going up one level means `arches/` is not a subdir. Ignore.
     (cd arches && pip install -e .) # It is still marked as an alpha
 
 4. Add query sets
@@ -215,19 +216,23 @@ The environment was set up using the following instructions:
 6. Start postgis
 
     In another shell
-
     ```shell
     docker run --rm --name some-postgres -p5432:5432 -e POSTGRES_PASSWORD=postgis postgis/postgis
     ```
+
 7. Edit test project settings
     ```shell
-    cd ../rbac-test
+    cd ../rbac-test-prj
     ```
-    - Following [Installation](#installation) step 3 edit the `rbac_test/settings.py` file
     - Following [Installation](#installation) step 4 edit the `pyproject.toml` file
-    - Following [Installation](#installation) step 5 edit the `rbac_test/urls.py` file
+    - Following [Installation](#installation) step 5 edit the `rbac_test_prj/urls.py` file
+    - Following [Installation](#installation) step 3 edit the `rbac_test_prj/settings.py` file. 
+    There are three changes concerning:
+        - import statement
+        - INSTALLED_APPS
+        - MIDDLEWARE
 
-    In addition to edits for step 3 made above, in `rbac_test/settings.py` make the following changes:
+    In addition to edits for step 3 made above, in `rbac_test_prj/settings.py` make the following changes:
     - Add an elasticsearch host
     ```python
     ELASTICSEARCH_HOSTS = [{"scheme": "http", "host": os.environ.get("ESHOST", "localhost"), "port": int(os.environ.get("ESPORT", 9200))}]
@@ -246,11 +251,11 @@ The environment was set up using the following instructions:
     ```shell
     python manage.py setup_db # confirm DB reset
     ```
-    Note that setup_db cannot be run twice - known (new) bug
+    Note that setup_db **cannot** be run twice - known (new) bug
 
     Finally make some directories
     ```shell
-    mkdir -p rbac_test/{media/js,templates}/views/components/widgets
+    mkdir -p rbac_test_prj/{media/js,templates}/views/components/widgets
     ``` 
     TODO: Resolve if this is actually needed.
 
@@ -278,6 +283,12 @@ The environment was set up using the following instructions:
     ```
 
     At this point, a regular Arches instance with admin login should be available on localhost:8000
+
+Cleanup: to deactivate your development environment: 
+```shell
+deactivate_node # close node js nenv
+deactivate  # close python venv
+```
 
 ### Example
 
