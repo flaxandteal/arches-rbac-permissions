@@ -258,7 +258,7 @@ The approach involves running `elasticsearch` and `postgis` in Docker containers
     + EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     ```
 
-8. Do something with the local wildlife
+8. Install graph layout algorithm and reset the database.
 
     ```shell
     npm i --save cytoscape-elk
