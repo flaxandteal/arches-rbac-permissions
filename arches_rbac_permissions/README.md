@@ -102,7 +102,6 @@ __These instructions are currently removed to avoid ambiguity while testing - fo
 
 Add `"arches_rbac_permissions"`, `"arches_querysets"` and `"casbin_adapter.apps.CasbinAdapterConfig"` to the INSTALLED_APPS setting in the project's settings.py file.
 
-FIXME: TBC = To be confirmed? As in we are not sure if this is necessary?
 #TBC
 Ensure the Application settings are available to extend with:
 ```
@@ -171,19 +170,21 @@ The approach involves running `elasticsearch` and `postgis` in Docker containers
     ```
 
 2. Clone arches and start a project
+    First install arches and ensure you are on the latest development branch.
     ```shell
     git clone https://github.com/archesproject/arches
     cd arches
     git checkout dev/8.1.x # a6d1eb
     pip install -e .
     cd ..
-
+    ```
+    Next create a test project:
+    ```shell
     arches-admin startproject rbac_test_prj
     ```
     This should make a sample project directory directory `rbac-test-prj` (with dashes) containing in particular a `pyproject.toml` file, a `rbac_test_prj/settings.py` file, and a `rbac_test_prj/urls.py` file that you will edit in step 7 below.
 
-    FIXME: What is the following parenthetical expressing? Ignoring
-    (cd arches && pip install -e .)
+    For now, ensure that the arches dependency in the `pyproject.toml` files is compatible with your development version of arches.
 
 3. Add rbac-permissions
 
@@ -192,11 +193,8 @@ The approach involves running `elasticsearch` and `postgis` in Docker containers
     pip install uv # Currently needed for monorepo (dev only)
     cd arches-rbac-permissions/arches_rbac_permissions
     uv pip install -e . # Note the uv prefix
-    cd .. # FIXME: confirm this is cd up one level and not two (ie back to rbac-test/arches-rbac-permissions/ or rbac-test/ )
+    cd ..
     ```
-
-    FIXME: What is the following parenthetical expressing? Only going up one level means `arches/` is not a subdir. Ignore.
-    (cd arches && pip install -e .) # It is still marked as an alpha
 
 4. Add query sets
     ```shell
@@ -282,7 +280,7 @@ The approach involves running `elasticsearch` and `postgis` in Docker containers
     ```shell
     python manage.py packages -o load_package -a arches_user_datatype
     python manage.py packages -o load_package -a arches_inclusion_rule
-    python manage.py packages -o load_package -a arches_semantic_roles #FIXME: Errors
+    python manage.py packages -o load_package -a arches_semantic_roles
     ``` 
 
     Note: The following may be necessary if there are npm errors:
@@ -291,7 +289,7 @@ The approach involves running `elasticsearch` and `postgis` in Docker containers
     ``` 
 
     ```shell 
-    python manage.py packages -o load_package -s ../arches-rbac-permissions/tests/example/ #FIXME: Errors
+    python manage.py packages -o load_package -s ../arches-rbac-permissions/tests/example/
     ``` 
 
 10. Lastly spin up arches
