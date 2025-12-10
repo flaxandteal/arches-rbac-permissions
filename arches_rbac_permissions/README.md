@@ -98,15 +98,16 @@ __These instructions are currently removed to avoid ambiguity while testing - fo
 
 2. ~~Install the arches querysets (or clone this repo and pip install locally).~~
 
-3. Add `"arches_rbac_permissions"`, `"arches_querysets"` and `"casbin_adapter.apps.CasbinAdapterConfig"` to the INSTALLED_APPS setting in the project's settings.py file.
+3. FIXME: This step should be edited to content only needed for installation. The [dev setup](#development-set-up) section below does not currently reference this step.
+
+Add `"arches_rbac_permissions"`, `"arches_querysets"` and `"casbin_adapter.apps.CasbinAdapterConfig"` to the INSTALLED_APPS setting in the project's settings.py file.
 
 #TBC
 Ensure the Application settings are available to extend with:
 ```
 from arches_rbac_permissions.settings import *
 ```
-
-after `from arches.settings import *`
+after `from arches.settings import *`.
 
 Make the following addition:
 ```
@@ -118,7 +119,7 @@ INSTALLED_APPS = [
 
 Correct `MIDDLEWARE = [...` to `MIDDLEWARE += [...`
 
-4. Version your dependency on `"arches_rbac_permissions"` in `pyproject.toml`:
+4. Version your dependency on `"arches_rbac_permissions"` and `"arches_querysets"` in `pyproject.toml`:
 ```
 dependencies = [
     "arches>=7.6.0,<7.7.0",
@@ -148,77 +149,162 @@ python manage.py migrate
 npm run build_development
 ```
 
-### How this was tested
+### Development set up
 
-The environment was set up using:
+The following steps should get you set up for development with `arches-rbac-permissions`.
+The approach involves running `elasticsearch` and `postgis` in Docker containers, but you should have other [Arches dependencies](https://arches.readthedocs.io/en/stable/installing/requirements-and-dependencies/) as well clang installed.
 
+1. Create a root development folder and environments
+    ```shell
     mkdir rbac-test
     cd rbac-test
+    ```
 
+    ```shell
     python -m venv .venv
     . .venv/bin/activate
 
     pip install nodeenv
     nodeenv -n 20.18.2 .nenv
     . .nenv/bin/activate
+    ```
 
+2. Clone arches and start a project
+    First install arches and ensure you are on the latest development branch.
+    ```shell
     git clone https://github.com/archesproject/arches
     cd arches
     git checkout dev/8.1.x # a6d1eb
     pip install -e .
     cd ..
+    ```
+    Next create a test project:
+    ```shell
+    arches-admin startproject rbac_test_prj
+    ```
+    This should make a sample project directory directory `rbac-test-prj` (with dashes) containing in particular a `pyproject.toml` file, a `rbac_test_prj/settings.py` file, and a `rbac_test_prj/urls.py` file that you will edit in step 7 below.
 
-    arches-admin startproject rbac_test
+    For now, ensure that the arches dependency in the `pyproject.toml` files is compatible with your development version of arches.
 
-    (cd arches && pip install -e .)
+3. Add rbac-permissions
+
+    ```shell
     git clone https://github.com/flaxandteal/arches-rbac-permissions
     pip install uv # Currently needed for monorepo (dev only)
     cd arches-rbac-permissions/arches_rbac_permissions
     uv pip install -e . # Note the uv prefix
     cd ..
+    ```
 
-    (cd arches && pip install -e .) # It is still marked as an alpha
-
+4. Add query sets
+    ```shell
     git clone https://github.com/archesproject/arches-querysets.git
     cd arches-querysets
     pip install -e .
     cd ..
+    ```
 
-    # In another window
+5. Start elastic search
+
+    In another shell
+    ```shell
     docker run --rm --name some-es -e "discovery.type=single-node" -p9200:9200 -e POSTGRES_PASSWORD=postgis elastic/elasticsearch:7.17.27
-    # In another window
+    ```
+
+6. Start postgis
+
+    In another shell
+    ```shell
     docker run --rm --name some-postgres -p5432:5432 -e POSTGRES_PASSWORD=postgis postgis/postgis
+    ```
 
-    cd rbac-test
-    # make the changes to pyproject.toml and settings.py (follow the steps in Installation)
-    # Specifically steps:
-    #    3.
-    #    5.
+7. Edit test project settings
+    ```shell
+    cd ../rbac-test-prj
+    ```
+    - Following [Installation](#installation) step 4 edit the `pyproject.toml` file
+    - Following [Installation](#installation) step 5 edit the `rbac_test_prj/urls.py` file
 
-    # make the following adjustments for this test approach:
-    # ELASTICSEARCH_HOSTS = [{"scheme": "http", "host": os.environ.get("ESHOST", "localhost"), "port": int(os.environ.get("ESPORT", 9200))}]
-    # Uncomment the dummy email backend
-    # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  #<-- Only need to uncomment this for testing without an actual email server
+    Next make the following edits to the `rbac_test_prj/settings.py` file:
+    - Extend arches settings by adding the line: 
+    ```python 
+    from arches_rbac_permissions.settings import *
+    ```
+    after the `from arches.settings import *` statement.
 
+    - Edit the `INSTALLED_APPS` by adding all `ARCHES_RBAC_PERMISSIONS_APPS` like so: 
+    ```python
+    INSTALLED_APPS += (
+        "arches.app",
+        "django.contrib.admin",
+        *ARCHES_RBAC_PERMISSIONS_APPS,
+    )
+    ```
+
+    - Fix bug in `MIDDLEWARE` setting. The `MIDDLEWARE` setting should extend that imported from the `arches-rbac-permissions` settings. To account for this change the assignment to an update:
+    ```python
+    - MIDDLEWARE = [...]
+    + MIDDLEWARE += [...]
+    ```
+
+    - Add an elasticsearch host:
+    ```python
+    ELASTICSEARCH_HOSTS = [{"scheme": "http", "host": os.environ.get("ESHOST", "localhost"), "port": int(os.environ.get("ESPORT", 9200))}]
+    ```
+
+    - Uncomment the dummy email backend: 
+    ```python
+    - # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    + EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    ```
+
+8. Install graph layout algorithm and reset the database.
+
+    ```shell
     npm i --save cytoscape-elk
+    ```
+    and reset / setup the database
+    ```shell
     python manage.py setup_db # confirm DB reset
-    # Note that setup_db cannot be run twice - known (new) bug
-    mkdir -p rbac_test/{media/js,templates}/views/components/widgets # this seems like it should not be needed?
+    ```
+    Note that setup_db **cannot** be run twice - known (new) bug
 
-    # Would be nice to be able to run these as a group
+    Finally make some directories
+    ```shell
+    mkdir -p rbac_test_prj/{media/js,templates}/views/components/widgets
+    ``` 
+    TODO: Resolve if this is actually needed.
+
+9. Load arches packages
+    TODO: Figure out how to run these as a group
+    ```shell
     python manage.py packages -o load_package -a arches_user_datatype
     python manage.py packages -o load_package -a arches_inclusion_rule
     python manage.py packages -o load_package -a arches_semantic_roles
+    ``` 
 
-    # This may be necessary if there are npm errors:
+    Note: The following may be necessary if there are npm errors:
+    ```shell 
     cp ../arches/webpack/webpack-utils/build-filepath-lookup.js webpack/webpack-utils/build-filepath-lookup.js
+    ``` 
 
+    ```shell 
     python manage.py packages -o load_package -s ../arches-rbac-permissions/tests/example/
+    ``` 
 
+10. Lastly spin up arches
+    ```shell
     npm run build_development
     python manage.py runserver
+    ```
 
-At this point, a regular Arches instance with admin login should be available on localhost:8000
+    At this point, a regular Arches instance with admin login should be available on localhost:8000
+
+Cleanup: to deactivate your development environment: 
+```shell
+deactivate_node # close node js nenv
+deactivate  # close python venv
+```
 
 ### Example
 
