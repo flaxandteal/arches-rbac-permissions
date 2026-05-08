@@ -20,26 +20,26 @@ const viewModel = Backbone.View.extend({
 
         this.urls = {
             group_manager: (grouping) => generateArchesURL(
-                "groupmanager",
+                "arches_semantic_roles:groupmanager",
                 { grouping }
             ),
             group_manager_for_resource: (grouping, resourceid) => generateArchesURL(
-                "groupmanager_for_resource",
+                "arches_semantic_roles:groupmanager_for_resource",
                 { grouping, resourceid }
             ),
-            relatable_resources: generateArchesURL("relatable_resources"),
+            relatable_resources: generateArchesURL("arches:relatable_resources"),
             get_domain_connections: (graphid) => generateArchesURL(
-                "get_domain_connections",
+                "arches:get_domain_connections",
                 { graphid }
             ),
             api_tiles: (tileid) => generateArchesURL(
-                "api_tiles",
+                "arches:api_tiles",
                 { tileid }
             ),
-            related_resource_candidates: generateArchesURL("related_resource_candidates"),
-            search_results: generateArchesURL("search_results"),
+            related_resource_candidates: generateArchesURL("arches:related_resource_candidates"),
+            search_results: generateArchesURL("arches:search_results"),
             related_resources: (resourceinstanceid) => generateArchesURL(
-                "related_resources",
+                "arches:related_resources",
                 { resourceinstanceid }
             )
         };

@@ -23,11 +23,11 @@ var GroupSelectViewModel = function(params) {
     }
 
     const url_get_group_names_all = generateArchesURL(
-        "get_group_names_all"
+        "arches_user_datatype:get_group_names_all"
     );
 
     const url_get_group_names_one = generateArchesURL(
-        "get_group_names_one"
+        "arches_user_datatype:get_group_names_one"
     );
 
     params.configKeys = ['placeholder', 'defaultValue'];

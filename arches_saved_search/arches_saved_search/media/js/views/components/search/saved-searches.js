@@ -15,7 +15,7 @@ const viewModel = function(sharedStateObject) {
     this.savedSearchName = ko.observable();
     this.result = ko.observable();
     const url_saved_searches = generateArchesURL(
-        "savedsearches"
+        "arches_saved_search:savedsearches"
     );
 
     this.executeSave = function(){
@@ -48,7 +48,7 @@ const viewModel = function(sharedStateObject) {
             for (const [key, value] of Object.entries(search.query)) {
                 parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
             }
-            let url = generateArchesURL("search_home") + "?" + parts.join("&");
+            let url = generateArchesURL("arches:search_home") + "?" + parts.join("&");
             console.log(url, 'url', search.query, search, parts);
             self.personalItems.push({
                 image: undefined,

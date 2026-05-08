@@ -23,15 +23,15 @@ var UserSelectViewModel = function(params) {
     }
 
     const url_get_user_names_all = generateArchesURL(
-        "get_user_names_all"
+        "arches_user_datatype:get_user_names_all"
     );
 
     const url_get_user_names_one = generateArchesURL(
-        "get_user_names_one"
+        "arches_user_datatype:get_user_names_one"
     );
 
     const url_person_signup_link = generateArchesURL(
-        "person_user_signup"
+        "arches_user_datatype:person_user_signup"
     );
 
     params.configKeys = ['placeholder', 'defaultValue'];

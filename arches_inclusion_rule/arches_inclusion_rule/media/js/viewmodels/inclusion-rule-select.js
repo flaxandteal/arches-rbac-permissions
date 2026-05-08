@@ -22,19 +22,19 @@ var InclusionRuleSelectViewModel = function(params) {
     }
 
     const url_get_inclusion_rule_names_all = generateArchesURL(
-        "get_inclusion_rule_names_all"
+        "arches_inclusion_rule:get_inclusion_rule_names_all"
     );
 
     const url_get_inclusion_rule_names_one = generateArchesURL(
-        "get_inclusion_rule_names_one"
+        "arches_inclusion_rule:get_inclusion_rule_names_one"
     );
 
     const url_copy_inclusion_rule_from_saved_search = generateArchesURL(
-        "copy_inclusion_rule_from_saved_search"
+        "arches_inclusion_rule:copy_inclusion_rule_from_saved_search"
     );
 
     const url_go_to_inclusion_rule_inspect = generateArchesURL(
-        "go_to_inclusion_rule_inspect"
+        "arches_inclusion_rule:go_to_inclusion_rule_inspect"
     );
 
     params.configKeys = ['placeholder', 'defaultValue'];
