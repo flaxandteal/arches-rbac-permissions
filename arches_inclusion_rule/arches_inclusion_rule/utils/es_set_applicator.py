@@ -110,7 +110,6 @@ class SetApplicator:
 
         # print("Done with plugins")
 
-        # from arches.app.search.search_engine_factory import SearchEngineInstance as _se
         from arches.app.search.search_engine_factory import SearchEngineInstance as _se
         from arches_inclusion_rule.utils.search import UpdatingSearchEngine
         _se.__class__ = UpdatingSearchEngine
@@ -156,7 +155,6 @@ class SetApplicator:
                         print("Definition:", logical_set_data.member_definition)
                         print("Count:", count)
                     results = self._apply_set(_se, f"l:{logical_set.pk}", logical_set_query, resourceinstanceid=resourceinstanceid)
-                # results = self._apply_set(_se, f"l:{logical_set.pk}", logical_set_query, resourceinstanceid=resourceinstanceid)
                     if self.wait:
                         self.wait_for_completion(_se, results)
                 except Exception as e:
