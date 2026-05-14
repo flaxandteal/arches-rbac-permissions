@@ -11,9 +11,10 @@ const viewModel = function(sharedStateObject) {
     var self = this;
     self.searchFilterVms = sharedStateObject.searchFilterVms;
     this.query = sharedStateObject.query;
-    console.log(this.query, 'query');
+    // console.log(this.query, 'query');
     this.savedSearchName = ko.observable();
     this.result = ko.observable();
+    this.deletionResult = ko.observable();
     const url_saved_searches = generateArchesURL(
         "arches_saved_search:savedsearches"
     );
@@ -23,7 +24,7 @@ const viewModel = function(sharedStateObject) {
             "query": JSON.stringify(ko.unwrap(self.query)),
             "savedSearchName": this.savedSearchName() || "Saved Search"
         };
-        console.log(payload);
+        // console.log(payload);
         $.ajax({
             type: "POST",
             url: url_saved_searches,
@@ -32,7 +33,6 @@ const viewModel = function(sharedStateObject) {
             self.result(response.message);
         });
     };
-
         
     self.urls = arches.urls;
     self.selectedPopup = sharedStateObject.selectedPopup;
@@ -49,12 +49,23 @@ const viewModel = function(sharedStateObject) {
                 parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
             }
             let url = generateArchesURL("arches:search_home") + "?" + parts.join("&");
-            console.log(url, 'url', search.query, search, parts);
-            self.personalItems.push({
+            // console.log(url, 'url', search.query, search, parts);
+            const item = {
                 image: undefined,
                 title: search.name,
-                searchUrl: url
-            });
+                searchUrl: url,
+                id: search.id,
+            };
+            item.deleteSearch = function() {
+                $.ajax({
+                    type: "DELETE",
+                    url: url_saved_searches + "?id=" + search.id,
+                }).done(function(deletionResponse) {
+                    self.personalItems.remove(item);
+                    self.deletionResult(deletionResponse.message);
+                });
+            };
+            self.personalItems.push(item);
         });
     });
 

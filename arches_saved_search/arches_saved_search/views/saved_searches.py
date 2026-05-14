@@ -56,7 +56,21 @@ class SavedSearchesView(View):
         )
         return JSONResponse([
             {
+                "id": str(saved_search.pk),
                 "name": saved_search.name,
                 "query": saved_search.query
             } for saved_search in saved_searches
         ])
+    
+    def delete(self, request):
+        if not request.user or not request.user.id:
+            return JSONErrorResponse({"message": "No user"}, status=400)
+        search_id = request.GET.get("id")
+        if not search_id:
+            return JSONErrorResponse({"message": "No id provided"}, status=400)
+        try:
+            saved_search = SavedSearch.objects.get(pk=search_id, user=request.user)
+            saved_search.delete()
+            return JSONResponse({"message": "Deleted"})
+        except SavedSearch.DoesNotExist:
+            return JSONErrorResponse({"message": "Not found"}, status=404)
