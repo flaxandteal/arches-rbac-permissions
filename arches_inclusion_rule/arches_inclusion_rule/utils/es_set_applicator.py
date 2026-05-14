@@ -110,7 +110,10 @@ class SetApplicator:
 
         # print("Done with plugins")
 
+        # from arches.app.search.search_engine_factory import SearchEngineInstance as _se
         from arches.app.search.search_engine_factory import SearchEngineInstance as _se
+        from arches_inclusion_rule.utils.search import UpdatingSearchEngine
+        _se.__class__ = UpdatingSearchEngine
 
         try:
             logical_sets = ResourceTileTree.get_tiles(graph_slug="logical_set")
@@ -128,32 +131,37 @@ class SetApplicator:
                     continue
                 ir = InclusionRule.objects.get(pk=inclusion_rule_id)
 
-                if not ir.classname == "SearchRule":
-                    logger.error("QuerySets are not yet supported, in the rule %s for logical set %s", str(inclusion_rule_id), str(logical_set.pk))
-                    continue
-                parameters = ir.definition
-                for key, value in parameters.items():
-                    if len(value) != 1:
-                        raise RuntimeError("Each filter type must appear exactly once")
-                    parameters[key] = json.dumps(value)
-                def _logical_set_query(parameters):
-                    search_filter_factory = CommandSearchFilterFactory(parameters)
-                    searchview_component_instance = search_filter_factory.get_searchview_instance()
-                    _, inner_dsl = (
-                        searchview_component_instance.handle_search_results_query(
-                            search_filter_factory, returnDsl=True
+                try:
+                    if not ir.classname == "SearchRule":
+                        logger.error("QuerySets are not yet supported, in the rule %s for logical set %s", str(inclusion_rule_id), str(logical_set.pk))
+                        continue
+                    parameters = ir.definition
+                    for key, value in parameters.items():
+                        if len(value) != 1:
+                            raise RuntimeError("Each filter type must appear exactly once")
+                        parameters[key] = json.dumps(value)
+                    def _logical_set_query(parameters):
+                        search_filter_factory = CommandSearchFilterFactory(parameters)
+                        searchview_component_instance = search_filter_factory.get_searchview_instance()
+                        _, inner_dsl = (
+                            searchview_component_instance.handle_search_results_query(
+                                search_filter_factory, returnDsl=True
+                            )
                         )
-                    )
-                    return inner_dsl["query"]
-                logical_set_query = partial(_logical_set_query, parameters)
-                if self.print_statistics:
-                    count = logical_set_query().count(index=RESOURCES_INDEX)
-                    print("Logical Set:", logical_set.pk)
-                    print("Definition:", logical_set_data.member_definition)
-                    print("Count:", count)
-                results = self._apply_set(_se, f"l:{logical_set.pk}", logical_set_query, resourceinstanceid=resourceinstanceid)
-                if self.wait:
-                    self.wait_for_completion(_se, results)
+                        return inner_dsl["query"]
+                    logical_set_query = partial(_logical_set_query, parameters)
+                    if self.print_statistics:
+                        count = logical_set_query().count(index=RESOURCES_INDEX)
+                        print("Logical Set:", logical_set.pk)
+                        print("Definition:", logical_set_data.member_definition)
+                        print("Count:", count)
+                    results = self._apply_set(_se, f"l:{logical_set.pk}", logical_set_query, resourceinstanceid=resourceinstanceid)
+                # results = self._apply_set(_se, f"l:{logical_set.pk}", logical_set_query, resourceinstanceid=resourceinstanceid)
+                    if self.wait:
+                        self.wait_for_completion(_se, results)
+                except Exception as e:
+                    logger.error("Failed to apply set %s: %s", str(logical_set.pk), str(e))
+                    continue
                 if self.print_statistics:
                     dsl = Query(se=_se)
                     bool_query = Bool()
