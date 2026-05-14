@@ -47,7 +47,7 @@ class UpdateByQuery(Dsl):
             "script": self.script
         }
         self.dsl.update(kwargs)
-        return self.se.update_by_query(index=index, **self.dsl)
+        return UpdatingSearchEngine.update_by_query(self.se, index=index, **self.dsl)
 
 
 class UpdatingSearchEngine(SearchEngine):
