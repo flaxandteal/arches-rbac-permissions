@@ -31,7 +31,19 @@ dependencies = [
 dev = [
     "mypy>=1.17.1",
     "ruff>=0.12.10",
+    "pytest>=8.0",
+    "pytest-django>=4.8",
 ]
+
+[tool.pytest.ini_options]
+# tests/settings.py mirrors a host Arches project (loads the suite settings and
+# registers the apps in INSTALLED_APPS) so the modules can be imported and their
+# pure logic exercised. These unit tests do NOT touch the database or
+# Elasticsearch; integration tests that need a live Postgres/ES/Casbin runtime
+# would live elsewhere and require the full dev setup from the README.
+DJANGO_SETTINGS_MODULE = "tests.settings"
+pythonpath = ["."]
+testpaths = ["tests/unit"]
 
 [tool.uv.sources]
 arches_inclusion_rule = { workspace = true }

@@ -44,7 +44,7 @@ wheels = [
 
 [[package]]
 name = "arches"
-version = "8.0.3"
+version = "8.1.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "arcgis2geojson" },
@@ -86,9 +86,9 @@ dependencies = [
     { name = "sparqlwrapper" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2b/11/f4bc007b5d76f92f9f61fdc03f54b926b6a5d2c1d53c99c9a110db5b7a08/arches-8.0.3.tar.gz", hash = "sha256:8377840f74adf9a4019e16a04e3ba49c0e99b7c560deedd2fb35a44a628583d4", size = 28428226, upload-time = "2025-08-19T23:54:58.13Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c4/e9/258431691a5024c68bf453103c099ec51a289b6ce442f1e07315e3730402/arches-8.1.2.tar.gz", hash = "sha256:839f8759ce041f5d666971ed4ae0449ba05e064a17f6c8b1b332484dc5a9b1a6", size = 32136722, upload-time = "2026-03-27T18:23:25.742Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3a/84/67c21f2fd2eed1a061669634fc4216bd15f9384c420043be9d1a95679571/arches-8.0.3-py3-none-any.whl", hash = "sha256:cf3a71d680484e665d82265d7a04fdc0ebdca7a0374ae647500f8bc7c4071efa", size = 29000814, upload-time = "2025-08-19T23:54:49.748Z" },
+    { url = "https://files.pythonhosted.org/packages/f8/b1/2d1885c4f19fd81c0fb12bfa110635f5d46ab0f0b1c0a755af3e72707161/arches-8.1.2-py3-none-any.whl", hash = "sha256:cb1f031e1fdb30625e7363f812e08d9fd403c3a2b4ba2d4b7b5db9d69c5376ea", size = 32919176, upload-time = "2026-03-27T18:23:14.247Z" },
 ]
 
 [[package]]
@@ -118,9 +118,9 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "arches", specifier = ">=8.0,<8.2" },
-    { name = "arches-orm", specifier = ">=0.4.0" },
-    { name = "arches-querysets" },
+    { name = "arches", specifier = ">=8.1,<8.2" },
+    { name = "arches-orm", specifier = ">=0.4.2" },
+    { name = "arches-querysets", specifier = ">=1.1,<1.2" },
     { name = "arches-saved-search", editable = "arches_saved_search" },
     { name = "casbin-django-orm-adapter" },
     { name = "coverage", marker = "extra == 'dev'" },
@@ -137,7 +137,7 @@ provides-extras = ["dev", "docs"]
 
 [[package]]
 name = "arches-orm"
-version = "0.4.0"
+version = "0.4.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "edtf" },
@@ -150,22 +150,21 @@ dependencies = [
     { name = "tabulate" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1c/65/d103a965000ff7f516612fac5f43b9047ee91df494c1b920c7d9d8b63989/arches_orm-0.4.0.tar.gz", hash = "sha256:c77d0e23bafb9e7ccbf803844c12c6dd120fafa87d060b49fe25727ffbdafb9a", size = 1425483, upload-time = "2025-08-25T12:13:41.249Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/2a/95/e450a4dcf064b01e6443b657ee9d2b12e512e4e82ee7f2ecddd5c7c536ef/arches_orm-0.4.2.tar.gz", hash = "sha256:2f7bea7e72eb8e2b697ccbf5935300d81e54ada0bc0a169b1e050868696f00d8", size = 1425458, upload-time = "2025-08-25T18:46:35.178Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0a/9e/cf42c795c9fafd5818546a9b09c2f066fe8430e6756fa666a1ad529ba8bc/arches_orm-0.4.0-py3-none-any.whl", hash = "sha256:e75b36736312edd6bc462fdf5f6d8f87548c4f282dea5a51730603eb403bc4fe", size = 141854, upload-time = "2025-08-25T12:13:39.309Z" },
+    { url = "https://files.pythonhosted.org/packages/bc/0d/72d458b8964cd2a1d86b15529fea419926c2ddbbae2517bcaee24445ebfa/arches_orm-0.4.2-py3-none-any.whl", hash = "sha256:f18aa8aa96f526fb8acd6cc690ae4da2cbcd22c01d2f7fb28580e2020d47356f", size = 141851, upload-time = "2025-08-25T18:46:33.241Z" },
 ]
 
 [[package]]
 name = "arches-querysets"
-version = "0.1.0"
+version = "1.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "arches" },
-    { name = "djangorestframework" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6b/f4/fbd38a7c7033343a8358eb35f6002d37da0e9bcfa0bed9f8b808f9cada49/arches_querysets-0.1.0.tar.gz", hash = "sha256:8d4dab75174531bc16fba41cde82d9ceddd41d3bce33f5b017d70f12788b8d3b", size = 241042, upload-time = "2025-04-08T20:25:54.185Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a4/e7/b0e2a3df79044a8b121a75ace15b45b140fe15eaf96cdd72ec8682a82b71/arches_querysets-1.1.1.tar.gz", hash = "sha256:7937a2990d923e7426afa9ab84d21f27629630a55e32a1dae7009d02940371f3", size = 282187, upload-time = "2026-03-26T21:31:30.543Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/db/ff/ce42e889d91e51fa6696dbadef25b8444916d62597bcb6f5b3f9392bcd76/arches_querysets-0.1.0-py3-none-any.whl", hash = "sha256:abad2a7422b2eb5cdaa174aae5853e2de04a2202accc063d19f1b97231615d8b", size = 58602, upload-time = "2025-04-08T20:25:52.09Z" },
+    { url = "https://files.pythonhosted.org/packages/49/87/2e9cc82ff32eb00eafa1d7c0fbf015ce86c3d953d61f880db65aab8083b7/arches_querysets-1.1.1-py3-none-any.whl", hash = "sha256:404eeea7e9b3d675a22af72456f32a8e5f183ed51b364e3f8cc5f09b45e27445", size = 87769, upload-time = "2026-03-26T21:31:28.627Z" },
 ]
 
 [[package]]
@@ -173,6 +172,7 @@ name = "arches-rbac-permissions"
 version = "0.0.1"
 source = { editable = "arches_rbac_permissions" }
 dependencies = [
+    { name = "arches" },
     { name = "arches-inclusion-rule" },
     { name = "arches-saved-search" },
     { name = "arches-semantic-roles" },
@@ -187,6 +187,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "arches", specifier = ">=8.1,<8.2" },
     { name = "arches-inclusion-rule", editable = "arches_inclusion_rule" },
     { name = "arches-saved-search", editable = "arches_saved_search" },
     { name = "arches-semantic-roles", editable = "arches_semantic_roles" },
@@ -210,6 +211,8 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "mypy" },
+    { name = "pytest" },
+    { name = "pytest-django" },
     { name = "ruff" },
 ]
 
@@ -219,6 +222,8 @@ requires-dist = [{ name = "arches-rbac-permissions", editable = "arches_rbac_per
 [package.metadata.requires-dev]
 dev = [
     { name = "mypy", specifier = ">=1.17.1" },
+    { name = "pytest", specifier = ">=8.0" },
+    { name = "pytest-django", specifier = ">=4.8" },
     { name = "ruff", specifier = ">=0.12.10" },
 ]
 
@@ -248,9 +253,9 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "arches", specifier = ">=8.0,<8.2" },
+    { name = "arches", specifier = ">=8.1,<8.2" },
     { name = "arches-orm", specifier = ">=0.4.0" },
-    { name = "arches-querysets" },
+    { name = "arches-querysets", specifier = ">=1.1,<1.2" },
     { name = "casbin-django-orm-adapter" },
     { name = "coverage", marker = "extra == 'dev'" },
     { name = "django-authorization" },
@@ -292,10 +297,10 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "arches", specifier = ">=8.0,<8.2" },
+    { name = "arches", specifier = ">=8.1,<8.2" },
     { name = "arches-inclusion-rule", editable = "arches_inclusion_rule" },
-    { name = "arches-orm", specifier = ">=0.4.0" },
-    { name = "arches-querysets" },
+    { name = "arches-orm", specifier = ">=0.4.2" },
+    { name = "arches-querysets", specifier = ">=1.1,<1.2" },
     { name = "arches-user-datatype", editable = "arches_user_datatype" },
     { name = "casbin-django-orm-adapter" },
     { name = "coverage", marker = "extra == 'dev'" },
@@ -336,9 +341,9 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "arches", specifier = ">=8.0,<8.2" },
-    { name = "arches-orm", specifier = ">=0.4.0" },
-    { name = "arches-querysets" },
+    { name = "arches", specifier = ">=8.1,<8.2" },
+    { name = "arches-orm", specifier = ">=0.4.2" },
+    { name = "arches-querysets", specifier = ">=1.1,<1.2" },
     { name = "casbin-django-orm-adapter" },
     { name = "coverage", marker = "extra == 'dev'" },
     { name = "django-authorization" },
@@ -736,16 +741,16 @@ wheels = [
 
 [[package]]
 name = "django"
-version = "5.2.5"
+version = "5.2.15"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "asgiref" },
     { name = "sqlparse" },
     { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/62/9b/779f853c3d2d58b9e08346061ff3e331cdec3fe3f53aae509e256412a593/django-5.2.5.tar.gz", hash = "sha256:0745b25681b129a77aae3d4f6549b62d3913d74407831abaa0d9021a03954bae", size = 10859748, upload-time = "2025-08-06T08:26:29.978Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/2b/e3/31722f7284c9f43333daff9aee9184678e4487adcb5506af0db8cea09ce1/django-5.2.15.tar.gz", hash = "sha256:5154a9bf84ac01dde011e367f355c07dbb329532e06810dcf3ef2af269e236e7", size = 10873669, upload-time = "2026-06-03T13:03:35.892Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9d/6e/98a1d23648e0085bb5825326af17612ecd8fc76be0ce96ea4dc35e17b926/django-5.2.5-py3-none-any.whl", hash = "sha256:2b2ada0ee8a5ff743a40e2b9820d1f8e24c11bac9ae6469cd548f0057ea6ddcd", size = 8302999, upload-time = "2025-08-06T08:26:23.562Z" },
+    { url = "https://files.pythonhosted.org/packages/92/b5/38140b1643c00d5c46ce69c78e6980fd285aee223100319631bedee4f5e7/django-5.2.15-py3-none-any.whl", hash = "sha256:0eb4a9bb1853a35b0286dbc6d916bd352c8c2687195a7f2d6f80cefd840e4970", size = 8311957, upload-time = "2026-06-03T13:03:31.329Z" },
 ]
 
 [[package]]
@@ -905,18 +910,6 @@ wheels = [
 ]
 
 [[package]]
-name = "djangorestframework"
-version = "3.15.2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "django" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/2c/ce/31482eb688bdb4e271027076199e1aa8d02507e530b6d272ab8b4481557c/djangorestframework-3.15.2.tar.gz", hash = "sha256:36fe88cd2d6c6bec23dca9804bab2ba5517a8bb9d8f47ebc68981b56840107ad", size = 1067420, upload-time = "2024-06-19T07:59:32.891Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/7c/b6/fa99d8f05eff3a9310286ae84c4059b08c301ae4ab33ae32e46e8ef76491/djangorestframework-3.15.2-py3-none-any.whl", hash = "sha256:2b8871b062ba1aefc2de01f773875441a961fefbf79f5eed1e32b2f096944b20", size = 1071235, upload-time = "2024-06-19T07:59:26.106Z" },
-]
-
-[[package]]
 name = "edtf"
 version = "4.0.1"
 source = { registry = "https://pypi.org/simple" }
@@ -945,16 +938,16 @@ wheels = [
 
 [[package]]
 name = "elasticsearch"
-version = "8.19.0"
+version = "8.19.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "elastic-transport" },
     { name = "python-dateutil" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/05/00/7304af19770b9c53afe7b5b75433a1b0355d8725b4d8ed54a3f47d2a4f99/elasticsearch-8.19.0.tar.gz", hash = "sha256:66fe755e55127afc47c68eca6858006932d9d128b68834a15e7e9894517cfb67", size = 777512, upload-time = "2025-07-30T10:19:11.374Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/6b/79/365e306017a9fcfbbefab1a3b588d2404bea8806b36766ff0f886509a20e/elasticsearch-8.19.3.tar.gz", hash = "sha256:e84dd618a220cac25b962790085045dd27ac72e01c0a5d81bd29a2d47a71f03f", size = 800298, upload-time = "2025-12-23T12:56:00.72Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e0/73/05fe3d053d6154dd92a5f8ce3c67685af983c988aa6244e5512ea73f0d1f/elasticsearch-8.19.0-py3-none-any.whl", hash = "sha256:33eee4ec4244ef217952eeee0adff64a409120a1401c3bd35790e22145727e3f", size = 926924, upload-time = "2025-07-30T10:19:06.884Z" },
+    { url = "https://files.pythonhosted.org/packages/56/0f/ac126833c385b06166d41c486e4911f58ad7791fd1a53dd6e0b8d16ff214/elasticsearch-8.19.3-py3-none-any.whl", hash = "sha256:fe1db2555811192e8a1be78b01234d0a49d32b185ea7eeeb6f059331dee32838", size = 952820, upload-time = "2025-12-23T12:55:56.796Z" },
 ]
 
 [[package]]
@@ -1637,6 +1630,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/08/ba/45911d754e8eba3d5a841a5ce61a65a685ff1798421ac054f85aa8747dfb/pytest-8.4.1.tar.gz", hash = "sha256:7c67fd69174877359ed9371ec3af8a3d2b04741818c51e5e99cc1742251fa93c", size = 1517714, upload-time = "2025-06-18T05:48:06.109Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/29/16/c8a903f4c4dffe7a12843191437d7cd8e32751d5de349d45d3fe69544e87/pytest-8.4.1-py3-none-any.whl", hash = "sha256:539c70ba6fcead8e78eebbf1115e8b589e7565830d7d006a8723f19ac8a0afb7", size = 365474, upload-time = "2025-06-18T05:48:03.955Z" },
+]
+
+[[package]]
+name = "pytest-django"
+version = "4.12.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/13/2b/db9a193df89e5660137f5428063bcc2ced7ad790003b26974adf5c5ceb3b/pytest_django-4.12.0.tar.gz", hash = "sha256:df94ec819a83c8979c8f6de13d9cdfbe76e8c21d39473cfe2b40c9fc9be3c758", size = 91156, upload-time = "2026-02-14T18:40:49.235Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/83/a5/41d091f697c09609e7ef1d5d61925494e0454ebf51de7de05f0f0a728f1d/pytest_django-4.12.0-py3-none-any.whl", hash = "sha256:3ff300c49f8350ba2953b90297d23bf5f589db69545f56f1ec5f8cff5da83e85", size = 26123, upload-time = "2026-02-14T18:40:47.381Z" },
 ]
 
 [[package]]

@@ -42,7 +42,7 @@ classifiers = [
     "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
 ]
 dependencies = [
-    "arches>=8.0,<8.2",
+    "arches>=8.1,<8.2",
     "arches_saved_search",
     "arches_inclusion_rule",
     "arches_user_datatype",
